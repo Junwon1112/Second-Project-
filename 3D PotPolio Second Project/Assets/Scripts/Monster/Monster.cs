@@ -26,6 +26,17 @@ public class Monster : MonoBehaviour
     int tempLayerMask;
     Transform player;
 
+    bool isFindPlayer;
+
+    bool isMonsterChase = false;
+
+    enum MonsterState
+    {
+        patrol = 0,
+        chase,
+        attack,
+        hit
+    }
 
 
     private void Awake()
@@ -59,41 +70,65 @@ public class Monster : MonoBehaviour
             SetPatrol();
         }
 
-        FindPlayer();
+        FindPlayer(out isFindPlayer);
+        if(isFindPlayer)
+        {
+            ChasePlayer();
+        }
+
+
     }
 
     private void SetPatrol()
     {
-        destinationIndex++;
+        if(!isMonsterChase)
+        {
+            destinationIndex++;
 
-        destinationIndex %= patrolPoints.Length;
+            destinationIndex %= patrolPoints.Length;
 
-        agent.SetDestination(patrolPoints[destinationIndex].transform.position);
+            agent.SetDestination(patrolPoints[destinationIndex].transform.position);
+
+
+            Debug.Log("setpatrol");
+        }
         
-
-        Debug.Log("setpatrol");
     }
 
-    private Transform FindPlayer()
+    private Transform FindPlayer(out bool outIsFindPlayer)  //ontrigger쓰면 되는건데 연습해보고 싶어 사용함
     {
         Collider[] colliders = Physics.OverlapSphere(transform.position, monsterSearchRadius, tempLayerMask);
         //여기서 null값 뜨는 중, tempLayerMask 값은 128, player도 7번쨰 layer
+        //player에 컬라이더가 없어 생기던 문제였음
         player = null;
+        outIsFindPlayer = false;
 
-
-        if(colliders != null)
+        if (colliders != null)
         {
 
             foreach (Collider collider in colliders)
             {
                 player = collider.GetComponent<Transform>();
+                outIsFindPlayer = true;
                 Debug.Log($"{player.name}");
 
                 
             }
         }
 
+
         return player;
+    }
+
+    private void ChasePlayer()
+    {
+         
+        if(player != null)
+        {
+            isMonsterChase = true;
+            agent.SetDestination(player.position);
+        }
+    
     }
 
 
