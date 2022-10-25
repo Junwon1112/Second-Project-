@@ -14,10 +14,24 @@ public class Monster : MonoBehaviour
 
     NavMeshAgent agent;
     Transform[] patrolPoints;
+    bool isStopAgent;
+
+    public delegate void Action(NavMeshAgent agent);
+    Action changePatrolAction;
+    int destinationIndex = 0;
+
+
+    float monsterSearchRadius = 5;
+    LayerMask playerLayer;
+    int tempLayerMask;
+    Transform player;
+
+
 
     private void Awake()
     {
         agent = GetComponent<NavMeshAgent>();
+        playerLayer = LayerMask.NameToLayer("Player");
        
     }
 
@@ -30,22 +44,59 @@ public class Monster : MonoBehaviour
         for (int i = 0; i < patrolPoint.childCount; i++)
         {
             patrolPoints[i] = patrolPoint.transform.GetChild(i);
-            int j = 0;
         }
 
+        tempLayerMask = (1 << playerLayer);
 
-
-        transform.position = patrolPoints[0].transform.position;
+        agent.SetDestination(patrolPoints[0].transform.position);
         
     }
 
     private void Update()
     {
-        
+        if (agent.remainingDistance <= agent.stoppingDistance)
+        {
+            SetPatrol();
+        }
+
+        FindPlayer();
     }
 
     private void SetPatrol()
     {
+        destinationIndex++;
+
+        destinationIndex %= patrolPoints.Length;
+
+        agent.SetDestination(patrolPoints[destinationIndex].transform.position);
         
+
+        Debug.Log("setpatrol");
     }
+
+    private Transform FindPlayer()
+    {
+        Collider[] colliders = Physics.OverlapSphere(transform.position, monsterSearchRadius, tempLayerMask);
+        //여기서 null값 뜨는 중, tempLayerMask 값은 128, player도 7번쨰 layer
+        player = null;
+
+
+        if(colliders != null)
+        {
+
+            foreach (Collider collider in colliders)
+            {
+                player = collider.GetComponent<Transform>();
+                Debug.Log($"{player.name}");
+
+                
+            }
+        }
+
+        return player;
+    }
+
+
+
+
 }
