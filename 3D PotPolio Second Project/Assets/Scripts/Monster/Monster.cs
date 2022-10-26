@@ -24,19 +24,22 @@ public class Monster : MonoBehaviour
     float monsterSearchRadius = 5;
     LayerMask playerLayer;
     int tempLayerMask;
-    Transform player;
+    Transform player = null;
 
     bool isFindPlayer;
 
     bool isMonsterChase = false;
+    bool isPatrol = true;
+    bool isCombat = false;
 
     enum MonsterState
     {
         patrol = 0,
         chase,
-        attack,
-        hit
+        combat,
     }
+
+    MonsterState monsterState = MonsterState.patrol;
 
 
     private void Awake()
@@ -65,56 +68,75 @@ public class Monster : MonoBehaviour
 
     private void Update()
     {
-        if (agent.remainingDistance <= agent.stoppingDistance)
+        SetMonsterState(monsterState);
+
+        if(isPatrol)
         {
-            SetPatrol();
+            PatrolUpdate(); 
+        }
+        else if(isMonsterChase)
+        {
+            ChaseUpdate();
+        }
+        else
+        {
+            AttackUpdate();
         }
 
-        FindPlayer(out isFindPlayer);
+        
         if(isFindPlayer)
         {
-            ChasePlayer();
+            
+        }
+        else
+        {
+            monsterState = MonsterState.patrol;
+            SetMonsterState(monsterState);
         }
 
 
     }
+
 
     private void SetPatrol()
     {
-        if(!isMonsterChase)
+        if (agent.remainingDistance <= agent.stoppingDistance && isPatrol)
         {
+            
             destinationIndex++;
-
             destinationIndex %= patrolPoints.Length;
-
             agent.SetDestination(patrolPoints[destinationIndex].transform.position);
-
 
             Debug.Log("setpatrol");
         }
-        
+        else if(agent.remainingDistance > agent.stoppingDistance && isPatrol)
+        {
+            agent.SetDestination(patrolPoints[destinationIndex].transform.position);
+        }
     }
 
-    private Transform FindPlayer(out bool outIsFindPlayer)  //ontrigger쓰면 되는건데 연습해보고 싶어 사용함
+
+    private Transform FindPlayer(bool findPlayer)  //ontrigger쓰면 되는건데 연습해보고 싶어 사용함
     {
         Collider[] colliders = Physics.OverlapSphere(transform.position, monsterSearchRadius, tempLayerMask);
         //여기서 null값 뜨는 중, tempLayerMask 값은 128, player도 7번쨰 layer
         //player에 컬라이더가 없어 생기던 문제였음
-        player = null;
-        outIsFindPlayer = false;
+        findPlayer = false;
 
         if (colliders != null)
         {
-
             foreach (Collider collider in colliders)
             {
                 player = collider.GetComponent<Transform>();
-                outIsFindPlayer = true;
+                findPlayer = true;
+                monsterState = MonsterState.chase;
+                SetMonsterState(monsterState);
                 Debug.Log($"{player.name}");
-
                 
             }
         }
+
+        
 
 
         return player;
@@ -122,13 +144,63 @@ public class Monster : MonoBehaviour
 
     private void ChasePlayer()
     {
-         
         if(player != null)
         {
-            isMonsterChase = true;
-            agent.SetDestination(player.position);
+            
+            if (agent.remainingDistance <= agent.stoppingDistance)
+            {
+                monsterState = MonsterState.combat;
+                SetMonsterState(monsterState);
+            }
+            else
+            {
+                agent.SetDestination(player.position);
+            }
+            
+                
         }
     
+    }
+
+    private void SetMonsterState(MonsterState mon)
+    {
+
+        switch (mon)
+        {
+            case MonsterState.patrol:
+                isPatrol = true;
+                isMonsterChase = false;
+                isCombat = false;
+                break;
+            case MonsterState.chase:
+                isPatrol = false;
+                isMonsterChase = true;
+                isCombat = false;
+                break;
+            case MonsterState.combat:
+                isPatrol = false;
+                isMonsterChase = false;
+                isCombat = true;
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void PatrolUpdate()
+    {
+        SetPatrol();
+        FindPlayer(isFindPlayer); // 참고로 찾은 플레이어 트랜스폼 리턴함
+    }
+
+    private void ChaseUpdate()
+    {
+        ChasePlayer();
+    }
+
+    private void AttackUpdate()
+    {
+        Debug.Log("전투중");
     }
 
 
