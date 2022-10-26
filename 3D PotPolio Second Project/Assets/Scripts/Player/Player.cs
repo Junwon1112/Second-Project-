@@ -15,6 +15,16 @@ public class Player : MonoBehaviour
     float hp;
     float maxHp = 100;
     Slider hpBar;
+
+    public float HP
+    {
+        get { return hp; }
+        set 
+        { 
+            hp = value; 
+
+        }
+    }
     
 
     private void Awake()

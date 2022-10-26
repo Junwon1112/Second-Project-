@@ -6,32 +6,35 @@ using UnityEngine.AI;
 public class Monster : MonoBehaviour
 {
     //몬스터가 해야할 일들
-    //1, 일정 구간 순찰
-    //2. 순찰 중 일정범위 내 플레이어 존재시 추적
-    //3. 너무 먼 거리를 오면 제자리로 돌아감
-    //4. 움직임, 공격, 맞음, 죽음 4가지 상태
-    //5. 체력 필요 => 체력 체크 용 인터페이스 필요
+    //1, 일정 구간 순찰 => 구현
+    //2. 순찰 중 일정범위 내 플레이어 존재시 추적 => 구현
+    //3. 너무 먼 거리를 오면 제자리로 돌아감 => 구현
+    //4. 움직임, 공격, 맞음, 죽음 4가지 상태  => 죽음 제외 3가지 구현
+    //5. 체력 필요 => 체력 체크 용 인터페이스 필요 => 구현 해야함
 
     NavMeshAgent agent;
-    Transform[] patrolPoints;
-    bool isStopAgent;
+    Transform[] patrolPoints;   //순찰지점
 
     public delegate void Action(NavMeshAgent agent);
-    Action changePatrolAction;
     int destinationIndex = 0;
 
 
     float monsterSearchRadius = 5;
     LayerMask playerLayer;
     int tempLayerMask;
-    Transform player = null;
 
-    bool isFindPlayer;
+    //찾았을 때 추적할 플레이어 트랜스폼
+    Transform playerTransform = null;
 
+    //플레이어 체력 등 가져오기 위한 플레이어 스크립트
+    Player player;
+
+    //몬스터 상태 체크용
     bool isMonsterChase = false;
     bool isPatrol = true;
     bool isCombat = false;
 
+    //몬스터 상태 체크용 enum
     enum MonsterState
     {
         patrol = 0,
@@ -39,6 +42,7 @@ public class Monster : MonoBehaviour
         combat,
     }
 
+    // enum 인스턴스만들고 기본값을 patrol로 설정
     MonsterState monsterState = MonsterState.patrol;
 
 
@@ -46,7 +50,8 @@ public class Monster : MonoBehaviour
     {
         agent = GetComponent<NavMeshAgent>();
         playerLayer = LayerMask.NameToLayer("Player");
-       
+        playerTransform = GameObject.FindGameObjectWithTag("Player").transform.GetComponent<Transform>();
+        player = GameObject.FindGameObjectWithTag("Player").transform.GetComponent<Player>();
     }
 
     private void Start()
@@ -63,44 +68,34 @@ public class Monster : MonoBehaviour
         tempLayerMask = (1 << playerLayer);
 
         agent.SetDestination(patrolPoints[0].transform.position);
-        
+
+        SetMonsterState(monsterState);
+
     }
 
     private void Update()
     {
-        SetMonsterState(monsterState);
+        
 
         if(isPatrol)
         {
-            PatrolUpdate(); 
+            PatrolUpdate(); // 순찰을 하며 주변에 플레이어가 없는지 polling방식으로 계속체크
         }
         else if(isMonsterChase)
         {
-            ChaseUpdate();
+            ChaseUpdate();  //플레이어에게 도착할 때까지 추적, 도중에 플레이어가 사라지면 patrol로 돌아가도록 만들어야 됨
         }
-        else
+        else if(isCombat)
         {
-            AttackUpdate();
+            CombatUpdate(); 
         }
-
-        
-        if(isFindPlayer)
-        {
-            
-        }
-        else
-        {
-            monsterState = MonsterState.patrol;
-            SetMonsterState(monsterState);
-        }
-
 
     }
 
 
     private void SetPatrol()
     {
-        if (agent.remainingDistance <= agent.stoppingDistance && isPatrol)
+        if (agent.remainingDistance <= agent.stoppingDistance)
         {
             
             destinationIndex++;
@@ -109,60 +104,76 @@ public class Monster : MonoBehaviour
 
             Debug.Log("setpatrol");
         }
-        else if(agent.remainingDistance > agent.stoppingDistance && isPatrol)
-        {
-            agent.SetDestination(patrolPoints[destinationIndex].transform.position);
-        }
+        
     }
 
 
-    private Transform FindPlayer(bool findPlayer)  //ontrigger쓰면 되는건데 연습해보고 싶어 사용함
+    private void FindPlayer()  //ontrigger쓰면 되는건데 연습해보고 싶어 사용함
     {
         Collider[] colliders = Physics.OverlapSphere(transform.position, monsterSearchRadius, tempLayerMask);
         //여기서 null값 뜨는 중, tempLayerMask 값은 128, player도 7번쨰 layer
         //player에 컬라이더가 없어 생기던 문제였음
-        findPlayer = false;
-
-        if (colliders != null)
-        {
-            foreach (Collider collider in colliders)
-            {
-                player = collider.GetComponent<Transform>();
-                findPlayer = true;
-                monsterState = MonsterState.chase;
-                SetMonsterState(monsterState);
-                Debug.Log($"{player.name}");
-                
-            }
-        }
-
         
 
+        if (colliders.Length > 0)  //플레이어는 한명뿐이니 존재하기만 하면 찾은것으로 판단
+        {
+            monsterState = MonsterState.chase;
+            SetMonsterState(monsterState);
+            Debug.Log($"{playerTransform.name}");
 
-        return player;
+        }
     }
 
-    private void ChasePlayer()
+    private void ChasePlayer()  //FindPlayer가 찾은 플레이어 트랜스폼으로 추적하는 함수
     {
-        if(player != null)
+
+        if (agent.remainingDistance <= agent.stoppingDistance)  //플레이어에 도착하면 공격태세로 전환
         {
-            
-            if (agent.remainingDistance <= agent.stoppingDistance)
+            monsterState = MonsterState.combat;
+            SetMonsterState(monsterState);
+        }
+        else if(agent.remainingDistance > 5)    //너무 멀어지면 다시 순찰
+        {
+            monsterState = MonsterState.patrol;
+            SetMonsterState(monsterState);
+            agent.SetDestination(patrolPoints[destinationIndex].transform.position);
+            //상태바뀔때 목적지 재설정
+        }
+        else
+        {
+            agent.SetDestination(playerTransform.position);
+            //이동하는 플레이어 위치 갱신을 위해 시작할 때 실행
+        }
+
+
+    }
+
+    private void CombatPlayer()
+    {
+        //agent.remainingDistance썼다가 계속 체크하려면 setDestination을 계속 해야돼서 포기함
+        if ((transform.position - playerTransform.position).sqrMagnitude < 2.5f * 2.5f) 
+        {
+            if (player.HP > 0)
             {
-                monsterState = MonsterState.combat;
-                SetMonsterState(monsterState);
+                Debug.Log("전투중");
             }
             else
             {
-                agent.SetDestination(player.position);
+                monsterState = MonsterState.patrol;
+                SetMonsterState(monsterState);
+                Debug.Log("몬스터 승리");
             }
-            
-                
         }
-    
+        else  //너무 멀어지면 다시 플레이어 추적
+        {
+            monsterState = MonsterState.chase;
+            SetMonsterState(monsterState);
+            agent.SetDestination(playerTransform.position);
+            //상태바뀔때 목적지 재설정
+        }
     }
 
-    private void SetMonsterState(MonsterState mon)
+    private void SetMonsterState(MonsterState mon)  //플레이어 상태 세팅해주는 함수
     {
 
         switch (mon)
@@ -189,8 +200,8 @@ public class Monster : MonoBehaviour
 
     private void PatrolUpdate()
     {
-        SetPatrol();
-        FindPlayer(isFindPlayer); // 참고로 찾은 플레이어 트랜스폼 리턴함
+        SetPatrol();    // 순찰 시키기
+        FindPlayer(); // 플레이어 찾기, 참고로 찾은 플레이어
     }
 
     private void ChaseUpdate()
@@ -198,9 +209,9 @@ public class Monster : MonoBehaviour
         ChasePlayer();
     }
 
-    private void AttackUpdate()
+    private void CombatUpdate()
     {
-        Debug.Log("전투중");
+        CombatPlayer();   
     }
 
 
