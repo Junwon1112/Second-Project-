@@ -8,13 +8,26 @@ using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
+    //움직임을 위한 인풋 시스템용
     PlayerInput input;
+    //이동 방향 받고 리턴용
     Vector3 dir = Vector3.zero;
+    //애니메이션 용
     Animator anim;
+    //다른 행동중 움직임을 제한하기 위해
     bool canMove = true;
+
+    //체력 관련 변수들
     float hp;
     float maxHp = 100;
     Slider hpBar;
+
+    //회전 관련 변수들
+    float turnToX;
+    float turnToY;
+    float turnToZ;
+
+    float turnSpeed = 30.0f;
 
     public float HP
     {
@@ -39,12 +52,15 @@ public class Player : MonoBehaviour
         input.Player.Enable();
         input.Player.Move.performed += OnMoveInput;
         input.Player.Attack.performed += OnAttackInput;
+        input.Player.Look.performed += OnLookInput;
     }
+
 
     private void OnDisable()
     {
         input.Player.Attack.performed -= OnAttackInput;
         input.Player.Move.performed -= OnMoveInput;
+        input.Player.Look.performed -= OnLookInput;
         input.Player.Disable();
     }
 
@@ -56,13 +72,14 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
-        transform.position += dir * Time.deltaTime * 10;
-        if(dir == Vector3.zero)
+        //transform.position += dir * Time.deltaTime * 10;
+        transform.Translate(dir * Time.deltaTime * 10, Space.Self);
+        if (dir == Vector3.zero)
         {
             anim.SetBool("IsMove", false);
         }
-        
 
+        
     }
 
     private void OnMoveInput(InputAction.CallbackContext obj)
@@ -98,10 +115,31 @@ public class Player : MonoBehaviour
         //anim.SetBool("CanCombo", false);
     }
 
+    private void OnLookInput(InputAction.CallbackContext obj)
+    {
+        Debug.Log("쳐다보기");
+
+        float moveX = obj.ReadValue<Vector2>().x;
+        float moveY = obj.ReadValue<Vector2>().y;
+
+        //좌우 회전
+        turnToY = turnToY + moveX * turnSpeed * Time.deltaTime; 
+
+        //위아래 쳐다보기, 카메라 스크립트 구현 후 카메라만 움직이게 할 예정
+        turnToX = turnToX + moveY * turnSpeed * Time.deltaTime; 
+        
+        //turnToY = Mathf.Clamp(turnToY, -80, 80);    //최대값 설정
+        turnToX = Mathf.Clamp(turnToX, -20, 20);
+
+        transform.eulerAngles = new Vector3(0, turnToY, 0);
+
+
+    }
+
 
     private void SetHP()
     {
-        hpBar.value = hp / maxHp * 100;
+        hpBar.value = hp / maxHp;
     }
 
 

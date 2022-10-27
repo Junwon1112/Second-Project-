@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UI;
 
 public class Monster : MonoBehaviour
 {
@@ -33,6 +34,31 @@ public class Monster : MonoBehaviour
     bool isMonsterChase = false;
     bool isPatrol = true;
     bool isCombat = false;
+    bool isDie = false;
+
+    float hp;
+    float maxHP = 100;
+    float ratio;
+
+    float attackDelay = 1.5f;
+    float criticalRate = 15.0f; // 15퍼센트 확률로 치명타
+
+    bool isAttackContinue = false;
+
+    public float HP
+    {
+        get { return hp; }
+        set { hp = value; }
+    }
+    public float MaxHP
+    {
+        get { return maxHP; }
+    }
+
+    Slider hpSlider;
+
+    Animator anim;
+
 
     //몬스터 상태 체크용 enum
     enum MonsterState
@@ -40,6 +66,7 @@ public class Monster : MonoBehaviour
         patrol = 0,
         chase,
         combat,
+        die
     }
 
     // enum 인스턴스만들고 기본값을 patrol로 설정
@@ -52,6 +79,8 @@ public class Monster : MonoBehaviour
         playerLayer = LayerMask.NameToLayer("Player");
         playerTransform = GameObject.FindGameObjectWithTag("Player").transform.GetComponent<Transform>();
         player = GameObject.FindGameObjectWithTag("Player").transform.GetComponent<Player>();
+        hpSlider = GetComponentInChildren<Slider>();
+        anim = GetComponent<Animator>();
     }
 
     private void Start()
@@ -65,7 +94,15 @@ public class Monster : MonoBehaviour
             patrolPoints[i] = patrolPoint.transform.GetChild(i);
         }
 
-        tempLayerMask = (1 << playerLayer);
+        tempLayerMask = (1 << playerLayer); //비트플래그, 0000 0001 을 playerLayer(7번째 레이어) 만큼 옮겨라 => 0100 0000 이 됨
+
+        hp = maxHP;
+
+        ratio = hp / maxHP;
+
+        hpSlider.value = ratio;
+
+        anim.SetBool("isPatrol", true);
 
         agent.SetDestination(patrolPoints[0].transform.position);
 
@@ -88,6 +125,10 @@ public class Monster : MonoBehaviour
         else if(isCombat)
         {
             CombatUpdate(); 
+        }
+        else if(isDie)
+        {
+            DieUpdate();
         }
 
     }
@@ -156,6 +197,7 @@ public class Monster : MonoBehaviour
             if (player.HP > 0)
             {
                 Debug.Log("전투중");
+                MonsterAttack();
             }
             else
             {
@@ -173,6 +215,38 @@ public class Monster : MonoBehaviour
         }
     }
 
+    private void MonsterAttack()
+    {
+        if(!isAttackContinue)
+        {
+            isAttackContinue = true;
+            StartCoroutine(MonsterAttackCoroutine(attackDelay));
+        }
+    }
+
+    IEnumerator MonsterAttackCoroutine(float attackSpeed)
+    {
+        yield return new WaitForSeconds(attackSpeed);
+        anim.SetTrigger("OnAttack");
+        isCriticalAttack(criticalRate);
+        isAttackContinue = false;
+    }
+
+    private void isCriticalAttack(float criticalPercent)
+    {
+        float criticalAttack;
+        criticalAttack = Random.Range(0, 100.0f);
+        if(criticalAttack < criticalPercent)
+        {
+            anim.SetTrigger("OnCritical");
+        }
+    }
+
+    private void Die()
+    {
+        //체력 만들고, 체력이 0이 되면 죽음, 죽으면 죽는 애니메이션 실행하고 애니메이션 종료후 몬스터 Destroy 
+    }
+
     private void SetMonsterState(MonsterState mon)  //플레이어 상태 세팅해주는 함수
     {
 
@@ -182,17 +256,38 @@ public class Monster : MonoBehaviour
                 isPatrol = true;
                 isMonsterChase = false;
                 isCombat = false;
+                isDie = false;
+                anim.SetBool("isPatrol", true);
+                anim.SetBool("isChase", false);
+                anim.SetBool("isCombat", false);
                 break;
             case MonsterState.chase:
                 isPatrol = false;
                 isMonsterChase = true;
                 isCombat = false;
+                isDie = false;
+                anim.SetBool("isPatrol", false);
+                anim.SetBool("isChase", true);
+                anim.SetBool("isCombat", false);
                 break;
             case MonsterState.combat:
                 isPatrol = false;
                 isMonsterChase = false;
                 isCombat = true;
+                isDie = false;
+                anim.SetBool("isPatrol", false);
+                anim.SetBool("isChase", false);
+                anim.SetBool("isCombat", true);
                 break;
+            case MonsterState.die:
+                isPatrol = false;
+                isMonsterChase = false;
+                isCombat = false;
+                isDie = true;
+                anim.SetBool("isDie", true);
+
+                break;
+
             default:
                 break;
         }
@@ -212,6 +307,10 @@ public class Monster : MonoBehaviour
     private void CombatUpdate()
     {
         CombatPlayer();   
+    }
+    private void DieUpdate()
+    {
+        Die();
     }
 
 
