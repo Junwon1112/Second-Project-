@@ -6,7 +6,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.Animations;
 using UnityEngine.UI;
 
-public class Player : MonoBehaviour
+public class Player : MonoBehaviour, IHealth
 {
     //움직임을 위한 인풋 시스템용
     PlayerInput input;
@@ -16,6 +16,8 @@ public class Player : MonoBehaviour
     Animator anim;
     //다른 행동중 움직임을 제한하기 위해
     bool canMove = true;
+
+    Monster monster;
 
     //체력 관련 변수들
     float hp;
@@ -29,6 +31,8 @@ public class Player : MonoBehaviour
 
     float turnSpeed = 30.0f;
 
+
+
     public float HP
     {
         get { return hp; }
@@ -38,7 +42,25 @@ public class Player : MonoBehaviour
 
         }
     }
-    
+
+    public float MaxHP
+    {
+        get { return maxHp; }
+    }
+
+    float attackDamage = 10;
+    float defence = 5;
+
+    public float AttackDamage
+    {
+        get { return attackDamage; }
+        set { attackDamage = value; }
+    }
+    public float Defence
+    {
+        get { return defence; }
+        set { defence = value; }
+    }
 
     private void Awake()
     {
@@ -115,6 +137,24 @@ public class Player : MonoBehaviour
         //anim.SetBool("CanCombo", false);
     }
 
+    //private void OnTriggrEnter(Collider other)
+    //{
+    //    //플레이어 칼에있는 컬라이더의 트리거
+    //    if(other.CompareTag("Monster"))
+    //    {
+    //        Monster monster;
+    //        monster = other.GetComponent<Monster>();
+    //        if(monster.playerTriggerOff == false)
+    //        {
+    //            Attack(monster);
+    //            monster.SetHP();
+                
+    //        }
+    //        monster.playerTriggerOff = false;
+
+    //    }
+    //}
+
     private void OnLookInput(InputAction.CallbackContext obj)
     {
         Debug.Log("쳐다보기");
@@ -137,10 +177,13 @@ public class Player : MonoBehaviour
     }
 
 
-    private void SetHP()
+    public void SetHP()
     {
-        hpBar.value = hp / maxHp;
+        hpBar.value = HP / MaxHP;
     }
 
-
+    public void Attack(IBattle target)
+    {
+       //target.HP -= (AttackDamage - target.Defence);
+    }
 }

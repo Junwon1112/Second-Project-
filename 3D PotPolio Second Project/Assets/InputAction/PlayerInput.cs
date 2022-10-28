@@ -70,7 +70,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 {
                     ""name"": ""up"",
                     ""id"": ""b8155a9e-bfa7-43e4-b4c8-12b768e85415"",
-                    ""path"": ""<Keyboard>/upArrow"",
+                    ""path"": ""<Keyboard>/w"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Player"",
@@ -81,7 +81,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 {
                     ""name"": ""down"",
                     ""id"": ""e8935b68-feec-46fe-a9ef-e90d81559a9c"",
-                    ""path"": ""<Keyboard>/downArrow"",
+                    ""path"": ""<Keyboard>/s"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Player"",
@@ -92,7 +92,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 {
                     ""name"": ""left"",
                     ""id"": ""095d0fa3-a748-4746-9680-4cb4baba4f89"",
-                    ""path"": ""<Keyboard>/leftArrow"",
+                    ""path"": ""<Keyboard>/a"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Player"",
@@ -103,7 +103,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 {
                     ""name"": ""right"",
                     ""id"": ""62c1889e-9789-40f6-b056-64d34a8fbf37"",
-                    ""path"": ""<Keyboard>/rightArrow"",
+                    ""path"": ""<Keyboard>/d"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Player"",
@@ -114,7 +114,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""8a847583-bf92-4a71-84fb-4206519513da"",
-                    ""path"": ""<Keyboard>/a"",
+                    ""path"": ""<Mouse>/leftButton"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",

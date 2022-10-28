@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.UI;
 
-public class Monster : MonoBehaviour
+public class Monster : MonoBehaviour, IHealth
 {
     //몬스터가 해야할 일들
     //1, 일정 구간 순찰 => 구현
@@ -40,10 +40,34 @@ public class Monster : MonoBehaviour
     float maxHP = 100;
     float ratio;
 
+
+    float attackDamage = 10;
+    float defence = 3;
+
     float attackDelay = 1.5f;
     float criticalRate = 15.0f; // 15퍼센트 확률로 치명타
 
     bool isAttackContinue = false;
+    public bool playerTriggerOff = false;
+
+    public float AttackDamage
+    {
+        get
+        {
+            return attackDamage;
+        }
+        set
+        {
+            attackDamage = value;
+        }
+    }
+    public float Defence
+    {
+        get { return defence; }
+        set { defence = value; }
+    }
+
+
 
     public float HP
     {
@@ -55,6 +79,7 @@ public class Monster : MonoBehaviour
         get { return maxHP; }
     }
 
+   
     Slider hpSlider;
 
     Animator anim;
@@ -81,6 +106,7 @@ public class Monster : MonoBehaviour
         player = GameObject.FindGameObjectWithTag("Player").transform.GetComponent<Player>();
         hpSlider = GetComponentInChildren<Slider>();
         anim = GetComponent<Animator>();
+    
     }
 
     private void Start()
@@ -98,9 +124,7 @@ public class Monster : MonoBehaviour
 
         hp = maxHP;
 
-        ratio = hp / maxHP;
-
-        hpSlider.value = ratio;
+        SetHP();
 
         anim.SetBool("isPatrol", true);
 
@@ -227,6 +251,7 @@ public class Monster : MonoBehaviour
     IEnumerator MonsterAttackCoroutine(float attackSpeed)
     {
         yield return new WaitForSeconds(attackSpeed);
+        //monsterCollider.isTrigger = true; => 애니메이션으로 세팅
         anim.SetTrigger("OnAttack");
         isCriticalAttack(criticalRate);
         isAttackContinue = false;
@@ -241,6 +266,17 @@ public class Monster : MonoBehaviour
             anim.SetTrigger("OnCritical");
         }
     }
+
+    //private void OnTriggerEnter(Collider other) //공격할때 공격용 컬라이더가 활성되며 트리거를 파악, 플레이어가 들어오면 
+    //{
+    //    if(other.CompareTag("Player"))
+    //    {
+    //        playerTriggerOff = true;
+    //        Attack(player); //Attack은 매개변수로 IBattle을 받는데 Player클래스는 IBattle을 상속받았으므로 사용할 수 있다.
+    //        player.SetHP();
+    //        Debug.Log($"{player.HP}");
+    //    }
+    //}
 
     private void Die()
     {
@@ -313,7 +349,17 @@ public class Monster : MonoBehaviour
         Die();
     }
 
+    public void Attack(IBattle target)  //수치적인 전투 구현 
+    {
 
+    }
+    //{
+    //   // target.HP -= (AttackDamage - target.Defence);
+    //}
 
+    public void SetHP()
+    {
+        hpSlider.value = HP / MaxHP;
+    }
 
 }
