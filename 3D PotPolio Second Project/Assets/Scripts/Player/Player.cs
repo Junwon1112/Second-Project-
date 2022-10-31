@@ -48,7 +48,10 @@ public class Player : MonoBehaviour, IHealth
         get { return maxHp; }
     }
 
+    [SerializeField]    //private여도 유니티에서 수치바꿀수 있게 해주는 것
     float attackDamage = 10;
+
+    [SerializeField]
     float defence = 5;
 
     public float AttackDamage
@@ -157,8 +160,6 @@ public class Player : MonoBehaviour, IHealth
 
     private void OnLookInput(InputAction.CallbackContext obj)
     {
-        Debug.Log("쳐다보기");
-
         float moveX = obj.ReadValue<Vector2>().x;
         float moveY = obj.ReadValue<Vector2>().y;
 

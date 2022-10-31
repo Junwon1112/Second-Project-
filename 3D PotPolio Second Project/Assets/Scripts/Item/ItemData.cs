@@ -17,3 +17,9 @@ public class ItemData : ScriptableObject
     public int itemValue;          //아이템 가치
     public int itemMaxCount;       //아이템 최대 누적수
 }
+
+public enum ItemIDCode
+{
+    HP_Potion = 0,
+    Weapon
+}

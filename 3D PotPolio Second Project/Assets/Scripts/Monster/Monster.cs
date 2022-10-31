@@ -78,6 +78,7 @@ public class Monster : MonoBehaviour, IHealth
             if(hp <= 0)
             {
                 anim.SetBool("isDie", true);
+                SetMonsterState(MonsterState.die);
                 agent.enabled = false;
                 Destroy(gameObject, 3.0f);
             }
@@ -159,7 +160,7 @@ public class Monster : MonoBehaviour, IHealth
         {
             CombatUpdate(); 
         }
-        //else if(isDie)
+        //else if (isDie)
         //{
         //    DieUpdate();
         //}
@@ -278,6 +279,8 @@ public class Monster : MonoBehaviour, IHealth
         }
     }
 
+
+    // OntriggerEnter를 무기 스크립트에서 실행하는것으로 변경, 몬스터가 공격했을때 플레이어의 트리거도 발동되어 몬스터 자신도 피해입는 문제를 해결하기 위해
     //private void OnTriggerEnter(Collider other) //공격할때 공격용 컬라이더가 활성되며 트리거를 파악, 플레이어가 들어오면 
     //{
     //    if(other.CompareTag("Player"))
@@ -292,6 +295,7 @@ public class Monster : MonoBehaviour, IHealth
     private void Die()
     {
         //체력 만들고, 체력이 0이 되면 죽음, 죽으면 죽는 애니메이션 실행하고 애니메이션 종료후 몬스터 Destroy 
+        //프로퍼티에서 실행
     }
 
     private void SetMonsterState(MonsterState mon)  //플레이어 상태 세팅해주는 함수
@@ -326,14 +330,14 @@ public class Monster : MonoBehaviour, IHealth
                 anim.SetBool("isChase", false);
                 anim.SetBool("isCombat", true);
                 break;
-            //case MonsterState.die:
-            //    isPatrol = false;
-            //    isMonsterChase = false;
-            //    isCombat = false;
-            //    isDie = true;
-            //    anim.SetBool("isDie", true);
+            case MonsterState.die:
+                isPatrol = false;
+                isMonsterChase = false;
+                isCombat = false;
+                isDie = true;
+                anim.SetBool("isDie", true);
 
-            //    break;
+                break;
 
             default:
                 break;
