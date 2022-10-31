@@ -20,7 +20,7 @@ public class Monster : MonoBehaviour, IHealth
     int destinationIndex = 0;
 
 
-    float monsterSearchRadius = 5;
+    float monsterSearchRadius = 5.0f;
     LayerMask playerLayer;
     int tempLayerMask;
 
@@ -72,7 +72,16 @@ public class Monster : MonoBehaviour, IHealth
     public float HP
     {
         get { return hp; }
-        set { hp = value; }
+        set 
+        {
+            hp = value;
+            if(hp <= 0)
+            {
+                anim.SetBool("isDie", true);
+                agent.enabled = false;
+                Destroy(gameObject, 3.0f);
+            }
+        }
     }
     public float MaxHP
     {
@@ -150,10 +159,10 @@ public class Monster : MonoBehaviour, IHealth
         {
             CombatUpdate(); 
         }
-        else if(isDie)
-        {
-            DieUpdate();
-        }
+        //else if(isDie)
+        //{
+        //    DieUpdate();
+        //}
 
     }
 
@@ -185,6 +194,7 @@ public class Monster : MonoBehaviour, IHealth
             monsterState = MonsterState.chase;
             SetMonsterState(monsterState);
             Debug.Log($"{playerTransform.name}");
+            agent.SetDestination(playerTransform.position);
 
         }
     }
@@ -197,7 +207,7 @@ public class Monster : MonoBehaviour, IHealth
             monsterState = MonsterState.combat;
             SetMonsterState(monsterState);
         }
-        else if(agent.remainingDistance > 5)    //너무 멀어지면 다시 순찰
+        else if(agent.remainingDistance > monsterSearchRadius)    //너무 멀어지면 다시 순찰
         {
             monsterState = MonsterState.patrol;
             SetMonsterState(monsterState);
@@ -210,7 +220,6 @@ public class Monster : MonoBehaviour, IHealth
             //이동하는 플레이어 위치 갱신을 위해 시작할 때 실행
         }
 
-
     }
 
     private void CombatPlayer()
@@ -220,6 +229,8 @@ public class Monster : MonoBehaviour, IHealth
         {
             if (player.HP > 0)
             {
+                //transform.rotation = Quaternion.Lerp(Quaternion.identity, Quaternion.LookRotation(playerTransform.position), 0.1f) * Quaternion.Euler(0,180, 0);
+                transform.LookAt(Vector3.Lerp(transform.position, playerTransform.position, 0.1f));
                 Debug.Log("전투중");
                 MonsterAttack();
             }
@@ -241,7 +252,7 @@ public class Monster : MonoBehaviour, IHealth
 
     private void MonsterAttack()
     {
-        if(!isAttackContinue)
+        if(!isAttackContinue)   //업데이트에서 여러번 실행되지않도록
         {
             isAttackContinue = true;
             StartCoroutine(MonsterAttackCoroutine(attackDelay));
@@ -315,14 +326,14 @@ public class Monster : MonoBehaviour, IHealth
                 anim.SetBool("isChase", false);
                 anim.SetBool("isCombat", true);
                 break;
-            case MonsterState.die:
-                isPatrol = false;
-                isMonsterChase = false;
-                isCombat = false;
-                isDie = true;
-                anim.SetBool("isDie", true);
+            //case MonsterState.die:
+            //    isPatrol = false;
+            //    isMonsterChase = false;
+            //    isCombat = false;
+            //    isDie = true;
+            //    anim.SetBool("isDie", true);
 
-                break;
+            //    break;
 
             default:
                 break;
@@ -344,10 +355,10 @@ public class Monster : MonoBehaviour, IHealth
     {
         CombatPlayer();   
     }
-    private void DieUpdate()
-    {
-        Die();
-    }
+    //private void DieUpdate()
+    //{
+    //    Die();
+    //}
 
     public void Attack(IBattle target)  //수치적인 전투 구현 
     {
