@@ -10,7 +10,7 @@ public class ItemData : ScriptableObject
 
     //ItemData에 들어갈 내용
     public string itemName;        //아이템 이름
-    public int ID;                 //아이템 ID
+    public uint ID;                 //아이템 ID
     // public int itemType;           //아이템 종류 - 소모품인지 장비아이템인지 => 강사님은 인터페이스로 구현함
     public GameObject itemPrefab;  //아이템 프리팹
     public Sprite itemIcon;        //아이템 아이콘

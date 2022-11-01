@@ -8,6 +8,7 @@ using UnityEngine.UI;
 
 public class Player : MonoBehaviour, IHealth
 {
+    Player player;
     //움직임을 위한 인풋 시스템용
     PlayerInput input;
     //이동 방향 받고 리턴용
@@ -31,7 +32,11 @@ public class Player : MonoBehaviour, IHealth
 
     float turnSpeed = 30.0f;
 
-
+    //아이템 관련 변수
+    Item item;
+    ItemFactory itemFactory;
+    ItemIDCode itemID;
+    ItemData_Potion potion;
 
     public float HP
     {
@@ -70,6 +75,8 @@ public class Player : MonoBehaviour, IHealth
         input = new PlayerInput();
         anim = GetComponent<Animator>();
         hpBar = GameObject.Find("HpSlider").GetComponent<Slider>();
+        player = GetComponent<Player>();
+
     }
 
     private void OnEnable()
@@ -78,11 +85,14 @@ public class Player : MonoBehaviour, IHealth
         input.Player.Move.performed += OnMoveInput;
         input.Player.Attack.performed += OnAttackInput;
         input.Player.Look.performed += OnLookInput;
+        input.Player.TempItemUse.performed += OnTempItemUse;
     }
 
+    
 
     private void OnDisable()
     {
+        input.Player.TempItemUse.performed -= OnTempItemUse;
         input.Player.Attack.performed -= OnAttackInput;
         input.Player.Move.performed -= OnMoveInput;
         input.Player.Look.performed -= OnLookInput;
@@ -93,6 +103,7 @@ public class Player : MonoBehaviour, IHealth
     {
         hp = maxHp;
         SetHP();
+        potion = new ItemData_Potion();
     }
 
     private void Update()
@@ -175,6 +186,15 @@ public class Player : MonoBehaviour, IHealth
         transform.eulerAngles = new Vector3(0, turnToY, 0);
 
 
+    }
+
+    private void OnTempItemUse(InputAction.CallbackContext obj)
+    {
+
+        //아이템 생성 ==> 성공
+        //GameObject itemObj = ItemFactory.MakeItem((uint)ItemIDCode.HP_Potion, transform.position);
+        //아이템 사용
+        potion.Use(player);
     }
 
 

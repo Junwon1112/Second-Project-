@@ -49,6 +49,11 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    private void Start()
+    {
+        Initialize();
+    }
+
     private void Initialize()   //시작하면 오브젝트 가져오기
     {
         player = FindObjectOfType<Player>();

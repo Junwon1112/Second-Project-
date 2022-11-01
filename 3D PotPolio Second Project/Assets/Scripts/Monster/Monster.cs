@@ -50,6 +50,9 @@ public class Monster : MonoBehaviour, IHealth
     bool isAttackContinue = false;
     public bool playerTriggerOff = false;
 
+    //아이템 드롭
+    ItemFactory itemFactory;
+
     public float AttackDamage
     {
         get
@@ -80,6 +83,7 @@ public class Monster : MonoBehaviour, IHealth
                 anim.SetBool("isDie", true);
                 SetMonsterState(MonsterState.die);
                 agent.enabled = false;
+                DropItem();
                 Destroy(gameObject, 3.0f);
             }
         }
@@ -292,11 +296,6 @@ public class Monster : MonoBehaviour, IHealth
     //    }
     //}
 
-    private void Die()
-    {
-        //체력 만들고, 체력이 0이 되면 죽음, 죽으면 죽는 애니메이션 실행하고 애니메이션 종료후 몬스터 Destroy 
-        //프로퍼티에서 실행
-    }
 
     private void SetMonsterState(MonsterState mon)  //플레이어 상태 세팅해주는 함수
     {
@@ -364,17 +363,15 @@ public class Monster : MonoBehaviour, IHealth
     //    Die();
     //}
 
-    public void Attack(IBattle target)  //수치적인 전투 구현 
-    {
-
-    }
-    //{
-    //   // target.HP -= (AttackDamage - target.Defence);
-    //}
 
     public void SetHP()
     {
         hpSlider.value = HP / MaxHP;
+    }
+
+    private void DropItem()
+    {
+        ItemFactory.MakeItem(ItemIDCode.HP_Potion, transform.position);
     }
 
 }
