@@ -9,12 +9,16 @@ using UnityEngine.UI;
 public class Player : MonoBehaviour, IHealth
 {
     Player player;
+
     //움직임을 위한 인풋 시스템용
-    PlayerInput input;
+    public PlayerInput input;
+
     //이동 방향 받고 리턴용
     Vector3 dir = Vector3.zero;
+
     //애니메이션 용
     Animator anim;
+
     //다른 행동중 움직임을 제한하기 위해
     bool canMove = true;
 
@@ -37,6 +41,10 @@ public class Player : MonoBehaviour, IHealth
     ItemFactory itemFactory;
     ItemIDCode itemID;
     ItemData_Potion potion;
+
+    float findItemRange = 3.0f;
+    Inventory playerInventory;
+    InventoryUI playerInventoryUI;
 
     public float HP
     {
@@ -76,6 +84,8 @@ public class Player : MonoBehaviour, IHealth
         anim = GetComponent<Animator>();
         hpBar = GameObject.Find("HpSlider").GetComponent<Slider>();
         player = GetComponent<Player>();
+        playerInventory = GetComponentInChildren<Inventory>();
+        playerInventoryUI = FindObjectOfType<InventoryUI>();
 
     }
 
@@ -86,18 +96,24 @@ public class Player : MonoBehaviour, IHealth
         input.Player.Attack.performed += OnAttackInput;
         input.Player.Look.performed += OnLookInput;
         input.Player.TempItemUse.performed += OnTempItemUse;
+        input.Player.TakeItem.performed += OnTakeItem;
+        input.Player.TestMakeItem.performed += OnTestMakeItem;
     }
 
-    
+
 
     private void OnDisable()
     {
+        input.Player.TestMakeItem.performed -= OnTestMakeItem;
         input.Player.TempItemUse.performed -= OnTempItemUse;
         input.Player.Attack.performed -= OnAttackInput;
         input.Player.Move.performed -= OnMoveInput;
         input.Player.Look.performed -= OnLookInput;
         input.Player.Disable();
+        input.Player.TakeItem.performed -= OnTakeItem;
     }
+
+    
 
     private void Start()
     {
@@ -192,11 +208,30 @@ public class Player : MonoBehaviour, IHealth
     {
 
         //아이템 생성 ==> 성공
-        //GameObject itemObj = ItemFactory.MakeItem((uint)ItemIDCode.HP_Potion, transform.position);
+        GameObject itemObj = ItemFactory.MakeItem((uint)ItemIDCode.HP_Potion, transform.position, Quaternion.identity);
         //아이템 사용
         potion.Use(player);
     }
 
+    private void OnTakeItem(InputAction.CallbackContext obj)
+    {
+        Collider[] findItem = Physics.OverlapSphere(transform.position, findItemRange, LayerMask.GetMask("Item"));
+        if(findItem.Length > 0)
+        {
+            GameObject tempObj = findItem[0].gameObject;
+            Item tempItem = tempObj.GetComponent<Item>();
+
+            playerInventory.TakeItem(tempItem.data, 1);
+            playerInventoryUI.SetAllSlotWithData();
+            Destroy(tempObj);
+
+        }
+    }
+
+    private void OnTestMakeItem(InputAction.CallbackContext obj)
+    {
+        ItemFactory.MakeItem(ItemIDCode.HP_Potion, transform.position, Quaternion.identity);
+    }
 
     public void SetHP()
     {

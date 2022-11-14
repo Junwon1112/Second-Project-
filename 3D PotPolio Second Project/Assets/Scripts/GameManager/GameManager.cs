@@ -8,7 +8,7 @@ public class GameManager : MonoBehaviour
     ItemDataManager itemDataManager;
     //나중에 InventoryUI 추가해야됨
 
-    public Player MainPlyer
+    public Player MainPlayer
     {
         get
         {
@@ -47,11 +47,12 @@ public class GameManager : MonoBehaviour
                 Destroy(this.gameObject);
             }
         }
+        Initialize();
     }
 
     private void Start()
     {
-        Initialize();
+       
     }
 
     private void Initialize()   //시작하면 오브젝트 가져오기

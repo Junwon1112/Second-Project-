@@ -8,10 +8,11 @@ public class ItemFactory : MonoBehaviour
     //아이템을 하나 만들때 마다 늘릴 아이템 갯수
     static int itemCount = 0;
 
-    public static GameObject MakeItem(ItemIDCode itemIDCode)
+    public static GameObject MakeItem(ItemIDCode itemIDCode, Vector3 position, Quaternion rotation)
     {
-        GameObject obj = new GameObject();      //새로운 오브젝트 만들고
-        Item item = obj.AddComponent<Item>();   //아무튼 아이템 컴포넌트 추가, 인스턴스를 만들어야 다른 변수값을 바꿀수 있어 item인스턴스를 만든듯
+        GameObject obj = Instantiate(GameManager.Instance.ItemManager[itemIDCode].itemPrefab, position, rotation);
+        //GameObject obj = new GameObject();      //새로운 오브젝트 만들고
+        Item item = obj.AddComponent<Item>();   //아이템 컴포넌트 추가, 인스턴스를 만들어야 다른 변수값을 바꿀수 있어 item인스턴스를 만든듯
 
         item.data = GameManager.Instance.ItemManager[itemIDCode];   //추가된 컴포넌트의 데이터는 ItemIdCode의 데이터에 따라간다.
         obj.name = $"{item.data.name}_{itemCount}";                 //이름 설정
@@ -27,9 +28,9 @@ public class ItemFactory : MonoBehaviour
     }
 
     //숫자타입으로 온애를 enum타입으로 형변환해서 만들어주는 함수
-    public static GameObject MakeItem(uint id)
+    public static GameObject MakeItem(uint id, Vector3 position, Quaternion rotation)
     {
-        GameObject obj = MakeItem((ItemIDCode)id);  
+        GameObject obj = MakeItem((ItemIDCode)id, position, rotation);  
         return obj;
     }
 
@@ -37,9 +38,9 @@ public class ItemFactory : MonoBehaviour
 
     //아이템 만들시 위치값을 미세하게 다르게 나오도록 조정
     // bool randomNoise = false 는 만약에 파라미터로 randomNoise만 따로 안적으면 false로 취급한다는 뜻이다. ex) MakeItem(HP_Potion, new(1,1,0))이면 ranndomNoise는 false로 들어감
-    public static GameObject MakeItem(ItemIDCode itemIDCode, Vector3 itemPosition, bool randomNoise = false)   
+    public static GameObject MakeItem(ItemIDCode itemIDCode, Vector3 itemPosition, Quaternion rotation, bool randomNoise = false)   
     {
-        GameObject obj = MakeItem(itemIDCode);
+        GameObject obj = MakeItem(itemIDCode, itemPosition, rotation);
 
         if(randomNoise)
         {
@@ -53,9 +54,9 @@ public class ItemFactory : MonoBehaviour
         return obj;
     }
     //숫자 id 버전
-    public static GameObject MakeItem(uint id, Vector3 itemPosition, bool randomNoise = false)
+    public static GameObject MakeItem(uint id, Vector3 itemPosition, Quaternion rotation, bool randomNoise = false)
     {
-        return (MakeItem((ItemIDCode)id, itemPosition, randomNoise));
+        return (MakeItem((ItemIDCode)id, itemPosition, rotation, randomNoise));
     }
 
 
@@ -63,21 +64,21 @@ public class ItemFactory : MonoBehaviour
 
 
     //얘는 한번에 여러개의 아이템을 만드는 코드로 리턴값이 void임
-    public static void MakeItem(ItemIDCode itemIDCode, Vector3 itemPosition, uint count)
+    public static void MakeItem(ItemIDCode itemIDCode, Vector3 itemPosition, Quaternion rotation,uint count)
     {
         //GameObject obj = MakeItem(itemIDCode);
 
         for(int i=0; i < count; i++)
         {
-            MakeItem(itemIDCode, itemPosition, true);
+            MakeItem(itemIDCode, itemPosition, rotation, true);
         } 
     }
 
-    public static void MakeItem(uint id, Vector3 itemPosition, uint count)
+    public static void MakeItem(uint id, Vector3 itemPosition, Quaternion rotation, uint count)
     {
         //GameObject obj = MakeItem(itemIDCode);
 
-        MakeItem((ItemIDCode)id, itemPosition, count);
+        MakeItem((ItemIDCode)id, itemPosition, rotation, count);
     }
 
 

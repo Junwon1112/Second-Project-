@@ -62,6 +62,24 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""TakeItem"",
+                    ""type"": ""Button"",
+                    ""id"": ""fc9000cd-ddca-42b9-84d0-31df0c7d8b77"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""TestMakeItem"",
+                    ""type"": ""Button"",
+                    ""id"": ""76518a53-7e29-4ad4-b675-a9a25734c8e4"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -152,6 +170,56 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""action"": ""TempItemUse"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""2dda013b-bc44-4459-b3d9-70eef89b8e3e"",
+                    ""path"": ""<Keyboard>/f"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""TakeItem"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ae2f8c73-ea97-4947-81cc-5c3c090d5440"",
+                    ""path"": ""<Keyboard>/1"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""TestMakeItem"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
+        },
+        {
+            ""name"": ""Inventory"",
+            ""id"": ""c6136a03-b10e-4638-8431-feefc00506e7"",
+            ""actions"": [
+                {
+                    ""name"": ""InventoryOnOff"",
+                    ""type"": ""Button"",
+                    ""id"": ""1025edbf-0a0a-4aea-b6ee-e78012e6359d"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""8287b1d8-19c6-45d2-aad6-efe8642a520c"",
+                    ""path"": ""<Keyboard>/i"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""InventoryOnOff"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -181,6 +249,11 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         m_Player_Attack = m_Player.FindAction("Attack", throwIfNotFound: true);
         m_Player_Look = m_Player.FindAction("Look", throwIfNotFound: true);
         m_Player_TempItemUse = m_Player.FindAction("TempItemUse", throwIfNotFound: true);
+        m_Player_TakeItem = m_Player.FindAction("TakeItem", throwIfNotFound: true);
+        m_Player_TestMakeItem = m_Player.FindAction("TestMakeItem", throwIfNotFound: true);
+        // Inventory
+        m_Inventory = asset.FindActionMap("Inventory", throwIfNotFound: true);
+        m_Inventory_InventoryOnOff = m_Inventory.FindAction("InventoryOnOff", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -244,6 +317,8 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Attack;
     private readonly InputAction m_Player_Look;
     private readonly InputAction m_Player_TempItemUse;
+    private readonly InputAction m_Player_TakeItem;
+    private readonly InputAction m_Player_TestMakeItem;
     public struct PlayerActions
     {
         private @PlayerInput m_Wrapper;
@@ -252,6 +327,8 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         public InputAction @Attack => m_Wrapper.m_Player_Attack;
         public InputAction @Look => m_Wrapper.m_Player_Look;
         public InputAction @TempItemUse => m_Wrapper.m_Player_TempItemUse;
+        public InputAction @TakeItem => m_Wrapper.m_Player_TakeItem;
+        public InputAction @TestMakeItem => m_Wrapper.m_Player_TestMakeItem;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -273,6 +350,12 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 @TempItemUse.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnTempItemUse;
                 @TempItemUse.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnTempItemUse;
                 @TempItemUse.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnTempItemUse;
+                @TakeItem.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnTakeItem;
+                @TakeItem.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnTakeItem;
+                @TakeItem.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnTakeItem;
+                @TestMakeItem.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnTestMakeItem;
+                @TestMakeItem.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnTestMakeItem;
+                @TestMakeItem.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnTestMakeItem;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -289,10 +372,49 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 @TempItemUse.started += instance.OnTempItemUse;
                 @TempItemUse.performed += instance.OnTempItemUse;
                 @TempItemUse.canceled += instance.OnTempItemUse;
+                @TakeItem.started += instance.OnTakeItem;
+                @TakeItem.performed += instance.OnTakeItem;
+                @TakeItem.canceled += instance.OnTakeItem;
+                @TestMakeItem.started += instance.OnTestMakeItem;
+                @TestMakeItem.performed += instance.OnTestMakeItem;
+                @TestMakeItem.canceled += instance.OnTestMakeItem;
             }
         }
     }
     public PlayerActions @Player => new PlayerActions(this);
+
+    // Inventory
+    private readonly InputActionMap m_Inventory;
+    private IInventoryActions m_InventoryActionsCallbackInterface;
+    private readonly InputAction m_Inventory_InventoryOnOff;
+    public struct InventoryActions
+    {
+        private @PlayerInput m_Wrapper;
+        public InventoryActions(@PlayerInput wrapper) { m_Wrapper = wrapper; }
+        public InputAction @InventoryOnOff => m_Wrapper.m_Inventory_InventoryOnOff;
+        public InputActionMap Get() { return m_Wrapper.m_Inventory; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(InventoryActions set) { return set.Get(); }
+        public void SetCallbacks(IInventoryActions instance)
+        {
+            if (m_Wrapper.m_InventoryActionsCallbackInterface != null)
+            {
+                @InventoryOnOff.started -= m_Wrapper.m_InventoryActionsCallbackInterface.OnInventoryOnOff;
+                @InventoryOnOff.performed -= m_Wrapper.m_InventoryActionsCallbackInterface.OnInventoryOnOff;
+                @InventoryOnOff.canceled -= m_Wrapper.m_InventoryActionsCallbackInterface.OnInventoryOnOff;
+            }
+            m_Wrapper.m_InventoryActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @InventoryOnOff.started += instance.OnInventoryOnOff;
+                @InventoryOnOff.performed += instance.OnInventoryOnOff;
+                @InventoryOnOff.canceled += instance.OnInventoryOnOff;
+            }
+        }
+    }
+    public InventoryActions @Inventory => new InventoryActions(this);
     private int m_PlayerSchemeIndex = -1;
     public InputControlScheme PlayerScheme
     {
@@ -308,5 +430,11 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         void OnAttack(InputAction.CallbackContext context);
         void OnLook(InputAction.CallbackContext context);
         void OnTempItemUse(InputAction.CallbackContext context);
+        void OnTakeItem(InputAction.CallbackContext context);
+        void OnTestMakeItem(InputAction.CallbackContext context);
+    }
+    public interface IInventoryActions
+    {
+        void OnInventoryOnOff(InputAction.CallbackContext context);
     }
 }

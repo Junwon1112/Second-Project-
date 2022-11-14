@@ -78,7 +78,7 @@ public class Monster : MonoBehaviour, IHealth
         set 
         {
             hp = value;
-            if(hp <= 0)
+            if(hp <= 0 && !isDie)
             {
                 anim.SetBool("isDie", true);
                 SetMonsterState(MonsterState.die);
@@ -180,8 +180,6 @@ public class Monster : MonoBehaviour, IHealth
             destinationIndex++;
             destinationIndex %= patrolPoints.Length;
             agent.SetDestination(patrolPoints[destinationIndex].transform.position);
-
-            Debug.Log("setpatrol");
         }
         
     }
@@ -198,7 +196,6 @@ public class Monster : MonoBehaviour, IHealth
         {
             monsterState = MonsterState.chase;
             SetMonsterState(monsterState);
-            Debug.Log($"{playerTransform.name}");
             agent.SetDestination(playerTransform.position);
 
         }
@@ -371,7 +368,7 @@ public class Monster : MonoBehaviour, IHealth
 
     private void DropItem()
     {
-        ItemFactory.MakeItem(ItemIDCode.HP_Potion, transform.position);
+        ItemFactory.MakeItem(ItemIDCode.HP_Potion, transform.position, Quaternion.identity);
     }
 
 }
