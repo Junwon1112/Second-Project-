@@ -17,18 +17,9 @@ public class TempSlotInfoUI : MonoBehaviour
 
     
 
-    private void Awake()
+    void Awake()
     {
         itemImage = GetComponentInChildren<Image>();
-    }
-
-
-
-    public void SetTempSlotWithData(ItemData itemData, uint count)
-    {
-        itemImage.sprite = itemData.itemIcon;   //여기서 두번쨰 스플릿할때 에러남(아마 상속받아서 split쪽에서 ok누른뒤 에러나는거 같음)
-        tempSlotItemData = itemData;
-        tempSlotItemCount = count;
     }
 
 }
