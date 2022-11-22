@@ -32,6 +32,7 @@ public class ItemSlotUI : MonoBehaviour, IPointerClickHandler, IDragHandler, IBe
 
     ItemInfo itemInfo;  //슬롯위에 마우스 올려놨을 때 활성시킬 아이템 인포창 가져오기
     SplitUI splitUI;
+    DropUI dropUI;
     
     TempSlotSplitUI tempSlotSplitUI;
    
@@ -43,6 +44,7 @@ public class ItemSlotUI : MonoBehaviour, IPointerClickHandler, IDragHandler, IBe
         playerInvenUI = FindObjectOfType<InventoryUI>();
         itemInfo = FindObjectOfType<ItemInfo>();
         splitUI = FindObjectOfType<SplitUI>();
+        dropUI = FindObjectOfType<DropUI>();
         //tempSlotSplitUI = FindObjectOfType<TempSlotSplitUI>();    //비활성화 체크해놓으면 Awake에서 찾아도 못찾는다. 비활성화 타이밍이 Awake보다 빠른것 같다. 그래서 아래처럼 찾는다. 
         tempSlotSplitUI = GameObject.Find("ItemMoveSlotUI").transform.GetChild(0).GetComponent<TempSlotSplitUI>();   //활성화후 컴포넌트 찾은거 변수에 저장하고
     }
@@ -246,18 +248,22 @@ public class ItemSlotUI : MonoBehaviour, IPointerClickHandler, IDragHandler, IBe
 
     public void OnBeginDrag(PointerEventData eventData)     //아이템 이동이나 드랍 등을 하기위해 드래그 시작 지점 
     {
-        isDrag = true;
+        if(slotUIData != null)
+        {
+            isDrag = true;
 
-        //FindObjectOfType<TempSlotSplitUI>().gameObject.SetActive(true);   //비활성화돼서 바로 찾는건 안됨, 아래처럼 부모를 찾은뒤 그 자식을 찾는형식으로 찾아야함
+            //FindObjectOfType<TempSlotSplitUI>().gameObject.SetActive(true);   //비활성화돼서 바로 찾는건 안됨, 아래처럼 부모를 찾은뒤 그 자식을 찾는형식으로 찾아야함
 
-        GameObject.Find("ItemMoveSlotUI").transform.GetChild(0).gameObject.SetActive(true); //tempSlot을 비활성화 시켰다 부모오브젝트를 통해 찾아서 활성화 시킬것이다.
+            GameObject.Find("ItemMoveSlotUI").transform.GetChild(0).gameObject.SetActive(true); //tempSlot을 비활성화 시켰다 부모오브젝트를 통해 찾아서 활성화 시킬것이다.
 
-        tempSlotSplitUI.SetTempSlotWithData(slotUIData, slotUICount);       //이동할 데이터 tempslot에 전달하고
+            tempSlotSplitUI.SetTempSlotWithData(slotUIData, slotUICount);       //이동할 데이터 tempslot에 전달하고
 
-        playerInven.itemSlots[slotUIID].ClearSlotItem();             //UI와 슬롯 데이터에서는 데이터와 갯수를 뺌
-        slotUICount = 0;
+            playerInven.itemSlots[slotUIID].ClearSlotItem();             //UI와 슬롯 데이터에서는 데이터와 갯수를 뺌
+            slotUICount = 0;
 
-        playerInvenUI.SetAllSlotWithData();
+            playerInvenUI.SetAllSlotWithData();
+
+        }
 
         /*
          * 드래그를 시작하면 tempslotUI가 드래그를 시작한곳의 이미지를 가져와서 마우스 위치로 update된다.
@@ -290,8 +296,8 @@ public class ItemSlotUI : MonoBehaviour, IPointerClickHandler, IDragHandler, IBe
                         targetItemSlotUI.slotUICount + tempSlotSplitUI.tempSlotItemCount < targetItemSlotUI.slotUIData.itemMaxCount +1 ) 
                     {
                         targetItemSlotUI.slotUICount += tempSlotSplitUI.tempSlotItemCount;
-                        playerInven.itemSlots[targetItemSlotUI.slotUIID].IncreaseSlotItem(targetItemSlotUI.slotUICount);    //원본 슬롯에도 데이터와 갯수 전달
-                        targetItemSlotUI.SetSlotWithData(targetItemSlotUI.slotUIData, targetItemSlotUI.slotUICount);
+                        playerInven.itemSlots[targetItemSlotUI.slotUIID].IncreaseSlotItem(tempSlotSplitUI.tempSlotItemCount);    //원본 슬롯에도 데이터와 갯수 전달
+                        targetItemSlotUI.SetSlotWithData(targetItemSlotUI.slotUIData, targetItemSlotUI.slotUICount);    //자기 자신의 갯수가 바뀌었으니 해당데이터로 UI표기 최신화
 
                         splitUI.splitTempSlotSplitUI.ClearTempSlot();                   //tempSlot은 역할은 다했으니 초기화
                         splitUI.splitTempSlotSplitUI.gameObject.SetActive(false);       //처리 다했으면 tempslotUI끄기
@@ -329,6 +335,16 @@ public class ItemSlotUI : MonoBehaviour, IPointerClickHandler, IDragHandler, IBe
         else //raycast받는 게임 오브젝트가 아예없을 때 => Inventory밖에 버렸을 때 = 아이템 드롭
         {
 
+            dropUI.splitItemData = tempSlotSplitUI.tempSlotItemData;
+            dropUI.splitPossibleCount = tempSlotSplitUI.tempSlotItemCount;   //현재 슬롯이 가지고있는 갯수를 전해줌, splitPossibleCount는 splitUI내에서 실제 적용할 splitCount로 변환
+            dropUI.takeID = slotUIID;                                      //현재 해당 슬롯의 ID를 전달해 어떤 슬롯인지 구분
+            splitUI.splitTempSlotSplitUI.ClearTempSlot();                   //tempSlot은 역할은 다했으니 초기화
+            splitUI.splitTempSlotSplitUI.gameObject.SetActive(false);       //처리 다했으면 tempslotUI끄기
+            
+            dropUI.SplitUIOpen();
+            //여기부터
+
+            
         }
 
 

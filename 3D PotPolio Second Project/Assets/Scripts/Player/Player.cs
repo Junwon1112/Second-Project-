@@ -208,9 +208,32 @@ public class Player : MonoBehaviour, IHealth
     {
 
         //아이템 생성 ==> 성공
-        GameObject itemObj = ItemFactory.MakeItem((uint)ItemIDCode.HP_Potion, transform.position, Quaternion.identity);
+        //GameObject itemObj = ItemFactory.MakeItem((uint)ItemIDCode.HP_Potion, transform.position, Quaternion.identity);
         //아이템 사용
-        potion.Use(player);
+        //if(playerInventory.FindSameItemSlotForUseItem(potion). != null);
+        if(playerInventory.FindSameItemSlotForUseItem(potion).SlotItemData != null)
+        {
+            int tempID;
+            potion.Use(player);
+            if(playerInventory.FindSameItemSlotForUseItem(potion).ItemCount == 1)
+            {
+                tempID = playerInventory.FindSameItemSlotForUseItem(potion).slotID;
+                playerInventory.FindSameItemSlotForUseItem(potion).ClearSlotItem();
+                playerInventoryUI.slotUIs[tempID].slotUIData = null;
+                playerInventoryUI.slotUIs[tempID].slotUICount = 0;
+                playerInventoryUI.SetAllSlotWithData();
+            }
+            else
+            {
+                tempID = playerInventory.FindSameItemSlotForUseItem(potion).slotID;
+                playerInventory.FindSameItemSlotForUseItem(potion).ItemCount--;
+                playerInventoryUI.slotUIs[tempID].slotUICount--;
+                playerInventoryUI.SetAllSlotWithData();
+            }
+            
+        }
+        
+        
     }
 
     private void OnTakeItem(InputAction.CallbackContext obj)

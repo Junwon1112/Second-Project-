@@ -182,7 +182,7 @@ public class Inventory : MonoBehaviour
     }
 
     //같은 아이템 슬롯 중 가장 앞쪽 슬롯 리턴 또는 비어있는 슬롯 리턴
-    public ItemSlot FindSameItemSlot(ItemData compareItemData)     
+    public ItemSlot FindSameItemSlotForAddItem(ItemData compareItemData)     
     {
         bool isFindSlot = false;
         ItemSlot returnItemSlot = null;
@@ -227,13 +227,13 @@ public class Inventory : MonoBehaviour
     public void TakeItem(ItemData takeItemData, uint count)
     {
         //아이템이 꽉차면 NULL reference가 뜨는데 findsameitemslot함수에서 null값을 리턴해서 거기서는 slotItemData를 받을수 없어 에러가 나는듯, 하지만 일단 작동은 잘돼서 나중에 수정할 것
-        if(FindSameItemSlot(takeItemData).SlotItemData != null) //데이터가 null이 아니라면 => 데이터가 비어있지 않음.
+        if(FindSameItemSlotForAddItem(takeItemData).SlotItemData != null) //데이터가 null이 아니라면 => 데이터가 비어있지 않음.
         {
-            FindSameItemSlot(takeItemData).IncreaseSlotItem(count);
+            FindSameItemSlotForAddItem(takeItemData).IncreaseSlotItem(count);
         }
-        else if(FindSameItemSlot(takeItemData).SlotItemData == null)  //데이터가 null일때
+        else if(FindSameItemSlotForAddItem(takeItemData).SlotItemData == null)  //데이터가 null일때
         {
-            FindSameItemSlot(takeItemData).AssignSlotItem(takeItemData, count);
+            FindSameItemSlotForAddItem(takeItemData).AssignSlotItem(takeItemData, count);
         }
         else //비어있는 슬롯을 찾지못했다면 찾지못함을 표시
         {
@@ -243,6 +243,26 @@ public class Inventory : MonoBehaviour
         //{
         //    Debug.Log("인벤토리가 꽉 차있다");
         //}
+    }
+
+    public ItemSlot FindSameItemSlotForUseItem(ItemData compareItemData)
+    {
+        ItemSlot returnItemSlot = null;
+        for (int i = 0; i < slotCount; i++)
+        {
+            //찾는 아이템과 같은 아이템 종류고 슬롯에 자리가 있다면(최대 개수보다 적다면)
+            if (itemSlots[i].SlotItemData.ID == compareItemData.ID)
+            {
+                Debug.Log($"{itemSlots[i]}가 같은 데이터이다");
+                returnItemSlot = itemSlots[i];
+                return returnItemSlot;
+                //break;
+            }
+
+        }
+
+        Debug.Log($"아이템이 없다");
+        return returnItemSlot;
     }
 
 

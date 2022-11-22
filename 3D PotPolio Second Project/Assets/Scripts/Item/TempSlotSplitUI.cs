@@ -9,6 +9,7 @@ public class TempSlotSplitUI : TempSlotInfoUI
 {
     //public bool isSpliting = false;     //SplitUI에서 OK버튼 누르면 true로 바꿔줌
     private TextMeshProUGUI tempSlotItemCountText;
+    int takeID = -1;
 
     void Awake()
     {

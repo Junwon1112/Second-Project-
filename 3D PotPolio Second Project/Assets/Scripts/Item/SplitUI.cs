@@ -7,42 +7,42 @@ using TMPro;
 
 public class SplitUI : MonoBehaviour
 {
-    private Button okButton;
-    private Button cancelButton;
-    private TMP_InputField inputField;
-    private CanvasGroup splitUICanvasGroup;
+    protected Button okButton;
+    protected Button cancelButton;
+    protected TMP_InputField inputField;
+    protected CanvasGroup splitUICanvasGroup;
 
     public ItemData splitItemData;      //ItemSlotUI에서 받아옴
     public uint splitPossibleCount = 1; //스플릿 하기 직전에 아이템슬롯UI에서 데이터값을 그대로 할당해 줌
-    private int splitCount = 0; //checkRightcount에서 최종적으로 할당해줌
+    protected int splitCount = 0; //checkRightcount에서 최종적으로 할당해줌
 
     public TempSlotSplitUI splitTempSlotSplitUI;
     public int takeID = -1; //아이템 슬롯과 UI의 ID를 받아올 값
 
     public bool isSplitting = false;
 
-    Inventory inventory;
-    InventoryUI inventoryUI;
+    protected Inventory inventory;
+    protected InventoryUI inventoryUI;
 
 
-    private void Awake()
+    protected virtual void Awake()
     {
         okButton = transform.Find("OKButton").GetComponent<Button>();
         cancelButton = transform.Find("CancelButton").GetComponent<Button>();
-        inputField = FindObjectOfType<TMP_InputField>();
+        inputField = GetComponentInChildren<TMP_InputField>();
         splitUICanvasGroup = GetComponent<CanvasGroup>();
         inventory = FindObjectOfType<Inventory>();
         inventoryUI = FindObjectOfType<InventoryUI>();
         splitTempSlotSplitUI = GameObject.Find("ItemMoveSlotUI").transform.GetChild(0).GetComponent<TempSlotSplitUI>();   //활성화후 컴포넌트 찾은거 변수에 저장하고
     }
 
-    private void Start()
+    protected virtual void Start()
     {
         //inputField.
         inputField.onEndEdit.AddListener(CheckRightCount); //스트링타입 리턴받는 함수 실행  => 입력된 숫자가 슬롯의 itemCount보다 크면 itemCount를, 작으면 0을 리턴
         
         okButton.onClick.AddListener(ClickOKButton);
-        //cancelButton.onClick.AddListener();
+        cancelButton.onClick.AddListener(ClickCancelButton);
 
     }
 
@@ -53,8 +53,7 @@ public class SplitUI : MonoBehaviour
         splitUICanvasGroup.blocksRaycasts = true;
 
         //시작하면 나오는 초기값을 제대로 설정해주는 과정 
-        bool isParsing = int.TryParse(inputField.text, out splitCount);
-        inputField.text = splitCount.ToString();
+        CheckRightCount(inputField.text);
     }
 
     public void SplitUIClose()
@@ -64,7 +63,7 @@ public class SplitUI : MonoBehaviour
         splitUICanvasGroup.blocksRaycasts = false;
     }
 
-    public void CheckRightCount(string inputText) //해당 내용을 프로퍼티로 설정하면 되는 문제였다..
+    protected virtual void CheckRightCount(string inputText) //텍스트에 나눌 갯수 입력 시 실행
     {
         
         //uint tempNum;
@@ -85,7 +84,7 @@ public class SplitUI : MonoBehaviour
         //return textCount;
     }
 
-    public void ClickOKButton()
+    protected virtual void ClickOKButton()
     {
         GameObject.Find("ItemMoveSlotUI").transform.GetChild(0).gameObject.SetActive(true);  //tempSlot을 비활성화 시켰다 부모오브젝트를 통해 찾아서 활성화 시킬것이다.
         
