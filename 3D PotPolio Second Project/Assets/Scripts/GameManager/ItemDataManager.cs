@@ -14,7 +14,7 @@ public class ItemDataManager : MonoBehaviour
     }
     //배열처럼 쓰는 프로퍼티
 
-    public ItemData this[ItemIDCode ID]  //인덱서
+    public ItemData this[ItemIDCode ID ]  //인덱서
     {
         get
         {
@@ -22,4 +22,6 @@ public class ItemDataManager : MonoBehaviour
         }
     }
     //배열처럼 쓰는 프로퍼티
+
+    
 }

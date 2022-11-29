@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 //아이템 데이터를 저장하는 데이터 파일을 만들어 주는 스크립트
-[CreateAssetMenu(fileName = "New Item data" , menuName = "Scripatable Object/Item Data", order = 1)]
+[CreateAssetMenu(fileName = "New Item data" , menuName = "Scriptable Object/Item Data", order = 1)]
 public class ItemData : ScriptableObject
 {
     //Scriptable 오브젝트로 만들 것

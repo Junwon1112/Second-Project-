@@ -141,7 +141,7 @@
                 {
                     "name": "",
                     "id": "1004cfaf-fd86-4848-920d-cf193e3fa389",
-                    "path": "<Mouse>/rightButton",
+                    "path": "<Keyboard>/1",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -163,7 +163,7 @@
                 {
                     "name": "",
                     "id": "ae2f8c73-ea97-4947-81cc-5c3c090d5440",
-                    "path": "<Keyboard>/1",
+                    "path": "<Mouse>/rightButton",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -185,6 +185,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "InventoryItemUse",
+                    "type": "Button",
+                    "id": "bb1cb9c1-712e-42b3-be28-f9c537c3dfbb",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -196,6 +205,45 @@
                     "processors": "",
                     "groups": "",
                     "action": "InventoryOnOff",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "db3e1b6a-d0e6-461f-8b5e-ff8b1b83d184",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "InventoryItemUse",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "Equipment",
+            "id": "8f3042f4-179a-485c-ab60-517739098c4f",
+            "actions": [
+                {
+                    "name": "EquipmentOnOff",
+                    "type": "Button",
+                    "id": "90c77fbd-3e62-4037-bb61-6aae4efb806f",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "9b5495a3-07cb-4a85-88d1-fd25a38b3ceb",
+                    "path": "<Keyboard>/u",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "EquipmentOnOff",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

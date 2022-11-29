@@ -8,14 +8,24 @@ using UnityEngine.EventSystems;
 
 public class InventoryUI : MonoBehaviour
 {
-    PlayerInput inventoryControl;   //i키로 껐다키기위한 인풋시스템용 변수
-    CanvasGroup canvasGroupOnOff;   //껐다 키는걸 canvasGroup을 이용한 변수
-    bool iscanvasGroupOff = true;   //인벤토리가 꺼져있는지 켜져있는지 확인하기 위한 변수
+    public PlayerInput inventoryControl;   //i키로 껐다키기위한 인풋시스템용 변수
+    protected CanvasGroup invenCanvasGroupOnOff;   //껐다 키는걸 canvasGroup을 이용한 변수
+    public bool isInvenCanvasGroupOff;   //인벤토리가 꺼져있는지 켜져있는지 확인하기 위한 변수
 
-    Button closeButton;
+    
+
+    private Button invenCloseButton;
 
     public ItemSlotUI[] slotUIs;
     Inventory playerInven;
+
+    protected GraphicRaycaster graphicRaycaster;
+
+    protected PointerEventData pointerEventData;
+
+    protected Player player;
+
+    private EquipmentUI equipmentUI;
 
     // 인벤토리 클릭관련 구현할 내용
     /*
@@ -36,21 +46,26 @@ public class InventoryUI : MonoBehaviour
      */
 
 
-    private void Awake()
+    protected virtual void Awake()
     {
         inventoryControl = new PlayerInput();
-        canvasGroupOnOff = GetComponent<CanvasGroup>();
-        closeButton = GetComponentInChildren<Button>();
+        invenCanvasGroupOnOff = GetComponent<CanvasGroup>();
+        invenCloseButton = GetComponentInChildren<Button>();
         slotUIs = GetComponentsInChildren<ItemSlotUI>();
 
         playerInven = FindObjectOfType<Inventory>();
+        graphicRaycaster = GameObject.Find("Canvas").gameObject.GetComponent<GraphicRaycaster>();
+        player = FindObjectOfType<Player>();
+        equipmentUI = FindObjectOfType<EquipmentUI>();
     }
 
     private void Start()
     {
-        closeButton.onClick.AddListener(InventoryOnOffSetting);
+        invenCloseButton.onClick.AddListener(InventoryOnOffSetting);
 
         SetAllSlotWithData();   //게임 시작할 때 슬롯UI들 전부 초기화
+
+        isInvenCanvasGroupOff = true;
     }
 
     private void OnEnable()
@@ -58,6 +73,8 @@ public class InventoryUI : MonoBehaviour
         inventoryControl.Inventory.Enable();
         inventoryControl.Inventory.InventoryOnOff.performed += OnInventoryOnOff;
     }
+
+    
 
     private void OnDisable()
     {
@@ -70,34 +87,92 @@ public class InventoryUI : MonoBehaviour
         InventoryOnOffSetting();
     }
 
+    
+
+    protected void OnInventoryItemUse(InputAction.CallbackContext obj)    //우클릭으로 아이템 사용 및 장착을 위한 함수, 인풋액션으로 구현했으므로 관리하기 편하려고 인벤토리에서 구현(onEnable에서 한번만 호출 하려고)
+    {
+        List<RaycastResult> slotItemCheck = new List<RaycastResult>();  //UI인식을 위해서는 GraphicRaycast가 필요하고 이걸 사용 후 리턴할 때 (RaycastResult)를 받는 리스트에 저장함
+        pointerEventData = new PointerEventData(null);                  //GraphicRaycast에서 마우스 위치를 PointerEventData에서 받으므로 정의 해줌
+
+        pointerEventData.position = Mouse.current.position.ReadValue();
+        graphicRaycaster.Raycast(pointerEventData, slotItemCheck);
+
+        GameObject returnObject = slotItemCheck[0].gameObject;
+
+        Debug.Log($"{returnObject.name}");
+        
+        ItemSlotUI tempSlotUI;
+        tempSlotUI = returnObject.GetComponent<ItemSlotUI>();
+
+        if(tempSlotUI != null)
+        {
+            if (tempSlotUI.slotUIData.ID == 0)   //data가 포션이라면 (포션id = 0)
+            {
+                ItemData_Potion tempPotion = new ItemData_Potion();
+                tempPotion.Use(player);
+                if (tempSlotUI.slotUICount <= 1)
+                {
+                    tempSlotUI.SetSlotWithData(tempSlotUI.slotUIData, 0);
+                    playerInven.itemSlots[tempSlotUI.slotUIID].ClearSlotItem();
+                }
+                else
+                {
+                    tempSlotUI.SetSlotWithData(tempSlotUI.slotUIData, tempSlotUI.slotUICount - 1);
+                    playerInven.itemSlots[tempSlotUI.slotUIID].DecreaseSlotItem(1);
+                }
+            }
+            else if(tempSlotUI.slotUIData.ID == 1)  //data가 무기라면
+            {
+                //장비창을 만들고 거기에 슬롯에 장착, 기존 인벤토리 슬롯에서는 사라짐
+                //장비창에서 우클릭하면 다시 인벤토리로 이동하며 무기 해제
+                //케릭터 손위치에 장착, 만약 이미 장착한 무기가 있다면 해당 슬롯에서 무기 교환
+                //weapon에 equip에서 장착 구현
+                //장비창 구현할 것
+                //1.아이템 슬롯처럼 모든 데이터를 받을 변수들
+                //2.우클릭하면 장착 해제
+            }
+        }
+        
+    }
+
     private void InventoryOnOffSetting()
     {
-        if (iscanvasGroupOff)
+        if (isInvenCanvasGroupOff)
         {
-            iscanvasGroupOff = false;
-            GameManager.Instance.MainPlayer.input.Disable();
+            isInvenCanvasGroupOff = false;
+            if(equipmentUI.isEquipCanvasGroupOff)   //인벤켰는데 장비창이 꺼져있으면 인벤이 플레이어 비활성화
+            {
+                GameManager.Instance.MainPlayer.input.Disable();
+                inventoryControl.Inventory.InventoryItemUse.performed += OnInventoryItemUse;
+            }
 
-            canvasGroupOnOff.alpha = 1;
-            canvasGroupOnOff.interactable = true;
-            canvasGroupOnOff.blocksRaycasts = true;
+
+            invenCanvasGroupOnOff.alpha = 1;
+            invenCanvasGroupOnOff.interactable = true;
+            invenCanvasGroupOnOff.blocksRaycasts = true;
         }
         else
         {
-            iscanvasGroupOff = true;
-            GameManager.Instance.MainPlayer.input.Enable();
+            isInvenCanvasGroupOff = true;
+            if (equipmentUI.isEquipCanvasGroupOff)  //인벤껐는데 장비창이 꺼져있으면 인벤이 플레이어 비활성화
+            {
+                GameManager.Instance.MainPlayer.input.Enable();
+                inventoryControl.Inventory.InventoryItemUse.performed -= OnInventoryItemUse;
+            }
+                
 
-            canvasGroupOnOff.alpha = 0;
-            canvasGroupOnOff.interactable = false;
-            canvasGroupOnOff.blocksRaycasts = false;
+            invenCanvasGroupOnOff.alpha = 0;
+            invenCanvasGroupOnOff.interactable = false;
+            invenCanvasGroupOnOff.blocksRaycasts = false;
         }
     }
 
+    
+
     public void SetAllSlotWithData()    //UI에 인벤토리 데이터를 넣어주는 함수
     {
-        Debug.Log($"{slotUIs.Length}");
         for (int i = 0; i < slotUIs.Length; i++) 
-        {
-            
+        {  
             slotUIs[i].SetSlotWithData(playerInven.itemSlots[i].SlotItemData, playerInven.itemSlots[i].ItemCount);
             slotUIs[i].slotUIID = i;
         }

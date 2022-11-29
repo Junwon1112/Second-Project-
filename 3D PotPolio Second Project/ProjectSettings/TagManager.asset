@@ -7,6 +7,8 @@ TagManager:
   - Ground
   - Monster
   - PatrolPoint
+  - SplitUI
+  - DropUI
   layers:
   - Default
   - TransparentFX

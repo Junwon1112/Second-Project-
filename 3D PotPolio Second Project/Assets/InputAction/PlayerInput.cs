@@ -163,7 +163,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""1004cfaf-fd86-4848-920d-cf193e3fa389"",
-                    ""path"": ""<Mouse>/rightButton"",
+                    ""path"": ""<Keyboard>/1"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -185,7 +185,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""ae2f8c73-ea97-4947-81cc-5c3c090d5440"",
-                    ""path"": ""<Keyboard>/1"",
+                    ""path"": ""<Mouse>/rightButton"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -207,6 +207,15 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""InventoryItemUse"",
+                    ""type"": ""Button"",
+                    ""id"": ""bb1cb9c1-712e-42b3-be28-f9c537c3dfbb"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -218,6 +227,45 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""InventoryOnOff"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""db3e1b6a-d0e6-461f-8b5e-ff8b1b83d184"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""InventoryItemUse"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
+        },
+        {
+            ""name"": ""Equipment"",
+            ""id"": ""8f3042f4-179a-485c-ab60-517739098c4f"",
+            ""actions"": [
+                {
+                    ""name"": ""EquipmentOnOff"",
+                    ""type"": ""Button"",
+                    ""id"": ""90c77fbd-3e62-4037-bb61-6aae4efb806f"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""9b5495a3-07cb-4a85-88d1-fd25a38b3ceb"",
+                    ""path"": ""<Keyboard>/u"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""EquipmentOnOff"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -254,6 +302,10 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         // Inventory
         m_Inventory = asset.FindActionMap("Inventory", throwIfNotFound: true);
         m_Inventory_InventoryOnOff = m_Inventory.FindAction("InventoryOnOff", throwIfNotFound: true);
+        m_Inventory_InventoryItemUse = m_Inventory.FindAction("InventoryItemUse", throwIfNotFound: true);
+        // Equipment
+        m_Equipment = asset.FindActionMap("Equipment", throwIfNotFound: true);
+        m_Equipment_EquipmentOnOff = m_Equipment.FindAction("EquipmentOnOff", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -387,11 +439,13 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
     private readonly InputActionMap m_Inventory;
     private IInventoryActions m_InventoryActionsCallbackInterface;
     private readonly InputAction m_Inventory_InventoryOnOff;
+    private readonly InputAction m_Inventory_InventoryItemUse;
     public struct InventoryActions
     {
         private @PlayerInput m_Wrapper;
         public InventoryActions(@PlayerInput wrapper) { m_Wrapper = wrapper; }
         public InputAction @InventoryOnOff => m_Wrapper.m_Inventory_InventoryOnOff;
+        public InputAction @InventoryItemUse => m_Wrapper.m_Inventory_InventoryItemUse;
         public InputActionMap Get() { return m_Wrapper.m_Inventory; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -404,6 +458,9 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 @InventoryOnOff.started -= m_Wrapper.m_InventoryActionsCallbackInterface.OnInventoryOnOff;
                 @InventoryOnOff.performed -= m_Wrapper.m_InventoryActionsCallbackInterface.OnInventoryOnOff;
                 @InventoryOnOff.canceled -= m_Wrapper.m_InventoryActionsCallbackInterface.OnInventoryOnOff;
+                @InventoryItemUse.started -= m_Wrapper.m_InventoryActionsCallbackInterface.OnInventoryItemUse;
+                @InventoryItemUse.performed -= m_Wrapper.m_InventoryActionsCallbackInterface.OnInventoryItemUse;
+                @InventoryItemUse.canceled -= m_Wrapper.m_InventoryActionsCallbackInterface.OnInventoryItemUse;
             }
             m_Wrapper.m_InventoryActionsCallbackInterface = instance;
             if (instance != null)
@@ -411,10 +468,46 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 @InventoryOnOff.started += instance.OnInventoryOnOff;
                 @InventoryOnOff.performed += instance.OnInventoryOnOff;
                 @InventoryOnOff.canceled += instance.OnInventoryOnOff;
+                @InventoryItemUse.started += instance.OnInventoryItemUse;
+                @InventoryItemUse.performed += instance.OnInventoryItemUse;
+                @InventoryItemUse.canceled += instance.OnInventoryItemUse;
             }
         }
     }
     public InventoryActions @Inventory => new InventoryActions(this);
+
+    // Equipment
+    private readonly InputActionMap m_Equipment;
+    private IEquipmentActions m_EquipmentActionsCallbackInterface;
+    private readonly InputAction m_Equipment_EquipmentOnOff;
+    public struct EquipmentActions
+    {
+        private @PlayerInput m_Wrapper;
+        public EquipmentActions(@PlayerInput wrapper) { m_Wrapper = wrapper; }
+        public InputAction @EquipmentOnOff => m_Wrapper.m_Equipment_EquipmentOnOff;
+        public InputActionMap Get() { return m_Wrapper.m_Equipment; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(EquipmentActions set) { return set.Get(); }
+        public void SetCallbacks(IEquipmentActions instance)
+        {
+            if (m_Wrapper.m_EquipmentActionsCallbackInterface != null)
+            {
+                @EquipmentOnOff.started -= m_Wrapper.m_EquipmentActionsCallbackInterface.OnEquipmentOnOff;
+                @EquipmentOnOff.performed -= m_Wrapper.m_EquipmentActionsCallbackInterface.OnEquipmentOnOff;
+                @EquipmentOnOff.canceled -= m_Wrapper.m_EquipmentActionsCallbackInterface.OnEquipmentOnOff;
+            }
+            m_Wrapper.m_EquipmentActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @EquipmentOnOff.started += instance.OnEquipmentOnOff;
+                @EquipmentOnOff.performed += instance.OnEquipmentOnOff;
+                @EquipmentOnOff.canceled += instance.OnEquipmentOnOff;
+            }
+        }
+    }
+    public EquipmentActions @Equipment => new EquipmentActions(this);
     private int m_PlayerSchemeIndex = -1;
     public InputControlScheme PlayerScheme
     {
@@ -436,5 +529,10 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
     public interface IInventoryActions
     {
         void OnInventoryOnOff(InputAction.CallbackContext context);
+        void OnInventoryItemUse(InputAction.CallbackContext context);
+    }
+    public interface IEquipmentActions
+    {
+        void OnEquipmentOnOff(InputAction.CallbackContext context);
     }
 }

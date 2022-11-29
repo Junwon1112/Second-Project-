@@ -43,8 +43,8 @@ public class ItemSlotUI : MonoBehaviour, IPointerClickHandler, IDragHandler, IBe
         playerInven = FindObjectOfType<Inventory>();
         playerInvenUI = FindObjectOfType<InventoryUI>();
         itemInfo = FindObjectOfType<ItemInfo>();
-        splitUI = FindObjectOfType<SplitUI>();
-        dropUI = FindObjectOfType<DropUI>();
+        splitUI = GameObject.Find("SplitUI").GetComponent<SplitUI>();  //dropUI가 splitUI를 상속받았는데 findobjectoftype으로 가져오면 dropUI를 받아올수도있다.
+        dropUI = GameObject.Find("DropUI").GetComponent<DropUI>();
         //tempSlotSplitUI = FindObjectOfType<TempSlotSplitUI>();    //비활성화 체크해놓으면 Awake에서 찾아도 못찾는다. 비활성화 타이밍이 Awake보다 빠른것 같다. 그래서 아래처럼 찾는다. 
         tempSlotSplitUI = GameObject.Find("ItemMoveSlotUI").transform.GetChild(0).GetComponent<TempSlotSplitUI>();   //활성화후 컴포넌트 찾은거 변수에 저장하고
     }
@@ -62,7 +62,7 @@ public class ItemSlotUI : MonoBehaviour, IPointerClickHandler, IDragHandler, IBe
 
     public void SetSlotWithData(ItemData itemData, uint count)  //슬롯의 데이터로 슬롯UI 설정 
     {
-        if(itemData != null)    //아이템 데이터가 존재한다면
+        if(itemData != null && count > 0)    //아이템 데이터가 존재한다면
         {
             slotUIData = itemData;
             slotUICount = count;
@@ -77,6 +77,7 @@ public class ItemSlotUI : MonoBehaviour, IPointerClickHandler, IDragHandler, IBe
         else
         {
             slotUIData = null;
+            slotUICount = count;
             itemImage.color = Color.clear;
             itemCountText.alpha = 0;
         }
@@ -374,4 +375,6 @@ public class ItemSlotUI : MonoBehaviour, IPointerClickHandler, IDragHandler, IBe
     {
         
     }
+
+
 }

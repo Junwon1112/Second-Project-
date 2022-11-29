@@ -11,10 +11,8 @@ GameObject:
   - component: {fileID: 8406875766908706882}
   - component: {fileID: 4829234713369636839}
   - component: {fileID: 7268831974590061357}
-  - component: {fileID: 3030704337056961373}
-  - component: {fileID: 8898827773536597609}
   m_Layer: 0
-  m_Name: Sword
+  m_Name: Sword_For_Item
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -85,29 +83,3 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!136 &3030704337056961373
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9214620317150788344}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  m_Radius: 0.1
-  m_Height: 1.4156286
-  m_Direction: 1
-  m_Center: {x: 0, y: 0.5, z: -0.000000042633083}
---- !u!114 &8898827773536597609
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9214620317150788344}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ab4196d64eb238647b25baf007dbe938, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 

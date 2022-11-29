@@ -69,6 +69,13 @@ public class DropUI : SplitUI
         //textCount = splitCount.ToString();
         //return textCount;
     }
+
+    public override void ClickCancelButton()
+    {
+        inventory.itemSlots[takeID].AssignSlotItem(splitItemData, splitPossibleCount);
+        inventoryUI.slotUIs[takeID].SetSlotWithData(splitItemData, splitPossibleCount);
+        SplitUIClose();
+    }
 }
 //{
 //    private Button okButton;

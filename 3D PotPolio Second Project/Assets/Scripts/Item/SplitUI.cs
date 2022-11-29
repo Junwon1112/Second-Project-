@@ -102,7 +102,7 @@ public class SplitUI : MonoBehaviour
         SplitUIClose();
     }
 
-    public void ClickCancelButton()
+    public virtual void ClickCancelButton()
     {
         SplitUIClose();
     }

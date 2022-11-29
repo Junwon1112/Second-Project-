@@ -41,6 +41,7 @@ public class Player : MonoBehaviour, IHealth
     ItemFactory itemFactory;
     ItemIDCode itemID;
     ItemData_Potion potion;
+    ItemData_Weapon weapon;
 
     float findItemRange = 3.0f;
     Inventory playerInventory;
@@ -120,6 +121,8 @@ public class Player : MonoBehaviour, IHealth
         hp = maxHp;
         SetHP();
         potion = new ItemData_Potion();
+        weapon = new ItemData_Weapon();
+
     }
 
     private void Update()
