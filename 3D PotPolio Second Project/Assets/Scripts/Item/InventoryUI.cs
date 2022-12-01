@@ -44,7 +44,7 @@ public class InventoryUI : MonoBehaviour
      *      -슬롯 자식으로 아이콘(이미지)가 할당되도록 하는 함수 만들기
      *      
      */
-
+    
 
     protected virtual void Awake()
     {
@@ -66,6 +66,7 @@ public class InventoryUI : MonoBehaviour
         SetAllSlotWithData();   //게임 시작할 때 슬롯UI들 전부 초기화
 
         isInvenCanvasGroupOff = true;
+
     }
 
     private void OnEnable()
@@ -87,8 +88,14 @@ public class InventoryUI : MonoBehaviour
         InventoryOnOffSetting();
     }
 
-    
 
+    //장비창을 만들고 거기에 슬롯에 장착, 기존 인벤토리 슬롯에서는 사라짐
+    //장비창에서 우클릭하면 다시 인벤토리로 이동하며 무기 해제
+    //케릭터 손위치에 장착, 만약 이미 장착한 무기가 있다면 해당 슬롯에서 무기 교환
+    //weapon에 equip에서 장착 구현
+    //장비창 구현할 것
+    //1.아이템 슬롯처럼 모든 데이터를 받을 변수들
+    //2.우클릭하면 장착 해제
     protected void OnInventoryItemUse(InputAction.CallbackContext obj)    //우클릭으로 아이템 사용 및 장착을 위한 함수, 인풋액션으로 구현했으므로 관리하기 편하려고 인벤토리에서 구현(onEnable에서 한번만 호출 하려고)
     {
         List<RaycastResult> slotItemCheck = new List<RaycastResult>();  //UI인식을 위해서는 GraphicRaycast가 필요하고 이걸 사용 후 리턴할 때 (RaycastResult)를 받는 리스트에 저장함
@@ -102,10 +109,21 @@ public class InventoryUI : MonoBehaviour
         Debug.Log($"{returnObject.name}");
         
         ItemSlotUI tempSlotUI;
-        tempSlotUI = returnObject.GetComponent<ItemSlotUI>();
+        EquipSlotUI tempEquipSlotUI = new();
 
-        if(tempSlotUI != null)
+        bool isFindEquipSlot = false;
+        bool isFindItemSlot = false;
+
+        isFindItemSlot = returnObject.TryGetComponent<ItemSlotUI>(out tempSlotUI);
+        if(!isFindItemSlot)
         {
+            
+            isFindEquipSlot = returnObject.TryGetComponent<EquipSlotUI>(out tempEquipSlotUI);
+        }
+
+        if(isFindItemSlot)
+        {
+
             if (tempSlotUI.slotUIData.ID == 0)   //data가 포션이라면 (포션id = 0)
             {
                 ItemData_Potion tempPotion = new ItemData_Potion();
@@ -123,17 +141,43 @@ public class InventoryUI : MonoBehaviour
             }
             else if(tempSlotUI.slotUIData.ID == 1)  //data가 무기라면
             {
-                //장비창을 만들고 거기에 슬롯에 장착, 기존 인벤토리 슬롯에서는 사라짐
-                //장비창에서 우클릭하면 다시 인벤토리로 이동하며 무기 해제
-                //케릭터 손위치에 장착, 만약 이미 장착한 무기가 있다면 해당 슬롯에서 무기 교환
-                //weapon에 equip에서 장착 구현
-                //장비창 구현할 것
-                //1.아이템 슬롯처럼 모든 데이터를 받을 변수들
-                //2.우클릭하면 장착 해제
+                for (int i = 0; i < equipmentUI.equipSlotUIs.Length; i++)    //무기 슬롯을 찾아라
+                {
+                    if(equipmentUI.equipSlotUIs[i].equipSlotID == 1001)
+                    {
+                        equipmentUI.equipSlotUIs[i].SetTempSlotWithData(tempSlotUI.slotUIData, 1);  //장비슬롯 설정
+                        //장착한 아이템을 무기위치에 만들고 잘 작동되도록 player에서 TakeWeapon을 통해 컴포넌트를 가져온다.
+                        GameObject tempWeaponObject;
+                        tempWeaponObject = ItemFactory.MakeItem(tempSlotUI.slotUIData.ID, Vector3.zero, Quaternion.identity); // player.weaponHandTransform.rotation
+                        tempWeaponObject.transform.SetParent(player.weaponHandTransform, false);
+                        player.TakeWeapon();
+                    }   
+                }
+                tempSlotUI.SetSlotWithData(tempSlotUI.slotUIData, 0);
+                playerInven.itemSlots[tempSlotUI.slotUIID].ClearSlotItem();
+                
             }
         }
-        
+        else if(isFindEquipSlot)
+        {
+            ItemSlot tempItemSlot;
+            tempItemSlot = playerInven.FindSameItemSlotForAddItem(tempEquipSlotUI.takeSlotItemData);    //여기가 너무 실행에 오래걸려 아랫쪽 줄이 먼저 실행된다.
+            tempItemSlot.AssignSlotItem(tempEquipSlotUI.takeSlotItemData);
+            slotUIs[tempItemSlot.slotID].SetSlotWithData(tempEquipSlotUI.takeSlotItemData, 1);
+
+            while(tempItemSlot != null)
+            {
+
+            }
+
+            //StartCoroutine();
+        }
     }
+
+    //IEnumerator IsFinished()
+    //{
+    //    yield return new wait
+    //}
 
     private void InventoryOnOffSetting()
     {

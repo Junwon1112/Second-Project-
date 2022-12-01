@@ -11,15 +11,28 @@ public class ItemFactory : MonoBehaviour
     public static GameObject MakeItem(ItemIDCode itemIDCode, Vector3 position, Quaternion rotation)
     {
         GameObject obj = Instantiate(GameManager.Instance.ItemManager[itemIDCode].itemPrefab, position, rotation);
-        //GameObject obj = new GameObject();      //새로운 오브젝트 만들고
         Item item = obj.AddComponent<Item>();   //아이템 컴포넌트 추가, 인스턴스를 만들어야 다른 변수값을 바꿀수 있어 item인스턴스를 만든듯
+        if (itemIDCode == ItemIDCode.Weapon)
+        {
+            obj.AddComponent<PlayerWeapon>();
+            CapsuleCollider capsuleCollider = obj.AddComponent<CapsuleCollider>();
+            capsuleCollider.radius = 0.1f;
+            capsuleCollider.height = 1.4f;
+            capsuleCollider.isTrigger = true;
+        }
+        else if(itemIDCode == ItemIDCode.HP_Potion)
+        {
+            SphereCollider sphereCollider = obj.AddComponent<SphereCollider>();
+            sphereCollider.radius = 0.5f;
+            sphereCollider.isTrigger = true;
+        }
+        //GameObject obj = new GameObject();      //새로운 오브젝트 만들고
+        
 
         item.data = GameManager.Instance.ItemManager[itemIDCode];   //추가된 컴포넌트의 데이터는 ItemIdCode의 데이터에 따라간다.
         obj.name = $"{item.data.name}_{itemCount}";                 //이름 설정
         obj.layer = LayerMask.NameToLayer("Item");                  //레이어 설정
-        SphereCollider sphereCollider = obj.AddComponent<SphereCollider>();
-        sphereCollider.radius = 0.5f;
-        sphereCollider.isTrigger = true;
+        
         itemCount++;    //현재 아이템 갯수 한개 추가
 
         //강사님은 여기에 미니맵표시 추가를 함, 나중에 미니맵 만들면 추가 요망

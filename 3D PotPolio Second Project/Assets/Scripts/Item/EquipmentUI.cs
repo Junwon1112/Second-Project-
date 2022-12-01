@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
 
-public class EquipmentUI : InventoryUI
+public class EquipmentUI : InventoryUI      //앞으로 부모보다 기능이 적은 자식은 억지로 만들지 말자는 것을 느꼈다. 아님 거꾸로 리팩토링을 해보자.. 
 {
     public PlayerInput equipmentControl;   //u키로 껐다키기위한 인풋시스템용 변수
 
@@ -17,13 +17,15 @@ public class EquipmentUI : InventoryUI
 
     InventoryUI inventoryUI;
 
+    public EquipSlotUI[] equipSlotUIs;
+
     protected override void Awake()
     {
         inventoryControl = new PlayerInput();   //아이템 우클릭은 inven에서 구현해서 필요할 때 가져오기 위해서
         equipmentControl = new PlayerInput();
         canvasGroupOnOff = GetComponent<CanvasGroup>();
         equipCloseButton = GetComponentInChildren<Button>();
-        slotUIs = GetComponentsInChildren<ItemSlotUI>();
+        equipSlotUIs = GetComponentsInChildren<EquipSlotUI>();
 
         graphicRaycaster = GameObject.Find("Canvas").gameObject.GetComponent<GraphicRaycaster>();
         player = FindObjectOfType<Player>();
@@ -34,6 +36,10 @@ public class EquipmentUI : InventoryUI
     {
         equipCloseButton.onClick.AddListener(EquipmentOnOffSetting);
         isEquipCanvasGroupOff = true;
+        for(int i = 0; i < equipSlotUIs.Length; i++)
+        {
+            equipSlotUIs[i].equipSlotID = 1001 + i; //1000번대 슬롯은 장비슬롯임을 구분하기 위해 추가
+        }
     }
 
     private void OnEnable()
@@ -61,7 +67,7 @@ public class EquipmentUI : InventoryUI
             if(inventoryUI.isInvenCanvasGroupOff)
             {
                 GameManager.Instance.MainPlayer.input.Disable();
-                inventoryControl.Inventory.InventoryItemUse.performed += OnInventoryItemUse;
+                inventoryUI.inventoryControl.Inventory.InventoryItemUse.performed += OnInventoryItemUse;
             }
          
 
@@ -75,7 +81,7 @@ public class EquipmentUI : InventoryUI
             if (inventoryUI.isInvenCanvasGroupOff)
             {
                 GameManager.Instance.MainPlayer.input.Enable();
-                inventoryControl.Inventory.InventoryItemUse.performed -= OnInventoryItemUse;
+                inventoryUI.inventoryControl.Inventory.InventoryItemUse.performed -= OnInventoryItemUse;
             }
 
             canvasGroupOnOff.alpha = 0;
@@ -84,7 +90,7 @@ public class EquipmentUI : InventoryUI
         }
     }
 
-    
+
 }
 
 //public class InventoryUI : MonoBehaviour

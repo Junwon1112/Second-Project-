@@ -47,6 +47,12 @@ public class Player : MonoBehaviour, IHealth
     Inventory playerInventory;
     InventoryUI playerInventoryUI;
 
+    //무기 바꿀때 사용하기 위한 변수들
+    GameObject weaponPrefab;
+    CapsuleCollider weaponCollider;
+    public Transform weaponHandTransform;
+    public bool isFindWeapon = false;
+
     public float HP
     {
         get { return hp; }
@@ -79,6 +85,9 @@ public class Player : MonoBehaviour, IHealth
         set { defence = value; }
     }
 
+    public delegate void FindAndTakeWeapon();
+    public event FindAndTakeWeapon EventFindAndTakeWeapon;
+
     private void Awake()
     {
         input = new PlayerInput();
@@ -87,6 +96,7 @@ public class Player : MonoBehaviour, IHealth
         player = GetComponent<Player>();
         playerInventory = GetComponentInChildren<Inventory>();
         playerInventoryUI = FindObjectOfType<InventoryUI>();
+        weaponHandTransform = FindObjectOfType<FindWeaponHand>().transform;
 
     }
 
@@ -123,6 +133,8 @@ public class Player : MonoBehaviour, IHealth
         potion = new ItemData_Potion();
         weapon = new ItemData_Weapon();
 
+        EventFindAndTakeWeapon += TakeWeapon;
+        EventFindAndTakeWeapon.Invoke();
     }
 
     private void Update()
@@ -256,7 +268,7 @@ public class Player : MonoBehaviour, IHealth
 
     private void OnTestMakeItem(InputAction.CallbackContext obj)
     {
-        ItemFactory.MakeItem(ItemIDCode.HP_Potion, transform.position, Quaternion.identity);
+        ItemFactory.MakeItem(ItemIDCode.Weapon, transform.position, Quaternion.identity);
     }
 
     public void SetHP()
@@ -267,5 +279,38 @@ public class Player : MonoBehaviour, IHealth
     public void Attack(IBattle target)
     {
        //target.HP -= (AttackDamage - target.Defence);
+    }
+
+    public void TakeWeapon()        // 여기player 클래스에 위치한 FindAndTakeWeapon takeWeapon 델리게이트에 넣음
+    {
+        PlayerWeapon tempPlayerWeapon = FindObjectOfType<PlayerWeapon>();
+        if (tempPlayerWeapon != null)
+        {
+            weaponPrefab = tempPlayerWeapon.gameObject;
+            weaponCollider = this.weaponPrefab.GetComponent<CapsuleCollider>();
+            isFindWeapon = true;
+            Debug.Log("무기찾음");
+        }
+        else
+        {
+            isFindWeapon = false;
+            Debug.Log("무기못찾음");
+        }
+        
+    }
+
+
+    
+
+    public void AttackTriggerOn()
+    {
+        if(isFindWeapon)
+        weaponCollider.enabled = true;
+    }
+
+    public void AttackTriggerOff()
+    {
+        if(isFindWeapon)
+        weaponCollider.enabled = false;
     }
 }

@@ -171,8 +171,8 @@ public class ItemSlotUI : MonoBehaviour, IPointerClickHandler, IDragHandler, IBe
         {
             if (slotUIData == null)
             {
-                slotUIData = splitUI.splitTempSlotSplitUI.tempSlotItemData;     //tempslot의 데이터를 넘겨받기
-                slotUICount = splitUI.splitTempSlotSplitUI.tempSlotItemCount;   //tempslot의 데이터의 갯수를 넘겨받기
+                slotUIData = splitUI.splitTempSlotSplitUI.takeSlotItemData;     //tempslot의 데이터를 넘겨받기
+                slotUICount = splitUI.splitTempSlotSplitUI.takeSlotItemCount;   //tempslot의 데이터의 갯수를 넘겨받기
                 playerInven.itemSlots[this.slotUIID].AssignSlotItem(slotUIData, slotUICount);    //원본 슬롯에도 데이터와 갯수 전달
                 splitUI.splitTempSlotSplitUI.ClearTempSlot();                   //tempSlot은 역할은 다했으니 초기화
                 splitUI.isSplitting = false;
@@ -180,13 +180,13 @@ public class ItemSlotUI : MonoBehaviour, IPointerClickHandler, IDragHandler, IBe
 
                 playerInvenUI.SetAllSlotWithData(); //새로바뀐값 새로고침
             }
-            else if(slotUIData == splitUI.splitTempSlotSplitUI.tempSlotItemData)  //tempslot의 데이터와 동일한지 확인
+            else if(slotUIData == splitUI.splitTempSlotSplitUI.takeSlotItemData)  //tempslot의 데이터와 동일한지 확인
             {
                 //내꺼와 나눠져서옮겨오는 걸 합친게 최대 갯수보다 적은 경우
-                if (splitUI.splitTempSlotSplitUI.tempSlotItemCount + slotUICount < splitUI.splitTempSlotSplitUI.tempSlotItemData.itemMaxCount)   
+                if (splitUI.splitTempSlotSplitUI.takeSlotItemCount + slotUICount < splitUI.splitTempSlotSplitUI.takeSlotItemData.itemMaxCount)   
                 {
-                    slotUICount += splitUI.splitTempSlotSplitUI.tempSlotItemCount;   //tempslot의 데이터의 갯수를 합치기
-                    playerInven.itemSlots[this.slotUIID].IncreaseSlotItem(splitUI.splitTempSlotSplitUI.tempSlotItemCount);    //원본 슬롯에도 갯수 합치기
+                    slotUICount += splitUI.splitTempSlotSplitUI.takeSlotItemCount;   //tempslot의 데이터의 갯수를 합치기
+                    playerInven.itemSlots[this.slotUIID].IncreaseSlotItem(splitUI.splitTempSlotSplitUI.takeSlotItemCount);    //원본 슬롯에도 갯수 합치기
                     splitUI.splitTempSlotSplitUI.ClearTempSlot();                   //tempSlot은 역할은 다했으니 초기화
                     splitUI.isSplitting = false;
                     splitUI.splitTempSlotSplitUI.gameObject.SetActive(false);       //처리 다했으면 tempslotUI끄기
@@ -197,8 +197,8 @@ public class ItemSlotUI : MonoBehaviour, IPointerClickHandler, IDragHandler, IBe
                 {
                     uint remainCount;   //remainCount = 최대값까지 필요한 갯수
                     uint newTempSlotCount;
-                    remainCount = (uint)splitUI.splitTempSlotSplitUI.tempSlotItemData.itemMaxCount - slotUICount;   //최대값까지 필요한 갯수 저장
-                    newTempSlotCount = splitUI.splitTempSlotSplitUI.tempSlotItemCount - remainCount;  //전해주는 양만큼 빼주고 변수에 해당 값 저장
+                    remainCount = (uint)splitUI.splitTempSlotSplitUI.takeSlotItemData.itemMaxCount - slotUICount;   //최대값까지 필요한 갯수 저장
+                    newTempSlotCount = splitUI.splitTempSlotSplitUI.takeSlotItemCount - remainCount;  //전해주는 양만큼 빼주고 변수에 해당 값 저장
                     slotUICount = (uint)slotUIData.itemMaxCount;       //=> 최대값만큼 전달받았기 때문에 최대값만큼 저장
                     playerInven.itemSlots[this.slotUIID].IncreaseSlotItem(remainCount); //아이템 슬롯도 최대값만큼 저장
 
@@ -284,8 +284,8 @@ public class ItemSlotUI : MonoBehaviour, IPointerClickHandler, IDragHandler, IBe
             {
                 if(targetItemSlotUI.slotUIData == null)    //놓은 슬롯이 빈슬롯이라면
                 {
-                    targetItemSlotUI.SetSlotWithData(tempSlotSplitUI.tempSlotItemData, tempSlotSplitUI.tempSlotItemCount);
-                    playerInven.itemSlots[targetItemSlotUI.slotUIID].AssignSlotItem(tempSlotSplitUI.tempSlotItemData, tempSlotSplitUI.tempSlotItemCount);//원본 슬롯에도 데이터와 갯수 전달
+                    targetItemSlotUI.SetSlotWithData(tempSlotSplitUI.takeSlotItemData, tempSlotSplitUI.takeSlotItemCount);
+                    playerInven.itemSlots[targetItemSlotUI.slotUIID].AssignSlotItem(tempSlotSplitUI.takeSlotItemData, tempSlotSplitUI.takeSlotItemCount);//원본 슬롯에도 데이터와 갯수 전달
                     splitUI.splitTempSlotSplitUI.ClearTempSlot();                   //tempSlot은 역할은 다했으니 초기화
                     splitUI.splitTempSlotSplitUI.gameObject.SetActive(false);       //처리 다했으면 tempslotUI끄기
 
@@ -293,11 +293,11 @@ public class ItemSlotUI : MonoBehaviour, IPointerClickHandler, IDragHandler, IBe
                 }
                 else    //빈슬롯이 아니고 아이템이 존재하는 슬롯이라면
                 {
-                    if(targetItemSlotUI.slotUIData == tempSlotSplitUI.tempSlotItemData &&   //옮기는 데이터 종류가 같고 //2개의 합이 maxCount보다 작거나 같은경우엔 합친다
-                        targetItemSlotUI.slotUICount + tempSlotSplitUI.tempSlotItemCount < targetItemSlotUI.slotUIData.itemMaxCount +1 ) 
+                    if(targetItemSlotUI.slotUIData == tempSlotSplitUI.takeSlotItemData &&   //옮기는 데이터 종류가 같고 //2개의 합이 maxCount보다 작거나 같은경우엔 합친다
+                        targetItemSlotUI.slotUICount + tempSlotSplitUI.takeSlotItemCount < targetItemSlotUI.slotUIData.itemMaxCount +1 ) 
                     {
-                        targetItemSlotUI.slotUICount += tempSlotSplitUI.tempSlotItemCount;
-                        playerInven.itemSlots[targetItemSlotUI.slotUIID].IncreaseSlotItem(tempSlotSplitUI.tempSlotItemCount);    //원본 슬롯에도 데이터와 갯수 전달
+                        targetItemSlotUI.slotUICount += tempSlotSplitUI.takeSlotItemCount;
+                        playerInven.itemSlots[targetItemSlotUI.slotUIID].IncreaseSlotItem(tempSlotSplitUI.takeSlotItemCount);    //원본 슬롯에도 데이터와 갯수 전달
                         targetItemSlotUI.SetSlotWithData(targetItemSlotUI.slotUIData, targetItemSlotUI.slotUICount);    //자기 자신의 갯수가 바뀌었으니 해당데이터로 UI표기 최신화
 
                         splitUI.splitTempSlotSplitUI.ClearTempSlot();                   //tempSlot은 역할은 다했으니 초기화
@@ -312,8 +312,8 @@ public class ItemSlotUI : MonoBehaviour, IPointerClickHandler, IDragHandler, IBe
                         SetSlotWithData(targetItemSlotUI.slotUIData, targetItemSlotUI.slotUICount);  //temp슬롯으로 데이터를 보내 비어있는 자기 자신에 상대 슬롯의 값 먼저 할당
 
                         //원본 슬롯에 데이터와 갯수 전달
-                        playerInven.itemSlots[targetItemSlotUI.slotUIID].AssignSlotItem(tempSlotSplitUI.tempSlotItemData, tempSlotSplitUI.tempSlotItemCount);    
-                        targetItemSlotUI.SetSlotWithData(tempSlotSplitUI.tempSlotItemData, tempSlotSplitUI.tempSlotItemCount);
+                        playerInven.itemSlots[targetItemSlotUI.slotUIID].AssignSlotItem(tempSlotSplitUI.takeSlotItemData, tempSlotSplitUI.takeSlotItemCount);    
+                        targetItemSlotUI.SetSlotWithData(tempSlotSplitUI.takeSlotItemData, tempSlotSplitUI.takeSlotItemCount);
                         
                         splitUI.splitTempSlotSplitUI.ClearTempSlot();                   //tempSlot은 역할은 다했으니 초기화
                         splitUI.splitTempSlotSplitUI.gameObject.SetActive(false);       //처리 다했으면 tempslotUI끄기
@@ -325,7 +325,7 @@ public class ItemSlotUI : MonoBehaviour, IPointerClickHandler, IDragHandler, IBe
             }
             else    //아이템 슬롯UI가 아니라면
             {
-                SetSlotWithData(tempSlotSplitUI.tempSlotItemData, tempSlotSplitUI.tempSlotItemCount);
+                SetSlotWithData(tempSlotSplitUI.takeSlotItemData, tempSlotSplitUI.takeSlotItemCount);
                 playerInven.itemSlots[this.slotUIID].AssignSlotItem(slotUIData, slotUICount);    //원본 슬롯에도 데이터와 갯수 전달
                 splitUI.splitTempSlotSplitUI.ClearTempSlot();                   //tempSlot은 역할은 다했으니 초기화
                 splitUI.splitTempSlotSplitUI.gameObject.SetActive(false);       //처리 다했으면 tempslotUI끄기
@@ -336,8 +336,8 @@ public class ItemSlotUI : MonoBehaviour, IPointerClickHandler, IDragHandler, IBe
         else //raycast받는 게임 오브젝트가 아예없을 때 => Inventory밖에 버렸을 때 = 아이템 드롭
         {
 
-            dropUI.splitItemData = tempSlotSplitUI.tempSlotItemData;
-            dropUI.splitPossibleCount = tempSlotSplitUI.tempSlotItemCount;   //현재 슬롯이 가지고있는 갯수를 전해줌, splitPossibleCount는 splitUI내에서 실제 적용할 splitCount로 변환
+            dropUI.splitItemData = tempSlotSplitUI.takeSlotItemData;
+            dropUI.splitPossibleCount = tempSlotSplitUI.takeSlotItemCount;   //현재 슬롯이 가지고있는 갯수를 전해줌, splitPossibleCount는 splitUI내에서 실제 적용할 splitCount로 변환
             dropUI.takeID = slotUIID;                                      //현재 해당 슬롯의 ID를 전달해 어떤 슬롯인지 구분
             splitUI.splitTempSlotSplitUI.ClearTempSlot();                   //tempSlot은 역할은 다했으니 초기화
             splitUI.splitTempSlotSplitUI.gameObject.SetActive(false);       //처리 다했으면 tempslotUI끄기
