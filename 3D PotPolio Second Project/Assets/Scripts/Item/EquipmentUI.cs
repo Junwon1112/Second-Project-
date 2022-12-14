@@ -12,7 +12,7 @@ public class EquipmentUI : InventoryUI      //앞으로 부모보다 기능이 적은 자식은
 
     protected Button equipCloseButton;
 
-    public bool isEquipCanvasGroupOff;   //인벤토리가 꺼져있는지 켜져있는지 확인하기 위한 변수
+    public bool isEquipCanvasGroupOff = true;   //인벤토리가 꺼져있는지 켜져있는지 확인하기 위한 변수
     //new public ItemSlotUI[] slotUIs;
 
     InventoryUI inventoryUI;
@@ -67,7 +67,7 @@ public class EquipmentUI : InventoryUI      //앞으로 부모보다 기능이 적은 자식은
             if(inventoryUI.isInvenCanvasGroupOff)
             {
                 GameManager.Instance.MainPlayer.input.Disable();
-                inventoryUI.inventoryControl.Inventory.InventoryItemUse.performed += OnInventoryItemUse;
+                inventoryUI.inventoryControl.Inventory.InventoryItemUse.performed += inventoryUI.OnInventoryItemUse;
             }
          
 
@@ -81,7 +81,7 @@ public class EquipmentUI : InventoryUI      //앞으로 부모보다 기능이 적은 자식은
             if (inventoryUI.isInvenCanvasGroupOff)
             {
                 GameManager.Instance.MainPlayer.input.Enable();
-                inventoryUI.inventoryControl.Inventory.InventoryItemUse.performed -= OnInventoryItemUse;
+                inventoryUI.inventoryControl.Inventory.InventoryItemUse.performed -= inventoryUI.OnInventoryItemUse;
             }
 
             canvasGroupOnOff.alpha = 0;

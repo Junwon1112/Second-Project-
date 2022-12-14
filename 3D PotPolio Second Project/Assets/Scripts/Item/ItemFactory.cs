@@ -12,7 +12,7 @@ public class ItemFactory : MonoBehaviour
     {
         GameObject obj = Instantiate(GameManager.Instance.ItemManager[itemIDCode].itemPrefab, position, rotation);
         Item item = obj.AddComponent<Item>();   //아이템 컴포넌트 추가, 인스턴스를 만들어야 다른 변수값을 바꿀수 있어 item인스턴스를 만든듯
-        if (itemIDCode == ItemIDCode.Weapon)
+        if (itemIDCode == ItemIDCode.Basic_Weapon_1 || itemIDCode == ItemIDCode.Basic_Weapon_2)
         {
             obj.AddComponent<PlayerWeapon>();
             CapsuleCollider capsuleCollider = obj.AddComponent<CapsuleCollider>();

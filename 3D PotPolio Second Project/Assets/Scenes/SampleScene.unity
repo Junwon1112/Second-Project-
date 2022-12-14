@@ -5917,6 +5917,7 @@ MonoBehaviour:
   itemDatas:
   - {fileID: 11400000, guid: c97bcf0ac86f1e9478fa93c97c51137d, type: 2}
   - {fileID: 11400000, guid: df55d59d539181f4d9fe4a19c3bf3d3b, type: 2}
+  - {fileID: 11400000, guid: df12fef7a52e56c4386999cda9ce657b, type: 2}
 --- !u!1 &1361497700
 GameObject:
   m_ObjectHideFlags: 0
@@ -6829,7 +6830,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 5823087227090583267, guid: c6c09961b7ed1184283595cc0d745904, type: 3}
       propertyPath: m_Alpha
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5823087227090583270, guid: c6c09961b7ed1184283595cc0d745904, type: 3}
       propertyPath: m_Pivot.x

@@ -268,7 +268,7 @@ public class Player : MonoBehaviour, IHealth
 
     private void OnTestMakeItem(InputAction.CallbackContext obj)
     {
-        ItemFactory.MakeItem(ItemIDCode.Weapon, transform.position, Quaternion.identity);
+        ItemFactory.MakeItem(ItemIDCode.Basic_Weapon_2, transform.position, Quaternion.identity);
     }
 
     public void SetHP()

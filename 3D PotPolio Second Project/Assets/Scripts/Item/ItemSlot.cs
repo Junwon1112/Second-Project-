@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ItemSlot : MonoBehaviour
+public class ItemSlot  //: MonoBehaviour
 {
     public int slotID = -1; //외부에서 몇번째 슬롯인지 구분하는 슬롯 아이디. 할당전엔 -1값을 할당해 놓음
 

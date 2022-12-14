@@ -10,7 +10,7 @@ public class InventoryUI : MonoBehaviour
 {
     public PlayerInput inventoryControl;   //i키로 껐다키기위한 인풋시스템용 변수
     protected CanvasGroup invenCanvasGroupOnOff;   //껐다 키는걸 canvasGroup을 이용한 변수
-    public bool isInvenCanvasGroupOff;   //인벤토리가 꺼져있는지 켜져있는지 확인하기 위한 변수
+    public bool isInvenCanvasGroupOff = true;   //인벤토리가 꺼져있는지 켜져있는지 확인하기 위한 변수
 
     
 
@@ -96,7 +96,7 @@ public class InventoryUI : MonoBehaviour
     //장비창 구현할 것
     //1.아이템 슬롯처럼 모든 데이터를 받을 변수들
     //2.우클릭하면 장착 해제
-    protected void OnInventoryItemUse(InputAction.CallbackContext obj)    //우클릭으로 아이템 사용 및 장착을 위한 함수, 인풋액션으로 구현했으므로 관리하기 편하려고 인벤토리에서 구현(onEnable에서 한번만 호출 하려고)
+    public void OnInventoryItemUse(InputAction.CallbackContext obj)    //우클릭으로 아이템 사용 및 장착을 위한 함수, 인풋액션으로 구현했으므로 관리하기 편하려고 인벤토리에서 구현(onEnable에서 한번만 호출 하려고)
     {
         List<RaycastResult> slotItemCheck = new List<RaycastResult>();  //UI인식을 위해서는 GraphicRaycast가 필요하고 이걸 사용 후 리턴할 때 (RaycastResult)를 받는 리스트에 저장함
         pointerEventData = new PointerEventData(null);                  //GraphicRaycast에서 마우스 위치를 PointerEventData에서 받으므로 정의 해줌
@@ -143,32 +143,53 @@ public class InventoryUI : MonoBehaviour
             {
                 for (int i = 0; i < equipmentUI.equipSlotUIs.Length; i++)    //무기 슬롯을 찾아라
                 {
-                    if(equipmentUI.equipSlotUIs[i].equipSlotID == 1001)
+                    if(equipmentUI.equipSlotUIs[i].equipSlotID == 1001)     //무기 슬롯 ID는 1001이다.
                     {
-                        equipmentUI.equipSlotUIs[i].SetTempSlotWithData(tempSlotUI.slotUIData, 1);  //장비슬롯 설정
-                        //장착한 아이템을 무기위치에 만들고 잘 작동되도록 player에서 TakeWeapon을 통해 컴포넌트를 가져온다.
-                        GameObject tempWeaponObject;
-                        tempWeaponObject = ItemFactory.MakeItem(tempSlotUI.slotUIData.ID, Vector3.zero, Quaternion.identity); // player.weaponHandTransform.rotation
-                        tempWeaponObject.transform.SetParent(player.weaponHandTransform, false);
-                        player.TakeWeapon();
+                        if (equipmentUI.equipSlotUIs[i].takeSlotItemData == null)   //현재 장착한 무기가 없을 떄
+                        {
+                            equipmentUI.equipSlotUIs[i].SetTempSlotWithData(tempSlotUI.slotUIData, 1);  //장비슬롯 설정
+                            GameObject tempWeaponObject;    //장착한 아이템을 무기위치에 만들고 잘 작동되도록 player에서 TakeWeapon을 통해 컴포넌트를 가져온다.
+                            tempWeaponObject = ItemFactory.MakeItem(tempSlotUI.slotUIData.ID, Vector3.zero, Quaternion.identity); // player.weaponHandTransform.rotation
+                            tempWeaponObject.transform.SetParent(player.weaponHandTransform, false);
+                            player.TakeWeapon();
+
+                            tempSlotUI.SetSlotWithData(tempSlotUI.slotUIData, 0);
+                            playerInven.itemSlots[tempSlotUI.slotUIID].ClearSlotItem();
+                        }
+                        else    //현재 장착한 무기가 있을 때
+                        {
+                            ItemSlot tempItemSlot = new();
+                            tempItemSlot.AssignSlotItem(equipmentUI.equipSlotUIs[i].takeSlotItemData);  //임시슬롯에 현재 무기창에 있는 데이터를 백업
+
+                            Destroy(FindObjectOfType<PlayerWeapon>().gameObject);   //기존 무기 프리팹을 찾아 지운다.
+                            equipmentUI.equipSlotUIs[i].SetTempSlotWithData(tempSlotUI.slotUIData, 1);    //장비슬롯에 인벤데이터를 할당하고
+
+                            //무기프리팹을 할당하는 일련의 과정을 실행한다.
+                            GameObject tempWeaponObject;    //장착한 아이템을 무기위치에 만들고 잘 작동되도록 player에서 TakeWeapon을 통해 컴포넌트를 가져온다.
+                            tempWeaponObject = ItemFactory.MakeItem(tempSlotUI.slotUIData.ID, Vector3.zero, Quaternion.identity); // player.weaponHandTransform.rotation
+                            tempWeaponObject.transform.SetParent(player.weaponHandTransform, false);
+                            player.TakeWeapon();
+
+                            //이제 인벤에서 바뀐 무기자리에 임시슬롯에 백업한 데이터를 저장
+                            playerInven.itemSlots[tempSlotUI.slotUIID].AssignSlotItem(tempItemSlot.SlotItemData);
+                            slotUIs[tempSlotUI.slotUIID].SetSlotWithData(tempItemSlot.SlotItemData, 1);
+
+                        }
+                        
                     }   
                 }
-                tempSlotUI.SetSlotWithData(tempSlotUI.slotUIData, 0);
-                playerInven.itemSlots[tempSlotUI.slotUIID].ClearSlotItem();
-                
+
             }
         }
         else if(isFindEquipSlot)
         {
-            ItemSlot tempItemSlot;
-            tempItemSlot = playerInven.FindSameItemSlotForAddItem(tempEquipSlotUI.takeSlotItemData);    //여기가 너무 실행에 오래걸려 아랫쪽 줄이 먼저 실행된다.
-            tempItemSlot.AssignSlotItem(tempEquipSlotUI.takeSlotItemData);
-            slotUIs[tempItemSlot.slotID].SetSlotWithData(tempEquipSlotUI.takeSlotItemData, 1);
+            ItemSlot tempItemSlot = new();
+            tempItemSlot = playerInven.FindSameItemSlotForAddItem(tempEquipSlotUI.takeSlotItemData);    //빈 슬롯 찾고
+            tempItemSlot.AssignSlotItem(tempEquipSlotUI.takeSlotItemData);                              //슬롯에 넣어준다.
+            slotUIs[tempItemSlot.slotID].SetSlotWithData(tempEquipSlotUI.takeSlotItemData, 1);          //슬롯UI도 마찬가지
 
-            while(tempItemSlot != null)
-            {
-
-            }
+            tempEquipSlotUI.ClearTempSlot();    //장비슬롯은 비우고
+            Destroy(FindObjectOfType<PlayerWeapon>().gameObject);   //무기를 찾아 지운다.
 
             //StartCoroutine();
         }
