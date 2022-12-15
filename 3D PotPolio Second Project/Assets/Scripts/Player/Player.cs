@@ -41,7 +41,7 @@ public class Player : MonoBehaviour, IHealth
     ItemFactory itemFactory;
     ItemIDCode itemID;
     ItemData_Potion potion;
-    ItemData_Weapon weapon;
+    public ItemData_Weapon myWeapon;
 
     float findItemRange = 3.0f;
     Inventory playerInventory;
@@ -85,8 +85,8 @@ public class Player : MonoBehaviour, IHealth
         set { defence = value; }
     }
 
-    public delegate void FindAndTakeWeapon();
-    public event FindAndTakeWeapon EventFindAndTakeWeapon;
+    //public delegate void FindAndTakeWeapon();
+    //public event FindAndTakeWeapon EventFindAndTakeWeapon;
 
     private void Awake()
     {
@@ -97,7 +97,6 @@ public class Player : MonoBehaviour, IHealth
         playerInventory = GetComponentInChildren<Inventory>();
         playerInventoryUI = FindObjectOfType<InventoryUI>();
         weaponHandTransform = FindObjectOfType<FindWeaponHand>().transform;
-
     }
 
     private void OnEnable()
@@ -131,10 +130,10 @@ public class Player : MonoBehaviour, IHealth
         hp = maxHp;
         SetHP();
         potion = new ItemData_Potion();
-        weapon = new ItemData_Weapon();
+        myWeapon = new ItemData_Weapon();
 
-        EventFindAndTakeWeapon += TakeWeapon;
-        EventFindAndTakeWeapon.Invoke();
+        //EventFindAndTakeWeapon += TakeWeapon;
+        //EventFindAndTakeWeapon.Invoke();
     }
 
     private void Update()
@@ -281,7 +280,7 @@ public class Player : MonoBehaviour, IHealth
        //target.HP -= (AttackDamage - target.Defence);
     }
 
-    public void TakeWeapon()        // 여기player 클래스에 위치한 FindAndTakeWeapon takeWeapon 델리게이트에 넣음
+    public void TakeWeapon()    //바로 아래 위치한 애니메이션으로 attackTrigger조절하는 함수에 collider를 전해주기 위한 함수 
     {
         PlayerWeapon tempPlayerWeapon = FindObjectOfType<PlayerWeapon>();
         if (tempPlayerWeapon != null)
@@ -299,9 +298,18 @@ public class Player : MonoBehaviour, IHealth
         
     }
 
+    public void EquipWeaponAbility()
+    {
+        attackDamage += myWeapon.attackDamage;
+    }
 
-    
+    public void UnEquipWeaponAbility()
+    {
+        attackDamage -= myWeapon.attackDamage;
+        myWeapon = null;
+    }
 
+    //유니티 애니메이션에서 이벤트로 활성화 할 함수들
     public void AttackTriggerOn()
     {
         if(isFindWeapon)

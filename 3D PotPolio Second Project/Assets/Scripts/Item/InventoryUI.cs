@@ -139,7 +139,7 @@ public class InventoryUI : MonoBehaviour
                     playerInven.itemSlots[tempSlotUI.slotUIID].DecreaseSlotItem(1);
                 }
             }
-            else if(tempSlotUI.slotUIData.ID == 1)  //data가 무기라면
+            else if(tempSlotUI.slotUIData.ID == 1 || tempSlotUI.slotUIData.ID == 2)  //data가 무기라면
             {
                 for (int i = 0; i < equipmentUI.equipSlotUIs.Length; i++)    //무기 슬롯을 찾아라
                 {
@@ -152,6 +152,8 @@ public class InventoryUI : MonoBehaviour
                             tempWeaponObject = ItemFactory.MakeItem(tempSlotUI.slotUIData.ID, Vector3.zero, Quaternion.identity); // player.weaponHandTransform.rotation
                             tempWeaponObject.transform.SetParent(player.weaponHandTransform, false);
                             player.TakeWeapon();
+                            player.myWeapon = (ItemData_Weapon)tempSlotUI.slotUIData;   //무기에 데미지를 추가하기 위해 플레이어에게 변수로 무기데이터 저장
+                            player.EquipWeaponAbility();     //플레이어에게 있는 무기 데미지와 자기 공격력 합치는 함수
 
                             tempSlotUI.SetSlotWithData(tempSlotUI.slotUIData, 0);
                             playerInven.itemSlots[tempSlotUI.slotUIID].ClearSlotItem();
@@ -162,6 +164,7 @@ public class InventoryUI : MonoBehaviour
                             tempItemSlot.AssignSlotItem(equipmentUI.equipSlotUIs[i].takeSlotItemData);  //임시슬롯에 현재 무기창에 있는 데이터를 백업
 
                             Destroy(FindObjectOfType<PlayerWeapon>().gameObject);   //기존 무기 프리팹을 찾아 지운다.
+                            player.UnEquipWeaponAbility();       //무기데미지를 빼고 플레이어에 있는 myWeapon변수를 null로 만듬
                             equipmentUI.equipSlotUIs[i].SetTempSlotWithData(tempSlotUI.slotUIData, 1);    //장비슬롯에 인벤데이터를 할당하고
 
                             //무기프리팹을 할당하는 일련의 과정을 실행한다.
@@ -169,6 +172,8 @@ public class InventoryUI : MonoBehaviour
                             tempWeaponObject = ItemFactory.MakeItem(tempSlotUI.slotUIData.ID, Vector3.zero, Quaternion.identity); // player.weaponHandTransform.rotation
                             tempWeaponObject.transform.SetParent(player.weaponHandTransform, false);
                             player.TakeWeapon();
+                            player.myWeapon = (ItemData_Weapon)tempSlotUI.slotUIData;   //무기에 데미지를 추가하기 위해 플레이어에게 변수로 무기데이터 저장
+                            player.EquipWeaponAbility();     //플레이어에게 있는 무기 데미지와 자기 공격력 합치는 함수
 
                             //이제 인벤에서 바뀐 무기자리에 임시슬롯에 백업한 데이터를 저장
                             playerInven.itemSlots[tempSlotUI.slotUIID].AssignSlotItem(tempItemSlot.SlotItemData);
@@ -181,12 +186,14 @@ public class InventoryUI : MonoBehaviour
 
             }
         }
-        else if(isFindEquipSlot)
+        else if(isFindEquipSlot)    //장비슬롯에서 클릭을 했다면
         {
             ItemSlot tempItemSlot = new();
             tempItemSlot = playerInven.FindSameItemSlotForAddItem(tempEquipSlotUI.takeSlotItemData);    //빈 슬롯 찾고
             tempItemSlot.AssignSlotItem(tempEquipSlotUI.takeSlotItemData);                              //슬롯에 넣어준다.
             slotUIs[tempItemSlot.slotID].SetSlotWithData(tempEquipSlotUI.takeSlotItemData, 1);          //슬롯UI도 마찬가지
+            
+            player.UnEquipWeaponAbility();     //무기데미지를 빼고 플레이어에 있는 myWeapon변수를 null로 만듬
 
             tempEquipSlotUI.ClearTempSlot();    //장비슬롯은 비우고
             Destroy(FindObjectOfType<PlayerWeapon>().gameObject);   //무기를 찾아 지운다.
