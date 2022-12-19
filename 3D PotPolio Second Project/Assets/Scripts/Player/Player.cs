@@ -29,6 +29,14 @@ public class Player : MonoBehaviour, IHealth
     float maxHp = 100;
     Slider hpBar;
 
+    //경험치 관련 변수들
+    float exp = 0.0f;
+    float maxExp = 100;
+    Slider expBar;
+
+    [SerializeField]
+    int level = 1;
+
     //회전 관련 변수들
     float turnToX;
     float turnToY;
@@ -68,6 +76,25 @@ public class Player : MonoBehaviour, IHealth
         get { return maxHp; }
     }
 
+    public float Exp
+    {
+        get { return exp; }
+        set
+        {
+            exp = value;
+
+        }
+    }
+
+    public float MaxExp
+    {
+        get { return maxExp; }
+        set
+        {
+            maxExp = value;
+        }
+    }
+
     [SerializeField]    //private여도 유니티에서 수치바꿀수 있게 해주는 것
     float attackDamage = 10;
 
@@ -97,6 +124,7 @@ public class Player : MonoBehaviour, IHealth
         playerInventory = GetComponentInChildren<Inventory>();
         playerInventoryUI = FindObjectOfType<InventoryUI>();
         weaponHandTransform = FindObjectOfType<FindWeaponHand>().transform;
+        expBar = GameObject.Find("ExpSlider").GetComponent<Slider>();
     }
 
     private void OnEnable()
@@ -130,6 +158,7 @@ public class Player : MonoBehaviour, IHealth
         hp = maxHp;
         SetHP();
         potion = new ItemData_Potion();
+        SetExp();
         myWeapon = new ItemData_Weapon();
 
         //EventFindAndTakeWeapon += TakeWeapon;
@@ -267,7 +296,7 @@ public class Player : MonoBehaviour, IHealth
 
     private void OnTestMakeItem(InputAction.CallbackContext obj)
     {
-        ItemFactory.MakeItem(ItemIDCode.Basic_Weapon_2, transform.position, Quaternion.identity);
+        ItemFactory.MakeItem(ItemIDCode.Basic_Weapon_1, transform.position, Quaternion.identity);
     }
 
     public void SetHP()
@@ -275,10 +304,23 @@ public class Player : MonoBehaviour, IHealth
         hpBar.value = HP / MaxHP;
     }
 
-    public void Attack(IBattle target)
+    public void SetExp()
     {
-       //target.HP -= (AttackDamage - target.Defence);
+        expBar.value = Exp / MaxExp;
     }
+
+    public void LevelUp()
+    {
+        level++;
+        Exp -= MaxExp;
+        MaxExp *= 1.3f;
+        SetExp();
+    }
+
+    //public void Attack(IBattle target)    //플레이어가 가진 무기에서 구현
+    //{
+    //   //target.HP -= (AttackDamage - target.Defence);
+    //}
 
     public void TakeWeapon()    //바로 아래 위치한 애니메이션으로 attackTrigger조절하는 함수에 collider를 전해주기 위한 함수 
     {

@@ -40,6 +40,7 @@ public class Monster : MonoBehaviour, IHealth
     float maxHP = 100;
     float ratio;
 
+    public float giveExp = 30.0f;
 
     float attackDamage = 10;
     float defence = 3;
@@ -92,7 +93,6 @@ public class Monster : MonoBehaviour, IHealth
     {
         get { return maxHP; }
     }
-
    
     Slider hpSlider;
 
