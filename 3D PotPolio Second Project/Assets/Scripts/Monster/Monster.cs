@@ -125,7 +125,9 @@ public class Monster : MonoBehaviour, IHealth
 
     private void Start()
     {
-        Transform patrolPoint = GameObject.FindGameObjectWithTag("PatrolPoint").transform.GetComponent<Transform>();
+        //Transform patrolPoint = GameObject.FindGameObjectWithTag("PatrolPoint").transform.GetComponent<Transform>();
+
+        Transform patrolPoint = FindObjectOfType<FindPatrolPoint>().transform;
 
         patrolPoints = new Transform[patrolPoint.childCount];
 
@@ -134,7 +136,7 @@ public class Monster : MonoBehaviour, IHealth
             patrolPoints[i] = patrolPoint.transform.GetChild(i);
         }
 
-        tempLayerMask = (1 << playerLayer); //비트플래그, 0000 0001 을 playerLayer(7번째 레이어) 만큼 옮겨라 => 0100 0000 이 됨
+        tempLayerMask = (1 << playerLayer); //비트플래그, 0000 0001 을 playerLayer(7번째 레이어) 만큼 옮겨라 => 0100 0000 이 됨, 플레이어 찾을 떄 플레이어 레이어용 변수로 활용하기 위해 만듬 
 
         hp = maxHP;
 

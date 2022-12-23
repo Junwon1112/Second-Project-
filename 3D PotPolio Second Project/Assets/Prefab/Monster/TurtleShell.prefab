@@ -1358,6 +1358,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 698edb20b5ed3d9498c3ca4ed32ebd2b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  giveExp: 30
   playerTriggerOff: 0
 --- !u!195 &272862269
 NavMeshAgent:
