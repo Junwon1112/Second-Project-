@@ -85,7 +85,7 @@ public class Monster : MonoBehaviour, IHealth
                 SetMonsterState(MonsterState.die);
                 agent.enabled = false;
                 DropItem();
-                Destroy(gameObject, 3.0f);
+                Destroy(transform.parent.gameObject, 3.0f);
             }
         }
     }
@@ -127,7 +127,7 @@ public class Monster : MonoBehaviour, IHealth
     {
         //Transform patrolPoint = GameObject.FindGameObjectWithTag("PatrolPoint").transform.GetComponent<Transform>();
 
-        Transform patrolPoint = FindObjectOfType<FindPatrolPoint>().transform;
+        Transform patrolPoint = transform.parent.GetChild(1);
 
         patrolPoints = new Transform[patrolPoint.childCount];
 
@@ -176,7 +176,9 @@ public class Monster : MonoBehaviour, IHealth
 
     private void SetPatrol()
     {
-        if (agent.remainingDistance <= agent.stoppingDistance)
+        //0번 경로가 설정되긴 하는데 그뒤 remainingDistance가 0으로 설정돼서 바로 1번 경로로 넘어가 버림,
+        //계산 시간이 필요해 그런 듯, 앞으로는 update에서 하지말고 코루틴으로 시간 넉넉하게 돌리고 이번엔 그냥 남은거리 0이면 계산 안 하도록 진행  
+        if (agent.remainingDistance <= agent.stoppingDistance && agent.remainingDistance != 0)  
         {
             
             destinationIndex++;

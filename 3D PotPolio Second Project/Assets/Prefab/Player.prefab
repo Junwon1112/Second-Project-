@@ -44,7 +44,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4c25554100613c74b934f465fefcd086, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemSlots: []
 --- !u!1 &963194225
 GameObject:
   m_ObjectHideFlags: 0
@@ -501,9 +500,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff85e40217fa7744487c9ba32acfb1a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  level: 1
+  myWeapon: {fileID: 0}
   weaponHandTransform: {fileID: 0}
   isFindWeapon: 0
-  attackDamage: 70
+  attackDamage: 10
   defence: 5
 --- !u!95 &3438691578238440640
 Animator:
@@ -2422,6 +2423,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4114314392365571484}
+  - component: {fileID: 2135517765}
   m_Layer: 0
   m_Name: weapon_r
   m_TagString: Untagged
@@ -2444,6 +2446,18 @@ Transform:
   m_Father: {fileID: 4702293459095200296}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
+--- !u!114 &2135517765
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7833405638181841659}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0232b5873c729984f98222801a214f2a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7906286604648312033
 GameObject:
   m_ObjectHideFlags: 0
