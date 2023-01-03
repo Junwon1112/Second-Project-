@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "New Potion", menuName = "Scriptable Object/ItemData_Potion", order = 2)]
+[CreateAssetMenu(fileName = "New Potion", menuName = "Scriptable Object_Item Data/ItemData_Potion", order = 2)]
 
 public class ItemData_Potion : ItemData, IConsumable
 {
