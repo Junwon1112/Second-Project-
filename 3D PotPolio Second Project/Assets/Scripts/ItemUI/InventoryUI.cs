@@ -50,7 +50,7 @@ public class InventoryUI : MonoBehaviour
     {
         inventoryControl = new PlayerInput();
         invenCanvasGroupOnOff = GetComponent<CanvasGroup>();
-        invenCloseButton = GetComponentInChildren<Button>();
+        invenCloseButton = transform.Find("CloseButton").GetComponent<Button>();
         slotUIs = GetComponentsInChildren<ItemSlotUI>();
 
         playerInven = FindObjectOfType<Inventory>();

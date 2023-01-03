@@ -24,7 +24,7 @@ public class EquipmentUI : InventoryUI      //앞으로 부모보다 기능이 적은 자식은
         inventoryControl = new PlayerInput();   //아이템 우클릭은 inven에서 구현해서 필요할 때 가져오기 위해서
         equipmentControl = new PlayerInput();
         canvasGroupOnOff = GetComponent<CanvasGroup>();
-        equipCloseButton = GetComponentInChildren<Button>();
+        equipCloseButton = transform.Find("CloseButton").GetComponent<Button>();
         equipSlotUIs = GetComponentsInChildren<EquipSlotUI>();
 
         graphicRaycaster = GameObject.Find("Canvas").gameObject.GetComponent<GraphicRaycaster>();
