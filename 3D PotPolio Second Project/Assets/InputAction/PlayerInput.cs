@@ -270,6 +270,34 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""Skill"",
+            ""id"": ""460549ee-e10f-4b0b-9a55-f5ac34724e92"",
+            ""actions"": [
+                {
+                    ""name"": ""SkillWindowOnOff"",
+                    ""type"": ""Button"",
+                    ""id"": ""c6b9f93c-d559-4988-a57a-913cb3f4ef73"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""97428b72-9de3-4903-a221-c348819d8595"",
+                    ""path"": ""<Keyboard>/k"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SkillWindowOnOff"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": [
@@ -306,6 +334,9 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         // Equipment
         m_Equipment = asset.FindActionMap("Equipment", throwIfNotFound: true);
         m_Equipment_EquipmentOnOff = m_Equipment.FindAction("EquipmentOnOff", throwIfNotFound: true);
+        // Skill
+        m_Skill = asset.FindActionMap("Skill", throwIfNotFound: true);
+        m_Skill_SkillWindowOnOff = m_Skill.FindAction("SkillWindowOnOff", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -508,6 +539,39 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         }
     }
     public EquipmentActions @Equipment => new EquipmentActions(this);
+
+    // Skill
+    private readonly InputActionMap m_Skill;
+    private ISkillActions m_SkillActionsCallbackInterface;
+    private readonly InputAction m_Skill_SkillWindowOnOff;
+    public struct SkillActions
+    {
+        private @PlayerInput m_Wrapper;
+        public SkillActions(@PlayerInput wrapper) { m_Wrapper = wrapper; }
+        public InputAction @SkillWindowOnOff => m_Wrapper.m_Skill_SkillWindowOnOff;
+        public InputActionMap Get() { return m_Wrapper.m_Skill; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(SkillActions set) { return set.Get(); }
+        public void SetCallbacks(ISkillActions instance)
+        {
+            if (m_Wrapper.m_SkillActionsCallbackInterface != null)
+            {
+                @SkillWindowOnOff.started -= m_Wrapper.m_SkillActionsCallbackInterface.OnSkillWindowOnOff;
+                @SkillWindowOnOff.performed -= m_Wrapper.m_SkillActionsCallbackInterface.OnSkillWindowOnOff;
+                @SkillWindowOnOff.canceled -= m_Wrapper.m_SkillActionsCallbackInterface.OnSkillWindowOnOff;
+            }
+            m_Wrapper.m_SkillActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @SkillWindowOnOff.started += instance.OnSkillWindowOnOff;
+                @SkillWindowOnOff.performed += instance.OnSkillWindowOnOff;
+                @SkillWindowOnOff.canceled += instance.OnSkillWindowOnOff;
+            }
+        }
+    }
+    public SkillActions @Skill => new SkillActions(this);
     private int m_PlayerSchemeIndex = -1;
     public InputControlScheme PlayerScheme
     {
@@ -534,5 +598,9 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
     public interface IEquipmentActions
     {
         void OnEquipmentOnOff(InputAction.CallbackContext context);
+    }
+    public interface ISkillActions
+    {
+        void OnSkillWindowOnOff(InputAction.CallbackContext context);
     }
 }

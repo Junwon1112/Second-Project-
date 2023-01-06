@@ -248,6 +248,34 @@
                     "isPartOfComposite": false
                 }
             ]
+        },
+        {
+            "name": "Skill",
+            "id": "460549ee-e10f-4b0b-9a55-f5ac34724e92",
+            "actions": [
+                {
+                    "name": "SkillWindowOnOff",
+                    "type": "Button",
+                    "id": "c6b9f93c-d559-4988-a57a-913cb3f4ef73",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "97428b72-9de3-4903-a221-c348819d8595",
+                    "path": "<Keyboard>/k",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SkillWindowOnOff",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         }
     ],
     "controlSchemes": [

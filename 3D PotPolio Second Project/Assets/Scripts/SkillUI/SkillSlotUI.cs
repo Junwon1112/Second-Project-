@@ -32,7 +32,7 @@ public class SkillSlotUI : MonoBehaviour
         
     }
 
-    public void SetSkillUIInfo()
+    public void SetSkillUIInfo()    
     {
         if(skillData != null)
         {
@@ -41,7 +41,7 @@ public class SkillSlotUI : MonoBehaviour
         }
         else
         {
-            skillIcon.sprite = null;
+            skillIcon.color = Color.clear;
             skillInfo.text = "No Assigned Skill";
         }
     }
