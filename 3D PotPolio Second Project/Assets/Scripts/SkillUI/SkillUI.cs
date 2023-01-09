@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class SkillUI : MonoBehaviour
 {
@@ -10,13 +11,19 @@ public class SkillUI : MonoBehaviour
     public List<SkillData> skillDatas;
     SkillSlotUI[] skillSlotUIs;
     CanvasGroup skillCanvasGroup;
-    bool isSkillWindowOff = true;
+    public bool isSkillWindowOff = true;
+    UI_Player_MoveOnOff ui_OnOff;
+
+    Button skillCloseButton;
+    
 
     private void Awake()
     {
         skillSlotUIs = GetComponentsInChildren<SkillSlotUI>();
         skillWindowControl = new PlayerInput();
         skillCanvasGroup = GetComponent<CanvasGroup>();
+        ui_OnOff = GetComponentInParent<UI_Player_MoveOnOff>();
+        skillCloseButton = transform.Find("CloseButton").GetComponent<Button>();
     }
 
     private void OnEnable()
@@ -34,6 +41,8 @@ public class SkillUI : MonoBehaviour
 
     private void Start()
     {
+        skillCloseButton.onClick.AddListener(OnSkillOnOffSetting);
+
         for(int i = 0; i < skillSlotUIs.Length; i++)
         {
             skillSlotUIs[i].skillData = skillDatas[i];
@@ -44,13 +53,21 @@ public class SkillUI : MonoBehaviour
 
     private void OnSkillWindowOnOff(UnityEngine.InputSystem.InputAction.CallbackContext obj)
     {
-        if(isSkillWindowOff)
+        OnSkillOnOffSetting();
+        
+    }
+
+    private void OnSkillOnOffSetting()
+    {
+        if (isSkillWindowOff)
         {
             isSkillWindowOff = false;
 
             skillCanvasGroup.alpha = 1;
             skillCanvasGroup.interactable = true;
             skillCanvasGroup.blocksRaycasts = true;
+
+            ui_OnOff.IsUIOnOff2();
         }
         else
         {
@@ -60,8 +77,8 @@ public class SkillUI : MonoBehaviour
             skillCanvasGroup.interactable = false;
             skillCanvasGroup.blocksRaycasts = false;
 
+            ui_OnOff.IsUIOnOff2();
         }
-        
     }
 
 }

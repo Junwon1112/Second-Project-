@@ -50,10 +50,6 @@ public class GameManager : MonoBehaviour
         Initialize();
     }
 
-    private void Start()
-    {
-       
-    }
 
     private void Initialize()   //시작하면 오브젝트 가져오기
     {

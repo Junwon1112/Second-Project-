@@ -27,6 +27,8 @@ public class InventoryUI : MonoBehaviour
 
     private EquipmentUI equipmentUI;
 
+    UI_Player_MoveOnOff ui_OnOff;
+
     // 인벤토리 클릭관련 구현할 내용
     /*
      * 인벤 관련 구현
@@ -57,6 +59,7 @@ public class InventoryUI : MonoBehaviour
         graphicRaycaster = GameObject.Find("Canvas").gameObject.GetComponent<GraphicRaycaster>();
         player = FindObjectOfType<Player>();
         equipmentUI = FindObjectOfType<EquipmentUI>();
+        ui_OnOff = GetComponentInParent<UI_Player_MoveOnOff>();
     }
 
     private void Start()
@@ -212,30 +215,34 @@ public class InventoryUI : MonoBehaviour
         if (isInvenCanvasGroupOff)
         {
             isInvenCanvasGroupOff = false;
-            if(equipmentUI.isEquipCanvasGroupOff)   //인벤켰는데 장비창이 꺼져있으면 인벤이 플레이어 비활성화
-            {
-                GameManager.Instance.MainPlayer.input.Disable();
-                inventoryControl.Inventory.InventoryItemUse.performed += OnInventoryItemUse;
-            }
-
 
             invenCanvasGroupOnOff.alpha = 1;
             invenCanvasGroupOnOff.interactable = true;
             invenCanvasGroupOnOff.blocksRaycasts = true;
+
+            ui_OnOff.IsUIOnOff2();
+
+            //if(equipmentUI.isEquipCanvasGroupOff)   //인벤켰는데 장비창이 꺼져있으면 인벤이 플레이어 비활성화
+            //{
+            //    GameManager.Instance.MainPlayer.input.Disable();
+            //    inventoryControl.Inventory.InventoryItemUse.performed += OnInventoryItemUse;
+            //}
         }
         else
         {
             isInvenCanvasGroupOff = true;
-            if (equipmentUI.isEquipCanvasGroupOff)  //인벤껐는데 장비창이 꺼져있으면 인벤이 플레이어 비활성화
-            {
-                GameManager.Instance.MainPlayer.input.Enable();
-                inventoryControl.Inventory.InventoryItemUse.performed -= OnInventoryItemUse;
-            }
-                
 
             invenCanvasGroupOnOff.alpha = 0;
             invenCanvasGroupOnOff.interactable = false;
             invenCanvasGroupOnOff.blocksRaycasts = false;
+
+            ui_OnOff.IsUIOnOff2();
+
+            //if (equipmentUI.isEquipCanvasGroupOff)  //인벤껐는데 장비창이 꺼져있으면 인벤이 플레이어 비활성화
+            //{
+            //    GameManager.Instance.MainPlayer.input.Enable();
+            //    inventoryControl.Inventory.InventoryItemUse.performed -= OnInventoryItemUse;
+            //}
         }
     }
 

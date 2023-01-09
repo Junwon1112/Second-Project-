@@ -135,6 +135,7 @@ GameObject:
   - component: {fileID: 22787115}
   - component: {fileID: 22787114}
   - component: {fileID: 22787113}
+  - component: {fileID: 22787117}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -232,6 +233,22 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &22787117
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 22787112}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 25b397e30eeecb046b8154b04202b295, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  canvasGroups:
+  - {fileID: 843655858}
+  - {fileID: 4075282831354162301}
+  - {fileID: 138281225}
 --- !u!1001 &112743601
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1329,6 +1346,12 @@ MonoBehaviour:
   skillDatas:
   - {fileID: 11400000, guid: ea65e22886594d041b11b21b00c34ffc, type: 2}
   - {fileID: 0}
+  isSkillWindowOff: 1
+--- !u!225 &138281225 stripped
+CanvasGroup:
+  m_CorrespondingSourceObject: {fileID: 3332803431530965256, guid: eb63b26f7b3072345bb502ce96d733a9, type: 3}
+  m_PrefabInstance: {fileID: 138281217}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &157664927
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7307,6 +7330,11 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 3984827923302210507, guid: 909a744f1889eed438b1a3fb2d030657, type: 3}
   m_PrefabInstance: {fileID: 3984827922458702202}
   m_PrefabAsset: {fileID: 0}
+--- !u!225 &843655858 stripped
+CanvasGroup:
+  m_CorrespondingSourceObject: {fileID: 3984827923302210510, guid: 909a744f1889eed438b1a3fb2d030657, type: 3}
+  m_PrefabInstance: {fileID: 3984827922458702202}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &883848737 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5823087228592779496, guid: c6c09961b7ed1184283595cc0d745904, type: 3}
@@ -9893,6 +9921,11 @@ MonoBehaviour:
   slotUIs: []
   isEquipCanvasGroupOff: 1
   equipSlotUIs: []
+--- !u!225 &4075282831354162301 stripped
+CanvasGroup:
+  m_CorrespondingSourceObject: {fileID: 5823087227090583267, guid: c6c09961b7ed1184283595cc0d745904, type: 3}
+  m_PrefabInstance: {fileID: 7512447142334943902}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &5032024302025728191
 PrefabInstance:
   m_ObjectHideFlags: 0
