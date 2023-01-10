@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.EventSystems;
 
-public class SkillSlotUI : MonoBehaviour
+public class SkillSlotUI : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHandler
 {
     //스킬 슬롯 UI에서 구현해야 할것 
     //1. 드래그해서 퀵슬롯으로 옮길 수 있어야함, 스킬 사용 요구레벨보다 레벨이 높고 할당된 스킬 포인트가 있어야 드래그 가능하게 만들고 싶음
@@ -14,22 +15,13 @@ public class SkillSlotUI : MonoBehaviour
     public SkillData skillData;        //SkillUI에 리스트나 배열로 스킬 스크립터블 오브젝트 받고 여기(skillslotUI)에 할당
     Image skillIcon;
     TextMeshProUGUI skillInfo;
-
+    TempSlotSkillUI tempSlotSkillUI;
 
     private void Awake()
     {
         skillIcon = GetComponent<Image>();
         skillInfo = transform.parent.GetComponentInChildren<TextMeshProUGUI>();
-    }
-
-    void Start()
-    {
-
-    }
-
-    void Update()
-    {
-        
+        tempSlotSkillUI = GameObject.FindObjectOfType<TempSlotSkillUI>();
     }
 
     public void SetSkillUIInfo()    
@@ -44,5 +36,25 @@ public class SkillSlotUI : MonoBehaviour
             skillIcon.color = Color.clear;
             skillInfo.text = "No Assigned Skill";
         }
+    }
+    void IBeginDragHandler.OnBeginDrag(PointerEventData eventData)
+    {
+        GameObject.Find("SkillMoveSlotUI").transform.GetChild(0).gameObject.SetActive(true);
+        tempSlotSkillUI.SetTempSkillSlotUIData(skillData);
+    }
+
+    void IEndDragHandler.OnEndDrag(PointerEventData eventData)
+    {
+        //퀵슬롯 만들고 다시 작업 요망
+
+
+
+
+        tempSlotSkillUI.transform.gameObject.SetActive(false);
+    }
+
+    void IDragHandler.OnDrag(PointerEventData eventData)
+    {
+        
     }
 }

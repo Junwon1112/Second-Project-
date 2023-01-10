@@ -247,7 +247,7 @@ public class Player : MonoBehaviour, IHealth
 
     }
 
-    private void OnTempItemUse(InputAction.CallbackContext obj)
+    private void OnTempItemUse(InputAction.CallbackContext obj)     //Keyboard Q
     {
 
         //아이템 생성 ==> 성공
@@ -279,7 +279,7 @@ public class Player : MonoBehaviour, IHealth
         
     }
 
-    private void OnTakeItem(InputAction.CallbackContext obj)
+    private void OnTakeItem(InputAction.CallbackContext obj)    //Keyboard F
     {
         Collider[] findItem = Physics.OverlapSphere(transform.position, findItemRange, LayerMask.GetMask("Item"));
         if(findItem.Length > 0)
@@ -294,7 +294,7 @@ public class Player : MonoBehaviour, IHealth
         }
     }
 
-    private void OnTestMakeItem(InputAction.CallbackContext obj)
+    private void OnTestMakeItem(InputAction.CallbackContext obj)    //Mouse Right Click (UI꺼져있을 때)
     {
         ItemFactory.MakeItem(ItemIDCode.Basic_Weapon_1, transform.position, Quaternion.identity);
     }
