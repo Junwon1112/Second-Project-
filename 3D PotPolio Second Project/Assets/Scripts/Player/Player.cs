@@ -61,6 +61,9 @@ public class Player : MonoBehaviour, IHealth
     public Transform weaponHandTransform;
     public bool isFindWeapon = false;
 
+    //스킬 사용 중인지 체크하기 위해 사용
+    public bool isSkillUsing = false;
+
     public float HP
     {
         get { return hp; }
@@ -363,4 +366,15 @@ public class Player : MonoBehaviour, IHealth
         if(isFindWeapon)
         weaponCollider.enabled = false;
     }
+
+    public void IsSkillUseOn()
+    {
+        isSkillUsing = true;
+    }
+
+    public void IsSkillUseOff()
+    {
+        isSkillUsing = false;
+    }
+
 }

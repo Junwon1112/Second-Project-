@@ -15,10 +15,21 @@ public class SkillData : ScriptableObject
     public float skillCooltime;
     public float skillDamage;
 
-    public AnimationClip skillMotion;
     public SkillTypeCode skillType;
 
+    public string skillStateName;
     public string skillInformation;
+
+    public virtual float SetSkillDamage(float attackDamage)
+    {
+        float finalSkillDamage = 0;
+
+        finalSkillDamage = skillDamage + (attackDamage * 0.7f);
+
+
+        return finalSkillDamage;
+    }
+
 }
 
 public enum SkillIDCode

@@ -69,8 +69,8 @@ public class ItemSlotUI : MonoBehaviour, IPointerClickHandler, IDragHandler, IBe
 
             itemImage.color = Color.white;
             itemImage.sprite = itemData.itemIcon;
-            itemImage.raycastTarget = true;
 
+            itemImage.raycastTarget = true;
             itemCountText.alpha = 1.0f;
             itemCountText.text = count.ToString();
         }

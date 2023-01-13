@@ -18,6 +18,6 @@ MonoBehaviour:
   requireLevel: 1
   skillCooltime: 5
   skillDamage: 2
-  skillMotion: {fileID: 1827226128182048838, guid: bf0f02cdf042a5d42a32ade9e4d5e204, type: 3}
   skillType: 1
+  skillStateName: Skill_WheelWind
   skillInformation: Turn and Attack!

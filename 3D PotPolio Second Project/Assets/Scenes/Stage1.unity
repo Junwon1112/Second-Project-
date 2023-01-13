@@ -9407,6 +9407,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 22787116}
     m_Modifications:
+    - target: {fileID: 850341107788100342, guid: dda6c62b03b8c38499c20978fcd68c7a, type: 3}
+      propertyPath: testSkillData
+      value: 
+      objectReference: {fileID: 11400000, guid: ea65e22886594d041b11b21b00c34ffc, type: 2}
     - target: {fileID: 1450720058503021003, guid: dda6c62b03b8c38499c20978fcd68c7a, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -9550,6 +9554,14 @@ PrefabInstance:
     - target: {fileID: 7208019877587093099, guid: dda6c62b03b8c38499c20978fcd68c7a, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8525480785591259401, guid: dda6c62b03b8c38499c20978fcd68c7a, type: 3}
+      propertyPath: m_Interactable
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8525480785591259401, guid: dda6c62b03b8c38499c20978fcd68c7a, type: 3}
+      propertyPath: m_BlocksRaycasts
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8525480785591259404, guid: dda6c62b03b8c38499c20978fcd68c7a, type: 3}
       propertyPath: m_Pivot.x

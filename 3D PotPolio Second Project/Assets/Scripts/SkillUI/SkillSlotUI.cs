@@ -45,8 +45,13 @@ public class SkillSlotUI : MonoBehaviour, IBeginDragHandler, IEndDragHandler, ID
 
     void IEndDragHandler.OnEndDrag(PointerEventData eventData)
     {
-        //퀵슬롯 만들고 다시 작업 요망
+        GameObject obj = eventData.pointerCurrentRaycast.gameObject;
+        QuickSlotUI quickSlotUI = obj.GetComponent<QuickSlotUI>();
 
+        if(quickSlotUI != null)     //퀵슬롯 안찍었으면 QuickSlotUI컴포넌트가 어차피 없을꺼니까 퀵슬롯을 찍었다면 이라는 뜻
+        {
+            quickSlotUI.QuickSlotSetData(tempSlotSkillUI.tempSkillData);   
+        }
 
 
 

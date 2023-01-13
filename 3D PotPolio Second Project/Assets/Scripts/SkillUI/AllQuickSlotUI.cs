@@ -3,17 +3,21 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.EventSystems;
 
 public class AllQuickSlotUI : MonoBehaviour
 {
     PlayerInput input;
-    QuickSlotUI[] quickSlotUIs;
+    public QuickSlotUI[] quickSlotUIs;
+    Animator anim;
+
 
 
     private void Awake()
     {
         input = new PlayerInput();
         quickSlotUIs = GetComponentsInChildren<QuickSlotUI>();
+        anim = FindObjectOfType<Player>().transform.GetComponent<Animator>();
     }
 
     private void OnEnable()
@@ -45,6 +49,8 @@ public class AllQuickSlotUI : MonoBehaviour
         {
             quickSlotUIs[i].quickSlotID = 2000 + i;
         }
+
+        
     }
 
 
@@ -53,7 +59,7 @@ public class AllQuickSlotUI : MonoBehaviour
 
     private void OnQuickSlot1(InputAction.CallbackContext obj)
     {
-        //quickSlotUIs[0].quickSlotSkillData.skillMotion
+        quickSlotUIs[0].skillUse.UsingSkill(quickSlotUIs[0].quickSlotSkillData);
     }
 
     private void OnQuickSlot2(InputAction.CallbackContext obj)
@@ -80,6 +86,7 @@ public class AllQuickSlotUI : MonoBehaviour
     {
         
     }
+
 
 
 
