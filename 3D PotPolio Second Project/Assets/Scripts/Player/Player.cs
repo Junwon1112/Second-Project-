@@ -345,7 +345,7 @@ public class Player : MonoBehaviour, IHealth
 
     public void EquipWeaponAbility()
     {
-        attackDamage += myWeapon.attackDamage;
+        AttackDamage += myWeapon.attackDamage;
     }
 
     public void UnEquipWeaponAbility()

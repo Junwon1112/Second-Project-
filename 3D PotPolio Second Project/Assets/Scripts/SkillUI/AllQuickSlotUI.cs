@@ -48,8 +48,9 @@ public class AllQuickSlotUI : MonoBehaviour
         for(int i =0; i < quickSlotUIs.Length; i++)
         {
             quickSlotUIs[i].quickSlotID = 2000 + i;
+            //quickSlotUIs[i].SkillUseInitiate();
         }
-
+        
         
     }
 

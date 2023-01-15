@@ -17,15 +17,21 @@ public class QuickSlotUI : MonoBehaviour, IBeginDragHandler, IEndDragHandler, ID
     {
         skillImage = GetComponent<Image>();
         tempSlotSkillUI = FindObjectOfType<TempSlotSkillUI>();
+        skillUse = GetComponentInChildren<SkillUse>();
+
     }
 
     private void Start()
     {
         skillImage.color = Color.clear;
-        skillUse = new SkillUse();
+        //skillUse = new SkillUse();
     }
 
 
+    //public void SkillUseInitiate()
+    //{
+    //    skillUse = new SkillUse();
+    //}
 
     public void QuickSlotSetData(SkillData skillData = null)    //파라미터 따로 기입안하면 skillData 파라미터는 null 값이 된다.
     {
