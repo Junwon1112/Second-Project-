@@ -8020,6 +8020,7 @@ GameObject:
   - component: {fileID: 1153503415}
   - component: {fileID: 1153503414}
   - component: {fileID: 1153503416}
+  - component: {fileID: 1153503417}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -8070,6 +8071,22 @@ MonoBehaviour:
   - {fileID: 11400000, guid: c97bcf0ac86f1e9478fa93c97c51137d, type: 2}
   - {fileID: 11400000, guid: df55d59d539181f4d9fe4a19c3bf3d3b, type: 2}
   - {fileID: 11400000, guid: df12fef7a52e56c4386999cda9ce657b, type: 2}
+--- !u!114 &1153503417
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1153503413}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d61c59cee3d037b4daa7a4fd2f3ebaaf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  skillDatas_Normal: []
+  skillDatas_Buff: []
+  skillDatas_Duration:
+  - {fileID: 11400000, guid: ea65e22886594d041b11b21b00c34ffc, type: 2}
 --- !u!224 &1252868523 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 1450720058503021003, guid: dda6c62b03b8c38499c20978fcd68c7a, type: 3}

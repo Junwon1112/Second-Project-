@@ -64,6 +64,8 @@ public class Player : MonoBehaviour, IHealth
     //스킬 사용 중인지 체크하기 위해 사용
     public bool isSkillUsing = false;
 
+    SkillUse[] skillUses;
+
     public float HP
     {
         get { return hp; }
@@ -128,6 +130,7 @@ public class Player : MonoBehaviour, IHealth
         playerInventoryUI = FindObjectOfType<InventoryUI>();
         weaponHandTransform = FindObjectOfType<FindWeaponHand>().transform;
         expBar = GameObject.Find("ExpSlider").GetComponent<Slider>();
+        skillUses = FindObjectsOfType<SkillUse>();
     }
 
     private void OnEnable()
@@ -328,6 +331,10 @@ public class Player : MonoBehaviour, IHealth
     public void TakeWeapon()    //바로 아래 위치한 애니메이션으로 attackTrigger조절하는 함수에 collider를 전해주기 위한 함수 
     {
         PlayerWeapon tempPlayerWeapon = FindObjectOfType<PlayerWeapon>();
+        for(int i = 0; i < skillUses.Length; i++)   //무기 장착시 SkillUse클래스에서도 무기를 받아오도록 함(무기가 시작할 땐 장착되어있지 않아 SkillUse Awake에서 안한다)
+        {
+            skillUses[i].TakeWeapon();
+        }
         if (tempPlayerWeapon != null)
         {
             weaponPrefab = tempPlayerWeapon.gameObject;

@@ -8,7 +8,10 @@ using UnityEngine.UI;
 public class SkillData : ScriptableObject
 {
     public string skillName;
-    public uint skillId;
+    
+    public int skillId;
+    public SkillIDCode skillIDCode;
+
     public Sprite skillIcon;
 
     public int requireLevel;
@@ -29,6 +32,8 @@ public class SkillData : ScriptableObject
 
         return finalSkillDamage;
     }
+    
+
 
 }
 

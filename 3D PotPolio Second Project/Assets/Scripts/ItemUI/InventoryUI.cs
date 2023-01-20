@@ -29,6 +29,8 @@ public class InventoryUI : MonoBehaviour
 
     UI_Player_MoveOnOff ui_OnOff;
 
+    SkillUse skillUse;
+
     // 인벤토리 클릭관련 구현할 내용
     /*
      * 인벤 관련 구현
@@ -55,11 +57,14 @@ public class InventoryUI : MonoBehaviour
         invenCloseButton = transform.Find("CloseButton").GetComponent<Button>();
         slotUIs = GetComponentsInChildren<ItemSlotUI>();
 
+
         playerInven = FindObjectOfType<Inventory>();
         graphicRaycaster = GameObject.Find("Canvas").gameObject.GetComponent<GraphicRaycaster>();
         player = FindObjectOfType<Player>();
         equipmentUI = FindObjectOfType<EquipmentUI>();
         ui_OnOff = GetComponentInParent<UI_Player_MoveOnOff>();
+    
+        skillUse = FindObjectOfType<SkillUse>();
     }
 
     private void Start()

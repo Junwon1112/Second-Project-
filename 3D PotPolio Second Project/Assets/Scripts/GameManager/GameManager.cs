@@ -6,6 +6,7 @@ public class GameManager : MonoBehaviour
 {
     Player player;
     ItemDataManager itemDataManager;
+    SkillDataManager skillDataManager;
     //나중에 InventoryUI 추가해야됨
 
     public Player MainPlayer
@@ -21,6 +22,14 @@ public class GameManager : MonoBehaviour
         get
         {
             return itemDataManager;
+        }
+    }
+
+    public SkillDataManager SkillDataManager
+    {
+        get
+        {
+            return skillDataManager;
         }
     }
 
@@ -55,5 +64,6 @@ public class GameManager : MonoBehaviour
     {
         player = FindObjectOfType<Player>();
         itemDataManager = FindObjectOfType<ItemDataManager>();
+        skillDataManager = FindObjectOfType<SkillDataManager>();
     }
 }

@@ -9,13 +9,14 @@ public class SkillUse : MonoBehaviour
     public float timer = 0.0f;
     Animator anim;
     Player player;
-    SkillData_Duration skillData_Duration;
+    PlayerWeapon weapon;
+
 
     private void Awake()
     {
         player = FindObjectOfType<Player>();
-        anim = player.transform.GetComponent<Animator>();
         
+        anim = player.transform.GetComponent<Animator>();
     }
 
     private void FixedUpdate()
@@ -38,12 +39,13 @@ public class SkillUse : MonoBehaviour
         if(!isSkillUsed)
         {
             timer = skillData.skillCooltime;
-            skillData.SetSkillDamage(player.AttackDamage);
+            weapon.SkillDamage = skillData.SetSkillDamage(player.AttackDamage);
+
             anim.SetBool("IsSkillUse", true);
             if(skillData.skillType == SkillTypeCode.Skill_Duration)
             {
-                
-               // StartCoroutine(SkillDurationTime());
+                SkillData_Duration tempSkill_Duration = GameManager.Instance.SkillDataManager.FindSkill_Duration(skillData.skillId);
+                StartCoroutine(SkillDurationTime(tempSkill_Duration.skillDuration));
             }
         }
     }
@@ -54,4 +56,8 @@ public class SkillUse : MonoBehaviour
         anim.SetBool("IsSkillUse", false);
     }
 
+    public void TakeWeapon()    //플레이어에서 무기 장착할 때 가져옴
+    {
+        weapon = FindObjectOfType<PlayerWeapon>();
+    }
 }

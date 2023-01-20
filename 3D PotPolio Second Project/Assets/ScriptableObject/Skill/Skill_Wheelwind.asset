@@ -21,3 +21,4 @@ MonoBehaviour:
   skillType: 1
   skillStateName: Skill_WheelWind
   skillInformation: Turn and Attack!
+  skillDuration: 3
