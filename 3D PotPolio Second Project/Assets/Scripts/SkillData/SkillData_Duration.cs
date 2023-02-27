@@ -2,6 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// 지속 공격타입의 스킬데이터를 가지는 스크립터블 오브젝트, SkillData를 상속받음
+/// </summary>
 [CreateAssetMenu(fileName = ("New Skill Data"), menuName = ("Scriptable Object_Skill Data/Skill Data_Duration"), order = 2)]
 public class SkillData_Duration : SkillData     //지속시간이 있는 공격 스킬
 {

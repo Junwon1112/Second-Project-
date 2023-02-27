@@ -4,6 +4,9 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
+/// <summary>
+/// 게임씬으로 이동시키는 클래스
+/// </summary>
 public class StartButton : MonoBehaviour
 {
     SceneManager sceneManager;

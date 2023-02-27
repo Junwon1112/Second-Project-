@@ -4,7 +4,9 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-
+/// <summary>
+/// 아이템 갯수를 나눌 때 사용하는 UI에 들어가는 클래스
+/// </summary>
 public class SplitUI : MonoBehaviour
 {
     protected Button okButton;
@@ -12,12 +14,27 @@ public class SplitUI : MonoBehaviour
     protected TMP_InputField inputField;
     protected CanvasGroup splitUICanvasGroup;
 
-    public ItemData splitItemData;      //ItemSlotUI에서 받아옴
-    public uint splitPossibleCount = 1; //스플릿 하기 직전에 아이템슬롯UI에서 데이터값을 그대로 할당해 줌
-    protected int splitCount = 0; //checkRightcount에서 최종적으로 할당해줌
+    /// <summary>
+    /// ItemSlotUI에서 받아옴
+    /// </summary>
+    public ItemData splitItemData;
+
+    /// <summary>
+    /// 스플릿 하기 직전에 아이템슬롯UI에서 데이터값을 그대로 할당해 줌
+    /// </summary>
+    public uint splitPossibleCount = 1;
+
+    /// <summary>
+    /// checkRightcount에서 최종적으로 할당해줌
+    /// </summary>
+    protected int splitCount = 0; 
 
     public TempSlotSplitUI splitTempSlotSplitUI;
-    public int takeID = -1; //아이템 슬롯과 UI의 ID를 받아올 값
+
+    /// <summary>
+    /// 아이템 슬롯과 UI의 ID를 받아올 값
+    /// </summary>
+    public int takeID = -1; 
 
     public bool isSplitting = false;
 
@@ -38,14 +55,17 @@ public class SplitUI : MonoBehaviour
 
     protected virtual void Start()
     {
-        //inputField.
-        inputField.onEndEdit.AddListener(CheckRightCount); //스트링타입 리턴받는 함수 실행  => 입력된 숫자가 슬롯의 itemCount보다 크면 itemCount를, 작으면 0을 리턴
+        //스트링타입 리턴받는 함수 실행  => 입력된 숫자가 슬롯의 itemCount보다 크면 itemCount를, 작으면 0을 리턴
+        inputField.onEndEdit.AddListener(CheckRightCount); 
         
         okButton.onClick.AddListener(ClickOKButton);
         cancelButton.onClick.AddListener(ClickCancelButton);
 
     }
 
+    /// <summary>
+    /// UI를 열었을 때 보이게 만드는 메서드
+    /// </summary>
     public void SplitUIOpen()
     {
         splitUICanvasGroup.alpha = 1.0f;
@@ -56,6 +76,9 @@ public class SplitUI : MonoBehaviour
         CheckRightCount(inputField.text);
     }
 
+    /// <summary>
+    /// UI를 열었을 때 보이게 만드는 메서드
+    /// </summary>
     public void SplitUIClose()
     {
         splitUICanvasGroup.alpha = 0.0f;
@@ -63,7 +86,11 @@ public class SplitUI : MonoBehaviour
         splitUICanvasGroup.blocksRaycasts = false;
     }
 
-    protected virtual void CheckRightCount(string inputText) //텍스트에 나눌 갯수 입력 시 실행
+    /// <summary>
+    /// 텍스트에 나눌 갯수 입력 시 실행,입력된 숫자가 슬롯의 itemCount보다 크면 itemCount를, 작으면 0을 리턴
+    /// </summary>
+    /// <param name="inputText"></param>
+    protected virtual void CheckRightCount(string inputText) 
     {
         
         //uint tempNum;
@@ -84,11 +111,13 @@ public class SplitUI : MonoBehaviour
         //return textCount;
     }
 
+    /// <summary>
+    /// ok버튼 누를 시 사용될 메서드, 아이템을 나누는 작업 실행
+    /// </summary>
     protected virtual void ClickOKButton()
     {
         GameObject.Find("ItemMoveSlotUI").transform.GetChild(0).gameObject.SetActive(true);  //tempSlot을 비활성화 시켰다 부모오브젝트를 통해 찾아서 활성화 시킬것이다.
         
-        //지금 에러나는데 위에서 활성화는 시켰는데, awake가 실행되기 전에 아래함수가 먼저 실행되는데 해당 함수에서 Awake에서 getcomponent해야하는 내용을 가져와야돼서 에러나는 것으로 추정
         splitTempSlotSplitUI.SetTempSlotWithData(splitItemData, (uint)splitCount);       //나눌 데이터 tempslot에 전달하고
 
 

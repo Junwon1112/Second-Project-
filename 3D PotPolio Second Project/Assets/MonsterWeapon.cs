@@ -2,6 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// 몬스터가 공격시 실제 데미지를 계산하는 클래스, 실제 무기는 존재하지 않으나 플레이어와 대칭성을 위한 클래스 이름
+/// </summary>
 public class MonsterWeapon : MonoBehaviour, IBattle
 {
     Monster monster;

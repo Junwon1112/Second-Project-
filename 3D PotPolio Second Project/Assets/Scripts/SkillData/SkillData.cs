@@ -4,6 +4,9 @@ using UnityEngine;
 using UnityEngine.Animations;
 using UnityEngine.UI;
 
+/// <summary>
+/// 스킬 데이터를 가지는 스크립터블 오브젝트, 3종류의 스킬데이터의 부모 클래스
+/// </summary>
 [CreateAssetMenu (fileName = ("New Skill Data"), menuName = ("Scriptable Object_Skill Data/Skill Data"), order = 1 )]
 public class SkillData : ScriptableObject
 {

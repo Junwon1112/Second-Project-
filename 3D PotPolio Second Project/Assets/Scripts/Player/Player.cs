@@ -10,26 +10,41 @@ public class Player : MonoBehaviour, IHealth
 {
     Player player;
 
-    //움직임을 위한 인풋 시스템용
+
+
+    /// <summary>
+    /// 움직임을 위한 인풋 시스템용
+    /// </summary>
     public PlayerInput input;
 
-    //이동 방향 받고 리턴용
+    /// <summary>
+    /// 이동 방향 받고 리턴용
+    /// </summary>
     Vector3 dir = Vector3.zero;
 
-    //애니메이션 용
+
+    /// <summary>
+    /// 애니메이션 용 
+    /// </summary>
     Animator anim;
 
-    //다른 행동중 움직임을 제한하기 위해
+    /// <summary>
+    /// 다른 행동중 움직임을 제한하기 위해
+    /// </summary>
     bool canMove = true;
 
     Monster monster;
 
-    //체력 관련 변수들
+    /// <summary>
+    /// 체력 관련 변수들
+    /// </summary>
     float hp;
     float maxHp = 100;
     Slider hpBar;
 
-    //경험치 관련 변수들
+    /// <summary>
+    /// 경험치 관련 변수들
+    /// </summary>
     float exp = 0.0f;
     float maxExp = 100;
     Slider expBar;
@@ -37,14 +52,18 @@ public class Player : MonoBehaviour, IHealth
     [SerializeField]
     int level = 1;
 
-    //회전 관련 변수들
+    /// <summary>
+    /// 회전 관련 변수들
+    /// </summary>
     float turnToX;
     float turnToY;
     float turnToZ;
 
     float turnSpeed = 30.0f;
 
-    //아이템 관련 변수
+    /// <summary>
+    /// 아이템 관련 변수
+    /// </summary>
     Item item;
     ItemFactory itemFactory;
     ItemIDCode itemID;
@@ -55,13 +74,17 @@ public class Player : MonoBehaviour, IHealth
     Inventory playerInventory;
     InventoryUI playerInventoryUI;
 
-    //무기 바꿀때 사용하기 위한 변수들
+    /// <summary>
+    /// 무기 바꿀때 사용하기 위한 변수들
+    /// </summary>
     GameObject weaponPrefab;
     CapsuleCollider weaponCollider;
     public Transform weaponHandTransform;
     public bool isFindWeapon = false;
 
-    //스킬 사용 중인지 체크하기 위해 사용
+    /// <summary>
+    /// 스킬 사용 중인지 체크하기 위해 사용
+    /// </summary>
     public bool isSkillUsing = false;
 
     SkillUse[] skillUses;
@@ -100,7 +123,10 @@ public class Player : MonoBehaviour, IHealth
         }
     }
 
-    [SerializeField]    //private여도 유니티에서 수치바꿀수 있게 해주는 것
+    /// <summary>
+    /// private여도 유니티에서 수치바꿀수 있게 해주는 것
+    /// </summary>
+    [SerializeField]    
     float attackDamage = 10;
 
     [SerializeField]
@@ -117,8 +143,6 @@ public class Player : MonoBehaviour, IHealth
         set { defence = value; }
     }
 
-    //public delegate void FindAndTakeWeapon();
-    //public event FindAndTakeWeapon EventFindAndTakeWeapon;
 
     private void Awake()
     {
@@ -133,6 +157,9 @@ public class Player : MonoBehaviour, IHealth
         skillUses = FindObjectsOfType<SkillUse>();
     }
 
+    /// <summary>
+    /// InputSystem에 등록한 단축키들에 해당하는 함수 등록
+    /// </summary>
     private void OnEnable()
     {
         input.Player.Enable();
@@ -145,7 +172,9 @@ public class Player : MonoBehaviour, IHealth
     }
 
 
-
+    /// <summary>
+    /// InputSystem에 등록한 단축키들에 해당하는 함수 해제
+    /// </summary>
     private void OnDisable()
     {
         input.Player.TestMakeItem.performed -= OnTestMakeItem;
@@ -166,14 +195,10 @@ public class Player : MonoBehaviour, IHealth
         potion = new ItemData_Potion();
         SetExp();
         myWeapon = new ItemData_Weapon();
-
-        //EventFindAndTakeWeapon += TakeWeapon;
-        //EventFindAndTakeWeapon.Invoke();
     }
 
     private void Update()
     {
-        //transform.position += dir * Time.deltaTime * 10;
         transform.Translate(dir * Time.deltaTime * 10, Space.Self);
         if (dir == Vector3.zero)
         {
@@ -204,16 +229,9 @@ public class Player : MonoBehaviour, IHealth
 
     private void OnAttackInput(InputAction.CallbackContext obj)
     {
-        //if (comboTimer > 0)
-        //{
-        //    anim.SetBool("CanCombo", true);
-        //}
         Debug.Log("attack");
         anim.SetBool("IsMove", false);
         anim.SetTrigger("AttackOn");
-
-        //comboTimer = 0.5f;
-        //anim.SetBool("CanCombo", false);
     }
 
     //private void OnTriggrEnter(Collider other)
@@ -253,7 +271,10 @@ public class Player : MonoBehaviour, IHealth
 
     }
 
-    private void OnTempItemUse(InputAction.CallbackContext obj)     //Keyboard Q
+    /// <summary>
+    /// Keyboard Q
+    /// </summary>
+    private void OnTempItemUse(InputAction.CallbackContext obj)     
     {
 
         //아이템 생성 ==> 성공
@@ -285,7 +306,10 @@ public class Player : MonoBehaviour, IHealth
         
     }
 
-    private void OnTakeItem(InputAction.CallbackContext obj)    //Keyboard F
+    /// <summary>
+    /// Keyboard F를 눌러 실행
+    /// </summary>
+    private void OnTakeItem(InputAction.CallbackContext obj)    
     {
         Collider[] findItem = Physics.OverlapSphere(transform.position, findItemRange, LayerMask.GetMask("Item"));
         if(findItem.Length > 0)
@@ -300,7 +324,11 @@ public class Player : MonoBehaviour, IHealth
         }
     }
 
-    private void OnTestMakeItem(InputAction.CallbackContext obj)    //Mouse Right Click (UI꺼져있을 때)
+    /// <summary>
+    /// Mouse Right Click (UI꺼져있을 때)
+    /// </summary>
+    /// <param name="obj"></param>
+    private void OnTestMakeItem(InputAction.CallbackContext obj)    
     {
         ItemFactory.MakeItem(ItemIDCode.Basic_Weapon_1, transform.position, Quaternion.identity);
     }
@@ -323,12 +351,10 @@ public class Player : MonoBehaviour, IHealth
         SetExp();
     }
 
-    //public void Attack(IBattle target)    //플레이어가 가진 무기에서 구현
-    //{
-    //   //target.HP -= (AttackDamage - target.Defence);
-    //}
-
-    public void TakeWeapon()    //바로 아래 위치한 애니메이션으로 attackTrigger조절하는 함수에 collider를 전해주기 위한 함수 
+    /// <summary>
+    /// 바로 아래 위치한 애니메이션으로 attackTrigger조절하는 함수에 collider를 전해주기 위한 함수
+    /// </summary>
+    public void TakeWeapon()     
     {
         PlayerWeapon tempPlayerWeapon = FindObjectOfType<PlayerWeapon>();
         for(int i = 0; i < skillUses.Length; i++)   //무기 장착시 SkillUse클래스에서도 무기를 받아오도록 함(무기가 시작할 땐 장착되어있지 않아 SkillUse Awake에서 안한다)
@@ -361,24 +387,35 @@ public class Player : MonoBehaviour, IHealth
         myWeapon = null;
     }
 
-    //유니티 애니메이션에서 이벤트로 활성화 할 함수들
+    /// <summary>
+    /// 유니티 애니메이션에서 이벤트로 활성화 할 함수
+    /// </summary>
     public void AttackTriggerOn()
     {
         if(isFindWeapon)
         weaponCollider.enabled = true;
     }
 
+    /// <summary>
+    /// 유니티 애니메이션에서 이벤트로 활성화 할 함수
+    /// </summary>
     public void AttackTriggerOff()
     {
         if(isFindWeapon)
         weaponCollider.enabled = false;
     }
 
+    /// <summary>
+    /// 유니티 애니메이션에서 이벤트로 활성화 할 함수
+    /// </summary>
     public void IsSkillUseOn()
     {
         isSkillUsing = true;
     }
 
+    /// <summary>
+    /// 유니티 애니메이션에서 이벤트로 활성화 할 함수
+    /// </summary>
     public void IsSkillUseOff()
     {
         isSkillUsing = false;

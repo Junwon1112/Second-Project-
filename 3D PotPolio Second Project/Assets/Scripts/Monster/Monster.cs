@@ -4,6 +4,9 @@ using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.UI;
 
+/// <summary>
+/// 몬스터 행동과 관련된 메서드
+/// </summary>
 public class Monster : MonoBehaviour, IHealth
 {
     //몬스터가 해야할 일들
@@ -14,7 +17,11 @@ public class Monster : MonoBehaviour, IHealth
     //5. 체력 필요 => 체력 체크 용 인터페이스 필요 => 구현 해야함
 
     NavMeshAgent agent;
-    Transform[] patrolPoints;   //순찰지점
+
+    /// <summary>
+    /// 순찰지점의 위치
+    /// </summary>
+    Transform[] patrolPoints;   
 
     public delegate void Action(NavMeshAgent agent);
     int destinationIndex = 0;
@@ -24,13 +31,19 @@ public class Monster : MonoBehaviour, IHealth
     LayerMask playerLayer;
     int tempLayerMask;
 
-    //찾았을 때 추적할 플레이어 트랜스폼
+    /// <summary>
+    /// 찾았을 때 추적할 플레이어 트랜스폼
+    /// </summary>
     Transform playerTransform = null;
 
-    //플레이어 체력 등 가져오기 위한 플레이어 스크립트
+    /// <summary>
+    /// 플레이어 체력 등 가져오기 위한 플레이어 스크립트
+    /// </summary>
     Player player;
 
-    //몬스터 상태 체크용
+    /// <summary>
+    /// 몬스터 상태 체크용
+    /// </summary>
     bool isMonsterChase = false;
     bool isPatrol = true;
     bool isCombat = false;
@@ -51,9 +64,9 @@ public class Monster : MonoBehaviour, IHealth
     bool isAttackContinue = false;
     public bool playerTriggerOff = false;
 
-    //아이템 드롭
-    ItemFactory itemFactory;
-
+    /// <summary>
+    /// 공격력과 관련된 프로퍼티
+    /// </summary>
     public float AttackDamage
     {
         get
@@ -65,14 +78,18 @@ public class Monster : MonoBehaviour, IHealth
             attackDamage = value;
         }
     }
+    /// <summary>
+    /// 방어력과 관련된 프로퍼티
+    /// </summary>
     public float Defence
     {
         get { return defence; }
         set { defence = value; }
     }
 
-
-
+    /// <summary>
+    /// 체력과 관련된 프로퍼티, 0이될 경우 아이템 드랍
+    /// </summary>
     public float HP
     {
         get { return hp; }
@@ -89,6 +106,9 @@ public class Monster : MonoBehaviour, IHealth
             }
         }
     }
+    /// <summary>
+    /// 최대체력에 대한 프로퍼티
+    /// </summary>
     public float MaxHP
     {
         get { return maxHP; }
@@ -99,7 +119,9 @@ public class Monster : MonoBehaviour, IHealth
     Animator anim;
 
 
-    //몬스터 상태 체크용 enum
+    /// <summary>
+    /// 몬스터 상태 체크용 enum
+    /// </summary>
     enum MonsterState
     {
         patrol = 0,
@@ -108,7 +130,9 @@ public class Monster : MonoBehaviour, IHealth
         die
     }
 
-    // enum 인스턴스만들고 기본값을 patrol로 설정
+    /// <summary>
+    /// enum 인스턴스만들고 기본값을 patrol로 설정
+    /// </summary>
     MonsterState monsterState = MonsterState.patrol;
 
 
@@ -125,8 +149,6 @@ public class Monster : MonoBehaviour, IHealth
 
     private void Start()
     {
-        //Transform patrolPoint = GameObject.FindGameObjectWithTag("PatrolPoint").transform.GetComponent<Transform>();
-
         Transform patrolPoint = transform.parent.GetChild(1);
 
         patrolPoints = new Transform[patrolPoint.childCount];
@@ -136,7 +158,8 @@ public class Monster : MonoBehaviour, IHealth
             patrolPoints[i] = patrolPoint.transform.GetChild(i);
         }
 
-        tempLayerMask = (1 << playerLayer); //비트플래그, 0000 0001 을 playerLayer(7번째 레이어) 만큼 옮겨라 => 0100 0000 이 됨, 플레이어 찾을 떄 플레이어 레이어용 변수로 활용하기 위해 만듬 
+        //비트플래그, 0000 0001 을 playerLayer(7번째 레이어) 만큼 옮겨라 => 0100 0000 이 됨, 플레이어 찾을 떄 플레이어 레이어용 변수로 활용하기 위해 만듬 
+        tempLayerMask = (1 << playerLayer); 
 
         hp = maxHP;
 
@@ -150,6 +173,9 @@ public class Monster : MonoBehaviour, IHealth
 
     }
 
+    /// <summary>
+    /// 매 프레임마다 주변을 체크하고 해당되는 상황의 메서드를 실행
+    /// </summary>
     private void Update()
     {
         
@@ -173,7 +199,9 @@ public class Monster : MonoBehaviour, IHealth
 
     }
 
-
+    /// <summary>
+    /// 순찰시 실제 실행되는 메서드 
+    /// </summary>
     private void SetPatrol()
     {
         //0번 경로가 설정되긴 하는데 그뒤 remainingDistance가 0으로 설정돼서 바로 1번 경로로 넘어가 버림,
@@ -188,7 +216,9 @@ public class Monster : MonoBehaviour, IHealth
         
     }
 
-
+    /// <summary>
+    /// 주변에 플레이어가 있는지 찾는 메서드
+    /// </summary>
     private void FindPlayer()  //ontrigger쓰면 되는건데 연습해보고 싶어 사용함
     {
         Collider[] colliders = Physics.OverlapSphere(transform.position, monsterSearchRadius, tempLayerMask);
@@ -205,6 +235,9 @@ public class Monster : MonoBehaviour, IHealth
         }
     }
 
+    /// <summary>
+    /// 찾은 플레이어가 있을 때 추적하는 메서드
+    /// </summary>
     private void ChasePlayer()  //FindPlayer가 찾은 플레이어 트랜스폼으로 추적하는 함수
     {
 
@@ -228,6 +261,9 @@ public class Monster : MonoBehaviour, IHealth
 
     }
 
+    /// <summary>
+    /// 전투 가능 거리에 플레이어가 있을 때 전투를 실행하는 메서드
+    /// </summary>
     private void CombatPlayer()
     {
         //agent.remainingDistance썼다가 계속 체크하려면 setDestination을 계속 해야돼서 포기함
@@ -256,6 +292,9 @@ public class Monster : MonoBehaviour, IHealth
         }
     }
 
+    /// <summary>
+    /// 조건을 만족 시 일정 주기로 공격을 시행하는 메서드
+    /// </summary>
     private void MonsterAttack()
     {
         if(!isAttackContinue)   //업데이트에서 여러번 실행되지않도록
@@ -265,6 +304,11 @@ public class Monster : MonoBehaviour, IHealth
         }
     }
 
+    /// <summary>
+    /// 공격속도에 따라 공격주기가 바뀌고 공격 실행시 실행되는 것들에 대한 메서드
+    /// </summary>
+    /// <param name="attackSpeed"></param>
+    /// <returns></returns>
     IEnumerator MonsterAttackCoroutine(float attackSpeed)
     {
         yield return new WaitForSeconds(attackSpeed);
@@ -274,6 +318,10 @@ public class Monster : MonoBehaviour, IHealth
         isAttackContinue = false;
     }
 
+    /// <summary>
+    /// 치명타 공격이 발생하는지 확인하는 메서드
+    /// </summary>
+    /// <param name="criticalPercent"></param>
     private void isCriticalAttack(float criticalPercent)
     {
         float criticalAttack;
@@ -297,7 +345,10 @@ public class Monster : MonoBehaviour, IHealth
     //    }
     //}
 
-
+    /// <summary>
+    /// 몬스터의 AI상태를 상황에 따라 바꾸는 함수
+    /// </summary>
+    /// <param name="mon"></param>
     private void SetMonsterState(MonsterState mon)  //플레이어 상태 세팅해주는 함수
     {
 
@@ -344,17 +395,26 @@ public class Monster : MonoBehaviour, IHealth
         }
     }
 
+    /// <summary>
+    /// 업데이트에서 순찰할 때 사용할 함수들
+    /// </summary>
     private void PatrolUpdate()
     {
         SetPatrol();    // 순찰 시키기
         FindPlayer(); // 플레이어 찾기, 참고로 찾은 플레이어
     }
 
+    /// <summary>
+    /// 업데이트에서 추적할 때 사용할 함수들
+    /// </summary>
     private void ChaseUpdate()
     {
         ChasePlayer();
     }
 
+    /// <summary>
+    /// 업데이트에서 전투할 때 사용할 함수들
+    /// </summary>
     private void CombatUpdate()
     {
         CombatPlayer();   
@@ -364,12 +424,17 @@ public class Monster : MonoBehaviour, IHealth
     //    Die();
     //}
 
-
+    /// <summary>
+    /// 체력 계산하는 메서드
+    /// </summary>
     public void SetHP()
     {
         hpSlider.value = HP / MaxHP;
     }
 
+    /// <summary>
+    /// 아이템을 드롭할 때 사용되는 메서드
+    /// </summary>
     private void DropItem()
     {
         ItemFactory.MakeItem(ItemIDCode.HP_Potion, transform.position, Quaternion.identity);

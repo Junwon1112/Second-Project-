@@ -4,9 +4,15 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
+/// <summary>
+/// 각각의 퀵슬롯의 동작에 대한 클래스
+/// </summary>
 public class QuickSlotUI : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHandler
 {
-    public int quickSlotID = -1;    //퀵슬롯 아이디는 2000번 부터 시작
+    /// <summary>
+    /// 퀵슬롯을 확인하는 Id, 퀵슬롯 아이디는 2000번 부터 시작
+    /// </summary>
+    public int quickSlotID = -1;    
     public SkillData quickSlotSkillData;
     Image skillImage;
     TempSlotSkillUI tempSlotSkillUI;
@@ -33,7 +39,11 @@ public class QuickSlotUI : MonoBehaviour, IBeginDragHandler, IEndDragHandler, ID
     //    skillUse = new SkillUse();
     //}
 
-    public void QuickSlotSetData(SkillData skillData = null)    //파라미터 따로 기입안하면 skillData 파라미터는 null 값이 된다.
+    /// <summary>
+    /// 퀵슬롯에 스킬을 세팅하는 메서드
+    /// </summary>
+    /// <param name="skillData">퀵슬롯에 세팅할 데이터</param>
+    public void QuickSlotSetData(SkillData skillData = null)    
     {
         if(skillData != null)
         {
@@ -52,6 +62,10 @@ public class QuickSlotUI : MonoBehaviour, IBeginDragHandler, IEndDragHandler, ID
         
     }
 
+    /// <summary>
+    /// 퀵슬롯간에 스킬데이터 교환시 사용, 드래그 시작시 실행될 메서드
+    /// </summary>
+    /// <param name="eventData"></param>
     void IBeginDragHandler.OnBeginDrag(PointerEventData eventData)
     {
         if(quickSlotSkillData != null)
@@ -61,6 +75,9 @@ public class QuickSlotUI : MonoBehaviour, IBeginDragHandler, IEndDragHandler, ID
         } 
     }
 
+    /// <summary>
+    /// 퀵슬롯간에 스킬데이터 교환시 사용, 드래그 끝낼 시 실행될 메서드
+    /// </summary>
     void IEndDragHandler.OnEndDrag(PointerEventData eventData)
     {
         GameObject obj = eventData.pointerCurrentRaycast.gameObject;

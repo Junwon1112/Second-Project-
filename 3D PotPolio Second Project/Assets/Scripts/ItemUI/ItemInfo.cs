@@ -3,11 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
-
+/// <summary>
+/// ItemInfo창의 동작을 관리하는 클래스
+/// </summary>
 public class ItemInfo : MonoBehaviour
 {
-    public TextMeshProUGUI infoName;           //아이템 이름
-    public TextMeshProUGUI itemInformation;    //아직 따로 설정해두지 않아서 쓰지는 않음
+    /// <summary>
+    /// 아이템 이름
+    /// </summary>
+    public TextMeshProUGUI infoName;           
+    public TextMeshProUGUI itemInformation; 
     public CanvasGroup infoCanvasGroup;
     public RectTransform infoTransform;
     public TempSlotInfoUI infoTempSlotUI;
@@ -21,6 +26,9 @@ public class ItemInfo : MonoBehaviour
         infoTempSlotUI = FindObjectOfType<TempSlotInfoUI>();
     }
 
+    /// <summary>
+    /// UI가 열렸을 때 실행될 메서드
+    /// </summary>
     public void OpenInfo()
     {
         infoCanvasGroup.alpha = 1.0f;

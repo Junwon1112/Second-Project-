@@ -2,14 +2,25 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// 인벤토리 속 아이템 슬롯 데이터
+/// </summary>
 public class ItemSlot  //: MonoBehaviour
 {
-    public int slotID = -1; //외부에서 몇번째 슬롯인지 구분하는 슬롯 아이디. 할당전엔 -1값을 할당해 놓음
+    /// <summary>
+    /// 외부에서 몇번째 슬롯인지 구분하는 슬롯 아이디. 할당전엔 -1값을 할당해 놓음
+    /// </summary>
+    public int slotID = -1; 
 
-    //필요한것 - 아이템 데이터랑 아이템 수량
+    /// <summary>
+    /// 아이템 슬롯의 데이터
+    /// </summary>
     ItemData slotItemData;
     uint itemCount;
 
+    /// <summary>
+    /// 아이템 슬롯 데이터 프로퍼티
+    /// </summary>
     public ItemData SlotItemData
     {
         get
@@ -25,9 +36,15 @@ public class ItemSlot  //: MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 아이템 갯수에 대한 프로퍼티
+    /// </summary>
     public uint ItemCount
     { get; set; }
 
+    /// <summary>
+    /// 생성자
+    /// </summary>
     public ItemSlot() { }
     public ItemSlot(ItemData data, uint count)
     {
@@ -46,7 +63,11 @@ public class ItemSlot  //: MonoBehaviour
  
 
 
-    //아이템 슬롯에 아이템 할당(없는거에서 있는거로)
+    /// <summary>
+    /// 아이템 슬롯에 아이템 할당(새로 생성)
+    /// </summary>
+    /// <param name="newItemData"></param>
+    /// <param name="newItemCount"></param>
     public void AssignSlotItem(ItemData newItemData, uint newItemCount = 1 )
     {
         if(IsEmpty())
@@ -58,7 +79,10 @@ public class ItemSlot  //: MonoBehaviour
         
     }
 
-    //(슬롯에 아이템이 존재할 때 할당)
+    /// <summary>
+    /// 슬롯에 아이템이 존재할 때 갯수 추가
+    /// </summary>
+    /// <param name="count"></param>
     public void IncreaseSlotItem(uint count = 1)
     {
         if(!IsEmpty())
@@ -76,6 +100,10 @@ public class ItemSlot  //: MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 아이템 슬롯에 있는 아이템 갯수 감소
+    /// </summary>
+    /// <param name="count"></param>
     public void DecreaseSlotItem(uint count = 1)
     {
         if(ItemCount - count > 0)
@@ -89,6 +117,9 @@ public class ItemSlot  //: MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 아이템 슬롯 비우기
+    /// </summary>
     public void ClearSlotItem()
     {
         SlotItemData = null;
@@ -97,7 +128,10 @@ public class ItemSlot  //: MonoBehaviour
 
 
 
-    //슬롯이 비어있는지 확인
+    /// <summary>
+    /// 슬롯이 비어있는지 확인
+    /// </summary>
+    /// <returns></returns>
     public bool IsEmpty()
     {
         return (slotItemData == null);

@@ -2,6 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// 콤보 공격을 사용하기 위해 만든 스테이트 머신
+/// </summary>
 public class IsCombo : StateMachineBehaviour
 {
     float timer = 0.5f;

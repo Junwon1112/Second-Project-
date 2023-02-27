@@ -2,6 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// 인벤토리의 데이터 클래스
+/// </summary>
 public class Inventory : MonoBehaviour
 {
     //구현할 친구들
@@ -29,7 +32,7 @@ public class Inventory : MonoBehaviour
     //-----------------
     ItemData potion;
 
-    public ItemSlot this[uint count]    //인덱서를 이용한 프로퍼티?
+    public ItemSlot this[uint count]    //인덱서를 이용한 프로퍼티
     {
         get
         {
@@ -52,47 +55,12 @@ public class Inventory : MonoBehaviour
         }
     }
 
-    private void Start()
-    {
-        
-
-        //potion = new ItemData();
-
-        //potion = GameManager.Instance.ItemManager[ItemIDCode.HP_Potion];
-
-
-
-
-
-        //테스트용, 확인후 지울 것----------------------
-
-
-
-        //itemSlots[2].AssignSlotItem(potion, 4);
-        //itemSlots[4].AssignSlotItem(potion, 4);
-        //Debug.Log($"{itemSlots[2].SlotItemData.itemName},{itemSlots[2].ItemCount}");
-        //Debug.Log($"{itemSlots[4].SlotItemData.itemName},{itemSlots[4].ItemCount}");
-        //DropItem(itemSlots[2], 2);
-        //FindSameItemSlot(potion);
-        //TakeItem(potion, 1);
-        //for (int i = 0; i < itemSlots.Length; i++)
-        //{
-        //    if (itemSlots[i].SlotItemData != null)
-        //    Debug.Log($"{itemSlots[i].SlotItemData.itemName},{itemSlots[i].ItemCount}");
-
-        //}
-        //Debug.Log($"{itemSlots[2].SlotItemData.itemName},{itemSlots[2].ItemCount}");
-        //itemSlots[1].AssignSlotItem(potion,4);
-        //itemSlots[3].AssignSlotItem(potion,3);
-
-        //Debug.Log($" 3번 슬롯은 {itemSlots[3].SlotItemData.itemName},{itemSlots[3].ItemCount}개");
-        ////1번슬롯은 {itemSlots[1].SlotItemData.itemName},{itemSlots[1].ItemCount}개 ,
-        //MoveSlotItem(itemSlots[1], itemSlots[3]);
-        //Debug.Log($" 3번 슬롯은 {itemSlots[3].SlotItemData.itemName},{itemSlots[3].ItemCount}개");
-        ////---------------------------------------------
-    }
-
-
+    /// <summary>
+    /// 아이템의 위치를 이동시키는 함수
+    /// </summary>
+    /// <param name="fromItemSlot">아이템이 이동하기 전 슬롯의 위치</param>
+    /// <param name="toItemSlot">아이템이 이동한 후 슬롯의 위치</param>
+    /// <param name="count">이동할 아이템 갯수, 파라미터 미작성시 기본값 1을 적용</param>
     public void MoveSlotItem(ItemSlot fromItemSlot, ItemSlot toItemSlot, uint count = 1)
     {
         //from => to에서 to가 null일때
@@ -149,6 +117,9 @@ public class Inventory : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 모든 슬롯을 비우는 메서드
+    /// </summary>
     public void ClearInven()    //확인 완료, 모든 슬롯 비움
     {
         foreach(ItemSlot itemSlot in itemSlots)
@@ -158,7 +129,12 @@ public class Inventory : MonoBehaviour
         }
     }
 
-    public void DropItem(ItemSlot dropItemSlot,uint dropCount)  //특정 슬롯 아이템 필드로 내놓기
+    /// <summary>
+    /// 특정 슬롯 아이템 필드로 버리기
+    /// </summary>
+    /// <param name="dropItemSlot">아이템을 버릴 슬롯</param>
+    /// <param name="dropCount">버릴 갯수</param>
+    public void DropItem(ItemSlot dropItemSlot,uint dropCount)  
     {
         if(dropItemSlot.ItemCount <= dropCount)  //아이템 갯수가 버릴 갯수보다 적거나 같다면
         {
@@ -181,7 +157,11 @@ public class Inventory : MonoBehaviour
         
     }
 
-    //같은 아이템 슬롯 중 가장 앞쪽 슬롯 리턴 또는 비어있는 슬롯 리턴
+    /// <summary>
+    /// 같은 아이템 슬롯 중 가장 앞쪽 슬롯 리턴 또는 비어있는 슬롯 리턴 (아이템을 추가할 시 사용)
+    /// </summary>
+    /// <param name="compareItemData">비교할 아이템 데이터</param>
+    /// <returns>같은 아이템 슬롯을 리턴</returns>
     public ItemSlot FindSameItemSlotForAddItem(ItemData compareItemData)     
     {
         bool isFindSlot = false;
@@ -223,7 +203,36 @@ public class Inventory : MonoBehaviour
 
     }
 
-    //아이템이 인벤토리에 들어오면 알맞은 슬롯을 찾아 할당해 주는 함수
+    /// <summary>
+    /// 같은 아이템 슬롯 중 가장 앞쪽 슬롯 리턴 또는 비어있는 슬롯 리턴 (아이템을 사용할 시 사용)
+    /// </summary>
+    /// <param name="compareItemData"></param>
+    /// <returns></returns>
+    public ItemSlot FindSameItemSlotForUseItem(ItemData compareItemData)
+    {
+        ItemSlot returnItemSlot = null;
+        for (int i = 0; i < slotCount; i++)
+        {
+            //찾는 아이템과 같은 아이템 종류고 슬롯에 자리가 있다면(최대 개수보다 적다면)
+            if (itemSlots[i].SlotItemData.ID == compareItemData.ID)
+            {
+                Debug.Log($"{itemSlots[i]}가 같은 데이터이다");
+                returnItemSlot = itemSlots[i];
+                return returnItemSlot;
+                //break;
+            }
+
+        }
+
+        Debug.Log($"아이템이 없다");
+        return returnItemSlot;
+    }
+
+    /// <summary>
+    /// 아이템이 인벤토리에 들어오면 알맞은 슬롯을 찾아 할당해 주는 함수
+    /// </summary>
+    /// <param name="takeItemData">들어올 아이템데이터</param>
+    /// <param name="count">들어온 갯수</param>
     public void TakeItem(ItemData takeItemData, uint count)
     {
         //아이템이 꽉차면 NULL reference가 뜨는데 findsameitemslot함수에서 null값을 리턴해서 거기서는 slotItemData를 받을수 없어 에러가 나는듯, 하지만 일단 작동은 잘돼서 나중에 수정할 것
@@ -245,27 +254,9 @@ public class Inventory : MonoBehaviour
         //}
     }
 
-    public ItemSlot FindSameItemSlotForUseItem(ItemData compareItemData)
-    {
-        ItemSlot returnItemSlot = null;
-        for (int i = 0; i < slotCount; i++)
-        {
-            //찾는 아이템과 같은 아이템 종류고 슬롯에 자리가 있다면(최대 개수보다 적다면)
-            if (itemSlots[i].SlotItemData.ID == compareItemData.ID)
-            {
-                Debug.Log($"{itemSlots[i]}가 같은 데이터이다");
-                returnItemSlot = itemSlots[i];
-                return returnItemSlot;
-                //break;
-            }
+   
 
-        }
-
-        Debug.Log($"아이템이 없다");
-        return returnItemSlot;
-    }
-
-
+    // try catch문을 이용한 에러잡는 함수 연습
     //public void aaa()
     //{ 
     //    try { } //중괄호 안에서 함수를 돌리고

@@ -5,6 +5,9 @@ using UnityEngine;
 using System.IO;
 using UnityEngine.Networking;
 
+/// <summary>
+/// 인터넷 통신 실습용 클래스, 아직 실제 적용x
+/// </summary>
 public class Practice : MonoBehaviour
 {
     //------------------------------------------------------

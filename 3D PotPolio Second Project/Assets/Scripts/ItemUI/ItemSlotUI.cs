@@ -6,25 +6,42 @@ using TMPro;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 
-
+/// <summary>
+/// 아이템 슬롯 UI와 관련된 메서드
+/// </summary>
 public class ItemSlotUI : MonoBehaviour, IPointerClickHandler, IDragHandler, IBeginDragHandler, IEndDragHandler , IPointerEnterHandler, IPointerExitHandler, IPointerMoveHandler
 {
-    public int slotUIID = -1;   //전체 슬롯에서 몇번째 슬롯인지 말해주는 말해주는 값, UI와 데이터를 받는 슬롯의 ID는 같다. 할당전에 값은 -1값 할당
+    /// <summary>
+    /// 전체 슬롯에서 몇번째 슬롯인지 말해주는 말해주는 값, UI와 데이터를 받는 슬롯의 ID는 같다. 할당전에 값은 -1값 할당
+    /// </summary>
+    public int slotUIID = -1;
 
-    public ItemData slotUIData;    //Info창을 생성할 때 slotUI에서 이름이나 설명 등의 정보를 전달해 줘야해서 만듬
-    public uint slotUICount = 0;       //tempslot에 갯수전달을 위해 만듬
+    /// <summary>
+    /// Info창을 생성할 때 slotUI에서 이름이나 설명 등의 정보를 전달해 줘야해서 만듬
+    /// </summary>
+    public ItemData slotUIData;
+
+    /// <summary>
+    /// tempslot에 갯수전달을 위해 만듬
+    /// </summary>
+    public uint slotUICount = 0;       
     uint splitCount;        //splitUI에서 값을받고 프로퍼티에서 나눌수있는 값으로 변환
 
     //빈 이미지를 만들고 아이템 데이터를 받았을 때 해당 데이터의 Icon을 이미지로 변환
     Image itemImage;                //Image에 프로퍼티로 스프라이트가 존재한다. 
-    TextMeshProUGUI itemCountText;  //UI로 텍스트를 표기하면 UGUI를 쓰는듯..?
+    TextMeshProUGUI itemCountText;  //UI로 텍스트를 표기하면 UGUI를 사용
     Inventory playerInven;
     InventoryUI playerInvenUI;
 
-    Vector2 mousePos = Vector2.zero;    //인포창이나 tempslotUI를 마우스 위치에서 열기위한 마우스 포지션 변수
+    /// <summary>
+    /// 인포창이나 tempslotUI를 마우스 위치에서 열기위한 마우스 포지션 변수
+    /// </summary>
+    Vector2 mousePos = Vector2.zero;
 
-
-    float infoOpenTime = 1.0f;          //마우스를 슬롯위에 올려놨을 때 몇초후 열지 설정할 변수
+    /// <summary>
+    /// 마우스를 슬롯위에 올려놨을 때 몇초후 열지 설정할 변수
+    /// </summary>
+    float infoOpenTime = 1.0f;          
 
     bool isDrag = false;
     bool isOnPointer = false;   //마우스가 슬롯위에 올라가 있는지
@@ -49,18 +66,18 @@ public class ItemSlotUI : MonoBehaviour, IPointerClickHandler, IDragHandler, IBe
         tempSlotSplitUI = GameObject.Find("ItemMoveSlotUI").transform.GetChild(0).GetComponent<TempSlotSplitUI>();   //활성화후 컴포넌트 찾은거 변수에 저장하고
     }
 
-    private void Start()
-    {
-        //전체 슬롯셋팅은 인벤토리UI에서 실행
-    }
 
     private void Update()
     {
         InfoInUpdate();
     }
 
-
-    public void SetSlotWithData(ItemData itemData, uint count)  //슬롯의 데이터로 슬롯UI 설정 
+    /// <summary>
+    /// 슬롯의 데이터로 슬롯UI 설정 
+    /// </summary>
+    /// <param name="itemData">세팅할 아이템 데이터</param>
+    /// <param name="count">세팅할 갯수</param>
+    public void SetSlotWithData(ItemData itemData, uint count)  
     {
         if(itemData != null && count > 0)    //아이템 데이터가 존재한다면
         {
@@ -83,18 +100,29 @@ public class ItemSlotUI : MonoBehaviour, IPointerClickHandler, IDragHandler, IBe
         }
         
     }
-
-    public void OnPointerEnter(PointerEventData eventData)  //마우스가 슬롯에 들어간 상태 파악
+    /// <summary>
+    /// 마우스가 슬롯에 들어간 상태 파악
+    /// </summary>
+    /// <param name="eventData"></param>
+    public void OnPointerEnter(PointerEventData eventData) 
     {
         isOnPointer = true;
     }
 
-    public void OnPointerExit(PointerEventData eventData)    //마우스가 슬롯에서 나간 상태 파악
+    /// <summary>
+    /// 마우스가 슬롯에서 나간 상태 파악
+    /// </summary>
+    /// <param name="eventData"></param>
+    public void OnPointerExit(PointerEventData eventData)    
     {
         isOnPointer = false;
     }
 
-    public void OnPointerMove(PointerEventData eventData)   //아이템 위에 1초이상 멈췄을 때 아이템 인포 창 표시, 인포창이 표시된 상태에서 움직이면 인포창 닫기
+    /// <summary>
+    /// 아이템 위에 1초이상 멈췄을 때 아이템 인포 창 표시, 인포창이 표시된 상태에서 움직이면 인포창 닫기
+    /// </summary>
+    /// <param name="eventData"></param>
+    public void OnPointerMove(PointerEventData eventData)  
     {
         if (!isDrag && isOnPointer && slotUIData != null) //드래그 안한 상태(일반적인 상태에서) 슬롯으로 들어가고 안 움직이면 적정시간 후 인포창 열기 
         {
@@ -120,7 +148,10 @@ public class ItemSlotUI : MonoBehaviour, IPointerClickHandler, IDragHandler, IBe
         }
     }
 
-    private void SetInfo()  //인포창 표시할 때 실행할 애들
+    /// <summary>
+    /// 인포창 표시할 때 실행할 애들
+    /// </summary>
+    private void SetInfo()  
     {
         itemInfo.infoTempSlotUI.itemImage.sprite = slotUIData.itemIcon;
         itemInfo.infoTransform.position = mousePos;
@@ -130,7 +161,10 @@ public class ItemSlotUI : MonoBehaviour, IPointerClickHandler, IDragHandler, IBe
         isInfoOpen = true;
     }
 
-    private void InfoInUpdate() //업데이트에서 실행할 인포창 오픈관련 함수
+    /// <summary>
+    /// 업데이트에서 실행할 인포창 오픈관련 함수
+    /// </summary>
+    private void InfoInUpdate() 
     {
         if(!isDrag)
         {
@@ -149,9 +183,13 @@ public class ItemSlotUI : MonoBehaviour, IPointerClickHandler, IDragHandler, IBe
         
     }
 
-    //클릭은 누르고 떼어져야 클릭이다.
-    public void OnPointerClick(PointerEventData eventData)  //shift랑 같이 눌러서 아이템 분할
+    /// <summary>
+    /// 클릭은 누르고 떼어져야 클릭이다, 아이템 클릭시 실행시킬 메서드
+    /// </summary>
+    /// <param name="eventData"></param>
+    public void OnPointerClick(PointerEventData eventData)  
     {
+        //shift랑 같이 눌러서 아이템 분할
         //shift와 함께 눌렀을 때 => splitUI등장, Keyboard함수는 inputsystem을 넣어야만 활용가능, 나누는 도중에 shift클릭을 한건 아닌지 확인
         if (Keyboard.current.leftShiftKey.ReadValue() > 0 && !splitUI.isSplitting) 
         {
@@ -247,7 +285,11 @@ public class ItemSlotUI : MonoBehaviour, IPointerClickHandler, IDragHandler, IBe
 
     //------------------OnDrag를 사용하지 않더라도 인터페이스 상속을 안받으면 BiginDrag가 작동하지 않는다.-----------------------------
 
-    public void OnBeginDrag(PointerEventData eventData)     //아이템 이동이나 드랍 등을 하기위해 드래그 시작 지점 
+    /// <summary>
+    /// 아이템 이동이나 드랍 등을 하기위해 드래그 시작 지점 
+    /// </summary>
+    /// <param name="eventData"></param>
+    public void OnBeginDrag(PointerEventData eventData)     
     {
         if(slotUIData != null)
         {
@@ -271,7 +313,10 @@ public class ItemSlotUI : MonoBehaviour, IPointerClickHandler, IDragHandler, IBe
          */
     }
 
-    //이떄 호출되는 OnEndDrag함수는 처음에 OnBiginDrag가 있던 슬롯의 함수다.
+    /// <summary>
+    /// 이때 호출되는 OnEndDrag함수는 처음에 OnBiginDrag가 있던 슬롯의 함수다.
+    /// </summary>
+    /// <param name="eventData"></param>
     public void OnEndDrag(PointerEventData eventData)       //아이템 이동이나 드랍 등을 하기 위한 드래그 도착 지점
     {
         GameObject obj = eventData.pointerCurrentRaycast.gameObject;
@@ -371,6 +416,10 @@ public class ItemSlotUI : MonoBehaviour, IPointerClickHandler, IDragHandler, IBe
          */
     }
 
+    /// <summary>
+    /// onbigindrag와 onenddrag가 작동되기 위해서는 ondrag가 필요하다
+    /// </summary>
+    /// <param name="eventData"></param>
     public void OnDrag(PointerEventData eventData)
     {
         

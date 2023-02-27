@@ -4,6 +4,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// 스킬창 UI에 대한 클래스
+/// </summary>
 public class SkillUI : MonoBehaviour
 {
     PlayerInput skillWindowControl;
@@ -67,7 +70,7 @@ public class SkillUI : MonoBehaviour
             skillCanvasGroup.interactable = true;
             skillCanvasGroup.blocksRaycasts = true;
 
-            ui_OnOff.IsUIOnOff2();
+            ui_OnOff.IsUIOnOff();
         }
         else
         {
@@ -77,7 +80,7 @@ public class SkillUI : MonoBehaviour
             skillCanvasGroup.interactable = false;
             skillCanvasGroup.blocksRaycasts = false;
 
-            ui_OnOff.IsUIOnOff2();
+            ui_OnOff.IsUIOnOff();
         }
     }
 

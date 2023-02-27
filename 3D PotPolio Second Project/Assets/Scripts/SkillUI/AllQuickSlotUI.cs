@@ -5,10 +5,18 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.EventSystems;
 
+/// <summary>
+/// 6개의 퀵슬롯을 관리하는 함수
+/// </summary>
 public class AllQuickSlotUI : MonoBehaviour
 {
     PlayerInput input;
+
+    /// <summary>
+    /// 각각의 단일 퀵슬롯을 배열에 받음
+    /// </summary>
     public QuickSlotUI[] quickSlotUIs;
+
     Animator anim;
 
 
@@ -20,6 +28,9 @@ public class AllQuickSlotUI : MonoBehaviour
         anim = FindObjectOfType<Player>().transform.GetComponent<Animator>();
     }
 
+    /// <summary>
+    /// InputSystem에 등록한 단축키들에 해당하는 함수 등록
+    /// </summary>
     private void OnEnable()
     {
         input.Enable();

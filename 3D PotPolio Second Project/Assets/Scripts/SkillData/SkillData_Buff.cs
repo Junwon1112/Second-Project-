@@ -2,6 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// 버프타입의 스킬데이터를 가지는 스크립터블 오브젝트, SkillData를 상속받음, 버프스킬 현재 미구현
+/// </summary>
 [CreateAssetMenu(fileName = ("New Skill Data"), menuName = ("Scriptable Object_Skill Data/Skill Data_Buff"), order = 3)]
 public class SkillData_Buff : SkillData //버프 스킬
 {

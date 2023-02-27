@@ -6,11 +6,25 @@ using UnityEngine.InputSystem;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
+/// <summary>
+/// 인벤토리 UI에 나타낼 데이터 및 UI의 작동을 관리
+/// </summary>
 public class InventoryUI : MonoBehaviour
 {
-    public PlayerInput inventoryControl;   //i키로 껐다키기위한 인풋시스템용 변수
-    protected CanvasGroup invenCanvasGroupOnOff;   //껐다 키는걸 canvasGroup을 이용한 변수
-    public bool isInvenCanvasGroupOff = true;   //인벤토리가 꺼져있는지 켜져있는지 확인하기 위한 변수
+    /// <summary>
+    /// i키로 껐다키기위한 인풋시스템용 변수
+    /// </summary>
+    public PlayerInput inventoryControl;
+
+    /// <summary>
+    /// 껐다 키는걸 canvasGroup을 이용한 변수
+    /// </summary>
+    protected CanvasGroup invenCanvasGroupOnOff;
+
+    /// <summary>
+    /// 인벤토리가 꺼져있는지 켜져있는지 확인하기 위한 변수
+    /// </summary>
+    public bool isInvenCanvasGroupOff = true;   
 
     
 
@@ -91,9 +105,40 @@ public class InventoryUI : MonoBehaviour
         inventoryControl.Inventory.Disable();
     }
 
+    /// <summary>
+    /// i키를 눌렀을 때 인벤토리 onoff
+    /// </summary>
+    /// <param name="obj"></param>
     private void OnInventoryOnOff(InputAction.CallbackContext obj)
     {
         InventoryOnOffSetting();
+    }
+
+    /// <summary>
+    /// 인벤토리 onoff시 실행할 메서드
+    /// </summary>
+    private void InventoryOnOffSetting()
+    {
+        if (isInvenCanvasGroupOff)
+        {
+            isInvenCanvasGroupOff = false;
+
+            invenCanvasGroupOnOff.alpha = 1;
+            invenCanvasGroupOnOff.interactable = true;
+            invenCanvasGroupOnOff.blocksRaycasts = true;
+
+            ui_OnOff.IsUIOnOff();
+        }
+        else
+        {
+            isInvenCanvasGroupOff = true;
+
+            invenCanvasGroupOnOff.alpha = 0;
+            invenCanvasGroupOnOff.interactable = false;
+            invenCanvasGroupOnOff.blocksRaycasts = false;
+
+            ui_OnOff.IsUIOnOff();
+        }
     }
 
 
@@ -104,6 +149,11 @@ public class InventoryUI : MonoBehaviour
     //장비창 구현할 것
     //1.아이템 슬롯처럼 모든 데이터를 받을 변수들
     //2.우클릭하면 장착 해제
+
+    /// <summary>
+    /// 우클릭시 아이템을 사용하게 하는 메서드
+    /// </summary>
+    /// <param name="obj"></param>
     public void OnInventoryItemUse(InputAction.CallbackContext obj)    //우클릭으로 아이템 사용 및 장착을 위한 함수, 인풋액션으로 구현했으므로 관리하기 편하려고 인벤토리에서 구현(onEnable에서 한번만 호출 하려고)
     {
         List<RaycastResult> slotItemCheck = new List<RaycastResult>();  //UI인식을 위해서는 GraphicRaycast가 필요하고 이걸 사용 후 리턴할 때 (RaycastResult)를 받는 리스트에 저장함
@@ -215,45 +265,10 @@ public class InventoryUI : MonoBehaviour
     //    yield return new wait
     //}
 
-    private void InventoryOnOffSetting()
-    {
-        if (isInvenCanvasGroupOff)
-        {
-            isInvenCanvasGroupOff = false;
-
-            invenCanvasGroupOnOff.alpha = 1;
-            invenCanvasGroupOnOff.interactable = true;
-            invenCanvasGroupOnOff.blocksRaycasts = true;
-
-            ui_OnOff.IsUIOnOff2();
-
-            //if(equipmentUI.isEquipCanvasGroupOff)   //인벤켰는데 장비창이 꺼져있으면 인벤이 플레이어 비활성화
-            //{
-            //    GameManager.Instance.MainPlayer.input.Disable();
-            //    inventoryControl.Inventory.InventoryItemUse.performed += OnInventoryItemUse;
-            //}
-        }
-        else
-        {
-            isInvenCanvasGroupOff = true;
-
-            invenCanvasGroupOnOff.alpha = 0;
-            invenCanvasGroupOnOff.interactable = false;
-            invenCanvasGroupOnOff.blocksRaycasts = false;
-
-            ui_OnOff.IsUIOnOff2();
-
-            //if (equipmentUI.isEquipCanvasGroupOff)  //인벤껐는데 장비창이 꺼져있으면 인벤이 플레이어 비활성화
-            //{
-            //    GameManager.Instance.MainPlayer.input.Enable();
-            //    inventoryControl.Inventory.InventoryItemUse.performed -= OnInventoryItemUse;
-            //}
-        }
-    }
-
-    
-
-    public void SetAllSlotWithData()    //UI에 인벤토리 데이터를 넣어주는 함수
+    /// <summary>
+    /// UI에 인벤토리 데이터를 넣어주는 함수
+    /// </summary>
+    public void SetAllSlotWithData()    
     {
         for (int i = 0; i < slotUIs.Length; i++) 
         {  

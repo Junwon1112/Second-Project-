@@ -4,18 +4,27 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
 
-public class EquipmentUI : InventoryUI      //앞으로 부모보다 기능이 적은 자식은 억지로 만들지 말자는 것을 느꼈다. 아님 거꾸로 리팩토링을 해보자.. 
+/// <summary>
+/// 인벤토리 UI를 상속받은 장비 클래스, 완성 후 UI클래스를 만들어서 상속을 할 걸..이라는 걸 느꼈다.
+/// </summary>
+public class EquipmentUI : InventoryUI     
 {
-    public PlayerInput equipmentControl;   //u키로 껐다키기위한 인풋시스템용 변수
+    /// <summary>
+    /// u키로 껐다키기위한 인풋시스템용 변수
+    /// </summary>
+    public PlayerInput equipmentControl;   
 
-    protected CanvasGroup canvasGroupOnOff;   //껐다 키는걸 canvasGroup을 이용한 변수
+    /// <summary>
+    /// 껐다 키는걸 canvasGroup을 이용한 변수
+    /// </summary>
+    protected CanvasGroup canvasGroupOnOff;   
 
     protected Button equipCloseButton;
 
-    public bool isEquipCanvasGroupOff = true;   //인벤토리가 꺼져있는지 켜져있는지 확인하기 위한 변수
-    //new public ItemSlotUI[] slotUIs;
-
-    InventoryUI inventoryUI;
+    /// <summary>
+    /// 인벤토리가 꺼져있는지 켜져있는지 확인하기 위한 변수
+    /// </summary>
+    public bool isEquipCanvasGroupOff = true;   
 
     public EquipSlotUI[] equipSlotUIs;
 
@@ -31,7 +40,6 @@ public class EquipmentUI : InventoryUI      //앞으로 부모보다 기능이 적은 자식은
 
         graphicRaycaster = GameObject.Find("Canvas").gameObject.GetComponent<GraphicRaycaster>();
         player = FindObjectOfType<Player>();
-        inventoryUI = GameObject.Find("InventoryUI").GetComponent<InventoryUI>();
         ui_OnOff_E = GetComponentInParent<UI_Player_MoveOnOff>();
     }
 
@@ -57,11 +65,18 @@ public class EquipmentUI : InventoryUI      //앞으로 부모보다 기능이 적은 자식은
         equipmentControl.Equipment.Disable();
     }
 
+    /// <summary>
+    /// U키를 눌러 장비창 onoff를 실행
+    /// </summary>
+    /// <param name="obj"></param>
     private void OnEquipmentOnOff(InputAction.CallbackContext obj)
     {
         EquipmentOnOffSetting();
     }
 
+    /// <summary>
+    /// 장비창 UI를 키거나 껐을 때 실행해야 될 메서드
+    /// </summary>
     private void EquipmentOnOffSetting()
     {
         if (isEquipCanvasGroupOff)
@@ -72,7 +87,7 @@ public class EquipmentUI : InventoryUI      //앞으로 부모보다 기능이 적은 자식은
             canvasGroupOnOff.interactable = true;
             canvasGroupOnOff.blocksRaycasts = true;
 
-            ui_OnOff_E.IsUIOnOff2();  //전체 UI ONOFF상태를 확인하고 InputSystem을 Enable과 Disable해주는 함수
+            ui_OnOff_E.IsUIOnOff();  //전체 UI ONOFF상태를 확인하고 InputSystem을 Enable과 Disable해주는 함수
 
             //if(inventoryUI.isInvenCanvasGroupOff)
             //{
@@ -89,7 +104,7 @@ public class EquipmentUI : InventoryUI      //앞으로 부모보다 기능이 적은 자식은
             canvasGroupOnOff.interactable = false;
             canvasGroupOnOff.blocksRaycasts = false;
             
-            ui_OnOff_E.IsUIOnOff2();
+            ui_OnOff_E.IsUIOnOff();
 
             //if (inventoryUI.isInvenCanvasGroupOff)
             //{

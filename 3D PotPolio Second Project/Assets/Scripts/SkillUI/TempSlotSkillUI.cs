@@ -4,6 +4,9 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
 
+/// <summary>
+/// 드래그 시 사용될 임시 스킬슬롯
+/// </summary>
 public class TempSlotSkillUI : MonoBehaviour
 {
     Image skillImage;

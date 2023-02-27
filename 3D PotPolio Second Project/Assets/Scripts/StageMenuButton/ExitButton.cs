@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// 게임 종료시 실행될 클래스
+/// </summary>
 public class ExitButton : MonoBehaviour
 {
     Button exitButton;
