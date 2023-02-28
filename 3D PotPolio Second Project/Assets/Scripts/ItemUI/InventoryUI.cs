@@ -45,8 +45,8 @@ public class InventoryUI : MonoBehaviour
 
     SkillUse skillUse;
 
-    // 인벤토리 클릭관련 구현할 내용
-    /*
+    /**
+     *@brief
      * 인벤 관련 구현
      * 1. 창 위쪽 드래그하면 인벤토리 창 마우스 위치로 이동
      * 
@@ -62,6 +62,8 @@ public class InventoryUI : MonoBehaviour
      *      -슬롯 자식으로 아이콘(이미지)가 할당되도록 하는 함수 만들기
      *      
      */
+
+
     
 
     protected virtual void Awake()
@@ -85,7 +87,11 @@ public class InventoryUI : MonoBehaviour
     {
         invenCloseButton.onClick.AddListener(InventoryOnOffSetting);
 
-        SetAllSlotWithData();   //게임 시작할 때 슬롯UI들 전부 초기화
+        /**
+         *@details 게임 시작할 때 슬롯UI들 전부 초기화
+        */
+
+        SetAllSlotWithData();   
 
         isInvenCanvasGroupOff = true;
 
@@ -142,19 +148,21 @@ public class InventoryUI : MonoBehaviour
     }
 
 
-    //장비창을 만들고 거기에 슬롯에 장착, 기존 인벤토리 슬롯에서는 사라짐
-    //장비창에서 우클릭하면 다시 인벤토리로 이동하며 무기 해제
-    //케릭터 손위치에 장착, 만약 이미 장착한 무기가 있다면 해당 슬롯에서 무기 교환
-    //weapon에 equip에서 장착 구현
-    //장비창 구현할 것
-    //1.아이템 슬롯처럼 모든 데이터를 받을 변수들
-    //2.우클릭하면 장착 해제
-
+    /**
+    *@brief
+    *장비창을 만들고 거기에 슬롯에 장착, 기존 인벤토리 슬롯에서는 사라짐
+    *장비창에서 우클릭하면 다시 인벤토리로 이동하며 무기 해제
+    *케릭터 손위치에 장착, 만약 이미 장착한 무기가 있다면 해당 슬롯에서 무기 교환
+    *weapon에 equip에서 장착 구현
+    *장비창 구현할 것
+    *1.아이템 슬롯처럼 모든 데이터를 받을 변수들
+    *2.우클릭하면 장착 해제
+    */
     /// <summary>
-    /// 우클릭시 아이템을 사용하게 하는 메서드
+    /// 우클릭시 아이템을 사용하게 하는 메서드, 인풋액션으로 구현했으므로 관리하기 편하려고 인벤토리에서 구현(onEnable에서 한번만 호출 하려고)
     /// </summary>
     /// <param name="obj"></param>
-    public void OnInventoryItemUse(InputAction.CallbackContext obj)    //우클릭으로 아이템 사용 및 장착을 위한 함수, 인풋액션으로 구현했으므로 관리하기 편하려고 인벤토리에서 구현(onEnable에서 한번만 호출 하려고)
+    public void OnInventoryItemUse(InputAction.CallbackContext obj)
     {
         List<RaycastResult> slotItemCheck = new List<RaycastResult>();  //UI인식을 위해서는 GraphicRaycast가 필요하고 이걸 사용 후 리턴할 때 (RaycastResult)를 받는 리스트에 저장함
         pointerEventData = new PointerEventData(null);                  //GraphicRaycast에서 마우스 위치를 PointerEventData에서 받으므로 정의 해줌
@@ -260,14 +268,6 @@ public class InventoryUI : MonoBehaviour
         }
     }
 
-    //IEnumerator IsFinished()
-    //{
-    //    yield return new wait
-    //}
-
-    /// <summary>
-    /// UI에 인벤토리 데이터를 넣어주는 함수
-    /// </summary>
     public void SetAllSlotWithData()    
     {
         for (int i = 0; i < slotUIs.Length; i++) 

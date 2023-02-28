@@ -204,8 +204,6 @@ public class Player : MonoBehaviour, IHealth
         {
             anim.SetBool("IsMove", false);
         }
-
-        
     }
 
     private void OnMoveInput(InputAction.CallbackContext obj)
