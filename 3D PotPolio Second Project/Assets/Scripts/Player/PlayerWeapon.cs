@@ -9,6 +9,8 @@ public class PlayerWeapon : MonoBehaviour, IBattle
 {
     Player player;
 
+    private float attackStopEffectTime = 0.05f;
+
     /// <summary>
     /// 몬스터가 죽었을 때 시체때리면 경험치 계속올라서 처음 죽었을 때만 오르도록 Attack함수에서 체력이 0보다 큰상태에서 0보다 작아지면 bool타입 발동
     /// </summary>
@@ -19,6 +21,17 @@ public class PlayerWeapon : MonoBehaviour, IBattle
     public float SkillDamage { get; set; }
     public float Defence { get; set; }
 
+    public float AttackStopEffectTime
+    {
+        get
+        {
+            return attackStopEffectTime;
+        }
+        set
+        {
+            attackStopEffectTime = value;
+        }
+    }
 
     private void Awake()
     {
@@ -78,6 +91,8 @@ public class PlayerWeapon : MonoBehaviour, IBattle
         //플레이어 칼에있는 컬라이더의 트리거
         if (other.CompareTag("Monster"))
         {
+            SoundPlayer.Instance?.PlaySound(SoundType.Sound_Hit);
+
             Monster monster;
             monster = other.GetComponent<Monster>();
 
@@ -87,6 +102,7 @@ public class PlayerWeapon : MonoBehaviour, IBattle
             }
             else
             {
+                StartCoroutine(AttackStopEffect());
                 SkillAttack(monster);
             }
             
@@ -103,6 +119,13 @@ public class PlayerWeapon : MonoBehaviour, IBattle
             }
 
         }
+    }
+
+    IEnumerator AttackStopEffect()
+    {
+        Time.timeScale = 0.0f;
+        yield return new WaitForSecondsRealtime(AttackStopEffectTime);
+        Time.timeScale = 1.0f;
     }
 
 }

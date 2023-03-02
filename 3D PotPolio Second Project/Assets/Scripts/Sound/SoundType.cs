@@ -8,7 +8,6 @@ public enum SoundType
     None,
     Sound_Attack,
     Sound_Hit,
-    Sound_Walk,
-    Sound_BGM1
+    Sound_Walk
 }
 

@@ -22,6 +22,8 @@ public class Player : MonoBehaviour, IHealth
     /// </summary>
     Vector3 dir = Vector3.zero;
 
+    float walkSoundVolume = 1.0f;
+    float AttackSoundVolume = 0.7f;
 
     /// <summary>
     /// 애니메이션 용 
@@ -32,8 +34,6 @@ public class Player : MonoBehaviour, IHealth
     /// 다른 행동중 움직임을 제한하기 위해
     /// </summary>
     bool canMove = true;
-
-    Monster monster;
 
     /// <summary>
     /// 체력 관련 변수들
@@ -227,7 +227,6 @@ public class Player : MonoBehaviour, IHealth
 
     private void OnAttackInput(InputAction.CallbackContext obj)
     {
-        Debug.Log("attack");
         anim.SetBool("IsMove", false);
         anim.SetTrigger("AttackOn");
     }
@@ -417,6 +416,22 @@ public class Player : MonoBehaviour, IHealth
     public void IsSkillUseOff()
     {
         isSkillUsing = false;
+    }
+
+    /// <summary>
+    /// 유니티 애니메이션에서 이벤트로 활성화 할 함수
+    /// </summary>
+    public void AttackSoundStart()
+    {
+        SoundPlayer.Instance?.PlaySound(SoundType.Sound_Attack, AttackSoundVolume);
+    }
+
+    /// <summary>
+    /// 유니티 애니메이션에서 이벤트로 활성화 할 함수
+    /// </summary>
+    public void WalkSoundStart()
+    {
+        SoundPlayer.Instance?.PlaySound(SoundType.Sound_Walk, walkSoundVolume);
     }
 
 }
