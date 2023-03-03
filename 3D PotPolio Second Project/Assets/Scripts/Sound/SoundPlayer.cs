@@ -39,7 +39,7 @@ public class SoundPlayer : MonoBehaviour
 
         for(int i = 0; i < audioClips_Effect.Length; i++)
         {
-            //Enum.Parse는 (Type enumType(Enum의 이름), string value(해당 Enum의 멤버 string 이름))
+            //Enum.Parse는 Type enumType(Enum의 이름), string value(해당 Enum의 멤버 string 이름))
             //을 통해 object로 리턴하고 캐스팅해 원하는 타입으로 받을 수 있다
             //등록된 오디오클립의 이름이 Enum의 멤버라고 했으므로 오디오클립 파일명과 Enum멤버의 이름이 같아야한다
             dic_EffectSound.Add((SoundType)System.Enum.Parse(typeof(SoundType), audioClips_Effect[i].name), audioClips_Effect[i]);
