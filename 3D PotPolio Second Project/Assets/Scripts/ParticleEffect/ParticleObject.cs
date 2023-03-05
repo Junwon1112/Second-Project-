@@ -2,13 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(ParticleSystem))]
+
 public class ParticleObject : MonoBehaviour
 {
     [SerializeField]
     protected ParticleSystem particleSystemSource;
-
-    IEnumerator particlePlayTime = null;
 
     /// <summary>
     /// 파티클 시스템의 프로퍼티를 변경하려면 MainModule을 통해 접근해야 한다고 한다
@@ -16,7 +14,6 @@ public class ParticleObject : MonoBehaviour
     public ParticleSystem ParticleSystemSource
     {
         get { return particleSystemSource; }
-        set { particleSystemSource = value; }
     }
 
     private void Awake()

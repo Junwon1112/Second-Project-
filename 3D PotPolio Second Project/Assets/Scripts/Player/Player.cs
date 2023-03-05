@@ -429,9 +429,10 @@ public class Player : MonoBehaviour, IHealth
     /// <summary>
     /// 유니티 애니메이션에서 이벤트로 활성화 할 함수
     /// </summary>
-    public void WalkSoundStart()
+    public void WalkSoundAndEffectStart()
     {
         SoundPlayer.Instance?.PlaySound(SoundType.Sound_Walk, walkSoundVolume);
+        ParticlePlayer.Instance?.PlayParticle(ParticleType.ParticleSystem_Walk, this.transform, false);
     }
 
 }
