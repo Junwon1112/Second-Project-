@@ -53,6 +53,10 @@ public class Monster : MonoBehaviour, IHealth
     float maxHP = 100;
     float ratio;
 
+    Slider hpSlider;
+
+    Animator anim;
+
     public float giveExp = 30.0f;
 
     float attackDamage = 10;
@@ -63,6 +67,11 @@ public class Monster : MonoBehaviour, IHealth
 
     bool isAttackContinue = false;
     public bool playerTriggerOff = false;
+
+    public Transform CharacterTransform
+    {
+        get { return this.transform; }
+    }
 
     /// <summary>
     /// 공격력과 관련된 프로퍼티
@@ -96,7 +105,8 @@ public class Monster : MonoBehaviour, IHealth
         set 
         {
             hp = value;
-            if(hp <= 0 && !isDie)
+
+            if (hp <= 0 && !isDie)
             {
                 anim.SetBool("isDie", true);
                 SetMonsterState(MonsterState.die);
@@ -114,9 +124,7 @@ public class Monster : MonoBehaviour, IHealth
         get { return maxHP; }
     }
    
-    Slider hpSlider;
 
-    Animator anim;
 
 
     /// <summary>
@@ -178,7 +186,7 @@ public class Monster : MonoBehaviour, IHealth
     /// </summary>
     private void Update()
     {
-        
+        LookingCameraHPBar();
 
         if(isPatrol)
         {
@@ -430,6 +438,14 @@ public class Monster : MonoBehaviour, IHealth
     public void SetHP()
     {
         hpSlider.value = HP / MaxHP;
+    }
+
+    /// <summary>
+    /// Hp바가 항상 플레이어를 보도록 하는 함수
+    /// </summary>
+    private void LookingCameraHPBar()
+    {
+        hpSlider.transform.LookAt(Camera.main.transform.position);
     }
 
     /// <summary>

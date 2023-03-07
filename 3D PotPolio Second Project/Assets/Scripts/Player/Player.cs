@@ -89,6 +89,11 @@ public class Player : MonoBehaviour, IHealth
 
     SkillUse[] skillUses;
 
+    public Transform CharacterTransform
+    {
+        get { return this.transform; }
+    }
+
     public float HP
     {
         get { return hp; }
@@ -362,6 +367,7 @@ public class Player : MonoBehaviour, IHealth
         {
             weaponPrefab = tempPlayerWeapon.gameObject;
             weaponCollider = this.weaponPrefab.GetComponent<CapsuleCollider>();
+            weaponCollider.enabled = false;
             isFindWeapon = true;
             Debug.Log("무기찾음");
         }

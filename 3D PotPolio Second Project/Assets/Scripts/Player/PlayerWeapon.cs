@@ -52,9 +52,11 @@ public class PlayerWeapon : MonoBehaviour, IBattle
     {
         if(target.HP >= 0)
         {
+            float realTakeDamage = AttackDamage - target.Defence;
+            target.HP -= (realTakeDamage);
 
-            target.HP -= (AttackDamage - target.Defence);
-
+            DMGTextPlayer.Instance?.CreateDMGText(target.CharacterTransform, target.CharacterTransform.position + new Vector3(0,1.0f, 0),
+                target.CharacterTransform.rotation , realTakeDamage);
             if (target.HP <= 0)
             {
                 isCheckExp = true;
@@ -71,8 +73,11 @@ public class PlayerWeapon : MonoBehaviour, IBattle
     {
         if (target.HP >= 0)
         {
+            float realTakeDamage = SkillDamage - target.Defence;
+            target.HP -= (realTakeDamage);
 
-            target.HP -= (SkillDamage - target.Defence);
+            DMGTextPlayer.Instance?.CreateDMGText(target.CharacterTransform, target.CharacterTransform.position + new Vector3(0, 1.0f, 0),
+                target.CharacterTransform.rotation, realTakeDamage);
 
             if (target.HP <= 0)
             {

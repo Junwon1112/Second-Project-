@@ -7,6 +7,7 @@ using UnityEngine;
 /// </summary>
 public interface IHealth
 {
+    public Transform CharacterTransform { get; }
     public float HP { get; set; }
     public float MaxHP { get; }
 
