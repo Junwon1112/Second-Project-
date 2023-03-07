@@ -10884,6 +10884,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 4594242059299863690, guid: 6737fa41af5b77f4298c4de0fb3df287, type: 3}
+      propertyPath: _particles.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 4594242059299863690, guid: 6737fa41af5b77f4298c4de0fb3df287, type: 3}
+      propertyPath: _particles.Array.data[3]
+      value: 
+      objectReference: {fileID: 100000, guid: c36b1a3f99ce18d488a671201ea27487, type: 3}
     - target: {fileID: 4594242059299863691, guid: 6737fa41af5b77f4298c4de0fb3df287, type: 3}
       propertyPath: m_Name
       value: ParticleManager

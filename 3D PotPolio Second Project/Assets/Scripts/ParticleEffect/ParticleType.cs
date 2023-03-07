@@ -8,6 +8,6 @@ public enum ParticleType
     None = 0,
     ParticleSystem_Hit,
     ParticleSystem_Walk,
-    ParticleSystem_SkillEffect1
-      
+    ParticleSystem_Buff,
+    ParticleSystem_WheelWind
 }

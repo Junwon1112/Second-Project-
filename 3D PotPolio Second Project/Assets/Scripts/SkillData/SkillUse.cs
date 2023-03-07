@@ -53,12 +53,12 @@ public class SkillUse : MonoBehaviour
                 SkillData_Duration tempSkill_Duration = GameManager.Instance.SkillDataManager.FindSkill_Duration(skillData.skillId);
                 float skillUsingTime = tempSkill_Duration.skillDuration;
 
-                float compensateTime = 1.0f;
-                Vector3 compensatePosition = new Vector3(0, 1.3f, 0);
-                Quaternion compensateRotation = new Quaternion(0, 0, 0, 0);
+                float compensateTime = 0.5f;
+                Quaternion compensateRotaion = Quaternion.Euler(-90.0f, 0.0f, 0.0f);
+                Vector3 compensatePosition = new Vector3(0, -1.5f, 0);
 
-                ParticlePlayer.Instance?.PlayParticle(ParticleType.ParticleSystem_SkillEffect1, weapon.transform, 
-                    weapon.transform.position + compensatePosition, weapon.transform.rotation, skillUsingTime+ compensateTime);
+                ParticlePlayer.Instance?.PlayParticle(ParticleType.ParticleSystem_WheelWind, player.transform, 
+                    player.transform.position + compensatePosition, player.transform.rotation * compensateRotaion, skillUsingTime+ compensateTime);
 
                 StartCoroutine(SkillDurationTime(skillUsingTime));
             }
