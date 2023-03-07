@@ -91,7 +91,11 @@ public class PlayerWeapon : MonoBehaviour, IBattle
         //플레이어 칼에있는 컬라이더의 트리거
         if (other.CompareTag("Monster"))
         {
+            Vector3 weaponPosition = transform.position;
+
             SoundPlayer.Instance?.PlaySound(SoundType.Sound_Hit);
+            ParticlePlayer.Instance?.PlayParticle(ParticleType.ParticleSystem_Hit, other.ClosestPoint(transform.position), transform.rotation);
+
 
             Monster monster;
             monster = other.GetComponent<Monster>();
@@ -102,7 +106,7 @@ public class PlayerWeapon : MonoBehaviour, IBattle
             }
             else
             {
-                StartCoroutine(AttackStopEffect());
+                //StartCoroutine(AttackStopEffect());
                 SkillAttack(monster);
             }
             
@@ -127,5 +131,6 @@ public class PlayerWeapon : MonoBehaviour, IBattle
         yield return new WaitForSecondsRealtime(AttackStopEffectTime);
         Time.timeScale = 1.0f;
     }
+
 
 }

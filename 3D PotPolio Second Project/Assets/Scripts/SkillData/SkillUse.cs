@@ -51,7 +51,16 @@ public class SkillUse : MonoBehaviour
             if(skillData.skillType == SkillTypeCode.Skill_Duration)
             {
                 SkillData_Duration tempSkill_Duration = GameManager.Instance.SkillDataManager.FindSkill_Duration(skillData.skillId);
-                StartCoroutine(SkillDurationTime(tempSkill_Duration.skillDuration));
+                float skillUsingTime = tempSkill_Duration.skillDuration;
+
+                float compensateTime = 1.0f;
+                Vector3 compensatePosition = new Vector3(0, 1.3f, 0);
+                Quaternion compensateRotation = new Quaternion(0, 0, 0, 0);
+
+                ParticlePlayer.Instance?.PlayParticle(ParticleType.ParticleSystem_SkillEffect1, weapon.transform, 
+                    weapon.transform.position + compensatePosition, weapon.transform.rotation, skillUsingTime+ compensateTime);
+
+                StartCoroutine(SkillDurationTime(skillUsingTime));
             }
         }
     }
@@ -74,4 +83,5 @@ public class SkillUse : MonoBehaviour
     {
         weapon = FindObjectOfType<PlayerWeapon>();
     }
+
 }

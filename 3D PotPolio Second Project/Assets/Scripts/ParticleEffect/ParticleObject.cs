@@ -31,12 +31,26 @@ public class ParticleObject : MonoBehaviour
         StartCoroutine(DestroyAfterPlay());
     }
 
+    public void Play(float playTime)
+    {
+        particleSystemSource.Play();
+        StartCoroutine(DestroyAfterPlay(playTime));
+        
+    }
+
+
     IEnumerator DestroyAfterPlay()
     {
         float lifeTime = particleSystemSource.main.duration;
         yield return new WaitForSeconds(lifeTime);
         DestroyParticle();
-        
+    }
+
+    IEnumerator DestroyAfterPlay(float playTime)
+    {
+        float lifeTime = playTime;
+        yield return new WaitForSeconds(lifeTime);
+        DestroyParticle();
     }
 
     public void Pause()

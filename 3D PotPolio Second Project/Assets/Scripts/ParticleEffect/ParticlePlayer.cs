@@ -65,33 +65,87 @@ public class ParticlePlayer : MonoBehaviour
         Instance = null;
     }
 
+
+
     /// <summary>
     /// 타입명을 통해 딕셔너리에서 게임오브젝트를 리턴받고 해당 오브젝트를 트랜스폼 파라미터에 종속시킬지 위치 값만 받을지 정한다
     /// </summary>
     /// <param name="particleType">만들고 싶은 파티클에 해당되는 타입명 </param>
-    /// <param name="parentTransform">만들어진 파티클의 부모가 될 오브젝트</param>
-    /// /// <param name="hasParent">트랜스폼을 오브젝트의 부모로 설정할지 말지</param>
-    /// <returns></returns>
-    protected ParticleObject CreateParticleObject(ParticleType particleType, Transform parentTransform, bool hasParent)
+    /// <param name="parentTransform">만들어질 파티클의 부모</param>
+    /// <param name="position">만들어진 파티클 위치</param>
+    /// <param name="rotation">만들어진 파티클의 회전</param>
+    /// <returns>파티클을 플레이 하는 ParticleObject</returns>
+    protected ParticleObject CreateParticleObject(ParticleType particleType, Transform parentTransform, Vector3 position, Quaternion rotation)
     {
         _particlesDict.TryGetValue(particleType, out GameObject gameObj);   //프리팹에 직접 접근함
 
-        GameObject newParticleObj = Instantiate(gameObj, parentTransform);
+        GameObject newParticleObj = Instantiate(gameObj, position, rotation, parentTransform);
         ParticleObject particleObj = newParticleObj.AddComponent<ParticleObject>();
-        if (hasParent)
-        {
-            newParticleObj.transform.SetParent(parentTransform, false);   
-        }
 
         return particleObj;
     }
 
-    public void PlayParticle(ParticleType particleType, Transform parentTransform, bool hasParent)
+
+    protected ParticleObject CreateParticleObject(ParticleType particleType, Vector3 position, Quaternion rotation)
     {
-        ParticleObject particleObj = CreateParticleObject(particleType, parentTransform, hasParent);
+        _particlesDict.TryGetValue(particleType, out GameObject gameObj);   //프리팹에 직접 접근함
+
+        GameObject newParticleObj = Instantiate(gameObj, position, rotation);
+        ParticleObject particleObj = newParticleObj.AddComponent<ParticleObject>();
+
+
+        return particleObj;
+    }
+
+    protected ParticleObject CreateParticleObject(ParticleType particleType, Transform parentTransform)
+    {
+        _particlesDict.TryGetValue(particleType, out GameObject gameObj);   //프리팹에 직접 접근함
+
+        GameObject newParticleObj = Instantiate(gameObj, transform, false);
+        ParticleObject particleObj = newParticleObj.AddComponent<ParticleObject>();
+
+        return particleObj;
+    }
+
+
+    public void PlayParticle(ParticleType particleType, Transform parentTransform, Vector3 position, Quaternion rotation, float playTime)
+    {
+        ParticleObject particleObj = CreateParticleObject(particleType, parentTransform, position, rotation);
+
+        particleObj.Play(playTime);
+    }
+    public void PlayParticle(ParticleType particleType, Vector3 position, Quaternion rotation, float playTime)
+    {
+        PlayParticle(particleType, null, position, rotation, playTime );
+    }
+
+    public void PlayParticle(ParticleType particleType, Transform parentTransform, float playTime)
+    {
+        ParticleObject particleObj = CreateParticleObject(particleType, parentTransform);
+
+        particleObj.Play(playTime);
+    }
+
+
+    public void PlayParticle(ParticleType particleType, Transform parentTransform,Vector3 position, Quaternion rotation)
+    {
+        ParticleObject particleObj = CreateParticleObject(particleType, parentTransform, position, rotation);
 
         particleObj.Play();
     }
+    public void PlayParticle(ParticleType particleType, Vector3 position, Quaternion rotation)
+    {
+        PlayParticle(particleType, null, position, rotation);
+    }
+
+    public void PlayParticle(ParticleType particleType, Transform parentTransform)
+    {
+        ParticleObject particleObj = CreateParticleObject(particleType, parentTransform);
+
+        particleObj.Play();
+    }
+
+
 
 
 

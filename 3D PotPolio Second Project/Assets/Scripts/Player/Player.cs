@@ -432,7 +432,7 @@ public class Player : MonoBehaviour, IHealth
     public void WalkSoundAndEffectStart()
     {
         SoundPlayer.Instance?.PlaySound(SoundType.Sound_Walk, walkSoundVolume);
-        ParticlePlayer.Instance?.PlayParticle(ParticleType.ParticleSystem_Walk, this.transform, false);
+        ParticlePlayer.Instance?.PlayParticle(ParticleType.ParticleSystem_Walk, transform.position, transform.rotation);
     }
 
 }
