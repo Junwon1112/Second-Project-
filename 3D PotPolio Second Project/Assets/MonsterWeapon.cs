@@ -15,7 +15,7 @@ public class MonsterWeapon : MonoBehaviour, IBattle
     public float Defence { get; set; }
     private void Awake()
     {
-        monster = GameObject.FindGameObjectWithTag("Monster").GetComponent<Monster>();
+        monster = transform.parent.GetComponent<Monster>();
     }
 
     private void Start()

@@ -36,7 +36,7 @@ public class ParticlePlayer : MonoBehaviour
         }
         else
         {
-            if(Instance != null)
+            if(Instance != this)
             {
                 Destroy(this.gameObject);
             }

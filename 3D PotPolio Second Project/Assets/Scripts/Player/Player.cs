@@ -18,6 +18,12 @@ public class Player : MonoBehaviour, IHealth
     public PlayerInput input;
 
     /// <summary>
+    /// 죽었을 때 리지드바디 변화용
+    /// </summary>
+    Rigidbody rigid;
+
+
+    /// <summary>
     /// 이동 방향 받고 리턴용
     /// </summary>
     Vector3 dir = Vector3.zero;
@@ -89,6 +95,8 @@ public class Player : MonoBehaviour, IHealth
 
     SkillUse[] skillUses;
 
+    bool isDie = false;
+
     public Transform CharacterTransform
     {
         get { return this.transform; }
@@ -98,9 +106,15 @@ public class Player : MonoBehaviour, IHealth
     {
         get { return hp; }
         set 
-        { 
-            hp = value; 
-
+        {
+            if(!isDie)
+            {
+                hp = value;
+                if (hp <= 0)
+                {
+                    Die();
+                }
+            }
         }
     }
 
@@ -153,6 +167,7 @@ public class Player : MonoBehaviour, IHealth
     {
         input = new PlayerInput();
         anim = GetComponent<Animator>();
+        rigid = GetComponent<Rigidbody>();
         hpBar = GameObject.Find("HpSlider").GetComponent<Slider>();
         player = GetComponent<Player>();
         playerInventory = GetComponentInChildren<Inventory>();
@@ -200,6 +215,10 @@ public class Player : MonoBehaviour, IHealth
         potion = new ItemData_Potion();
         SetExp();
         myWeapon = new ItemData_Weapon();
+        if(!isDie)
+        {
+            Time.timeScale = 1.0f;
+        }
     }
 
     private void Update()
@@ -213,7 +232,7 @@ public class Player : MonoBehaviour, IHealth
 
     private void OnMoveInput(InputAction.CallbackContext obj)
     {
-        if(canMove)
+        if(canMove && !isDie)
         {
             //2개의 축만 필요해 2d vector로 만들면 readvalue값을 2d로 받아야만 한다.
             //이후 3d로 변환하는 과정을 거친다.
@@ -232,45 +251,32 @@ public class Player : MonoBehaviour, IHealth
 
     private void OnAttackInput(InputAction.CallbackContext obj)
     {
-        anim.SetBool("IsMove", false);
-        anim.SetTrigger("AttackOn");
+        if(!isDie)
+        {
+            anim.SetBool("IsMove", false);
+            anim.SetTrigger("AttackOn");
+        }
     }
-
-    //private void OnTriggrEnter(Collider other)
-    //{
-    //    //플레이어 칼에있는 컬라이더의 트리거
-    //    if(other.CompareTag("Monster"))
-    //    {
-    //        Monster monster;
-    //        monster = other.GetComponent<Monster>();
-    //        if(monster.playerTriggerOff == false)
-    //        {
-    //            Attack(monster);
-    //            monster.SetHP();
-                
-    //        }
-    //        monster.playerTriggerOff = false;
-
-    //    }
-    //}
 
     private void OnLookInput(InputAction.CallbackContext obj)
     {
-        float moveX = obj.ReadValue<Vector2>().x;
-        float moveY = obj.ReadValue<Vector2>().y;
+        if(!isDie)
+        {
+            float moveX = obj.ReadValue<Vector2>().x;
+            float moveY = obj.ReadValue<Vector2>().y;
 
-        //좌우 회전
-        turnToY = turnToY + moveX * turnSpeed * Time.deltaTime; 
+            //좌우 회전
+            turnToY = turnToY + moveX * turnSpeed * Time.deltaTime;
 
-        //위아래 쳐다보기, 카메라 스크립트 구현 후 카메라만 움직이게 할 예정
-        turnToX = turnToX + moveY * turnSpeed * Time.deltaTime; 
-        
-        //turnToY = Mathf.Clamp(turnToY, -80, 80);    //최대값 설정
-        turnToX = Mathf.Clamp(turnToX, -20, 20);
+            //위아래 쳐다보기, 카메라 스크립트 구현 후 카메라만 움직이게 할 예정
+            turnToX = turnToX + moveY * turnSpeed * Time.deltaTime;
 
-        transform.eulerAngles = new Vector3(0, turnToY, 0);
+            //turnToY = Mathf.Clamp(turnToY, -80, 80);    //최대값 설정
+            turnToX = Mathf.Clamp(turnToX, -20, 20);
 
+            transform.eulerAngles = new Vector3(0, turnToY, 0);
 
+        }
     }
 
     /// <summary>
@@ -388,6 +394,26 @@ public class Player : MonoBehaviour, IHealth
     {
         attackDamage -= myWeapon.attackDamage;
         myWeapon = null;
+    }
+
+    private void Die()
+    {
+        isDie = true;
+        canMove = false;
+        anim.SetBool("isDie", true);
+        rigid.drag = 1000;
+        rigid.angularDrag = 1000;
+        rigid.isKinematic = true;
+        rigid.mass = 100;
+        StartCoroutine(CoDie());
+    }
+
+    IEnumerator CoDie()
+    {
+        float dieWaitingTime = 4.0f;
+        yield return new WaitForSeconds(dieWaitingTime);
+        FadeInOut.Instance.Fadeout();
+        Time.timeScale = 0.0f;
     }
 
     /// <summary>

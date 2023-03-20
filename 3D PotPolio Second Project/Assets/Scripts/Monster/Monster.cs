@@ -59,7 +59,9 @@ public class Monster : MonoBehaviour, IHealth
 
     public float giveExp = 30.0f;
 
-    float attackDamage = 10;
+
+    float attackDamage = 60;
+  
     float defence = 3;
 
     float attackDelay = 1.5f;

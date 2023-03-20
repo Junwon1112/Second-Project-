@@ -86,4 +86,9 @@ public class GameManager : MonoBehaviour
         itemDataManager = FindObjectOfType<ItemDataManager>();
         skillDataManager = FindObjectOfType<SkillDataManager>();
     }
+
+    private void Start()
+    {
+        FadeInOut.Instance.FadeIn();
+    }
 }
