@@ -123,7 +123,7 @@ public class PlayerWeapon : MonoBehaviour, IBattle
                 player.SetExp();
                 if(player.Exp >= player.MaxExp)
                 {
-                    player.LevelUp();
+                    player.newDel_LevelUp();    //레벨업 델리게이트
                 }
             }
 

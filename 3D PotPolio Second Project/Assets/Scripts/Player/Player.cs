@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Animations;
 using UnityEngine.UI;
+using TMPro;
 
 public class Player : MonoBehaviour, IHealth
 {
@@ -57,6 +58,20 @@ public class Player : MonoBehaviour, IHealth
 
     [SerializeField]
     int level = 1;
+    TextMeshProUGUI lvText;
+
+    /// <summary>
+    /// 스킬에 사용할 스킬포인트, 레벨업시 증가
+    /// </summary>
+    uint skillPoint = 1;
+
+    /// <summary>
+    /// 레벨업하면 레벨업 함수와 스킬UI에서 스킬포인트를 플레이어 스킬포인트와 동기화 해주는 함수 등록
+    /// </summary>
+    public delegate void del_LevelUP();
+    public del_LevelUP newDel_LevelUp;
+
+    SkillUI skillUI;
 
     /// <summary>
     /// 회전 관련 변수들
@@ -142,6 +157,12 @@ public class Player : MonoBehaviour, IHealth
         }
     }
 
+    public uint SkillPoint
+    {
+        get { return skillPoint; }
+        set { skillPoint = value; }
+    }
+
     /// <summary>
     /// private여도 유니티에서 수치바꿀수 있게 해주는 것
     /// </summary>
@@ -169,12 +190,15 @@ public class Player : MonoBehaviour, IHealth
         anim = GetComponent<Animator>();
         rigid = GetComponent<Rigidbody>();
         hpBar = GameObject.Find("HpSlider").GetComponent<Slider>();
+        expBar = GameObject.Find("ExpSlider").GetComponent<Slider>();
+        lvText = GameObject.Find("Level_num").GetComponent<TextMeshProUGUI>();
         player = GetComponent<Player>();
         playerInventory = GetComponentInChildren<Inventory>();
         playerInventoryUI = FindObjectOfType<InventoryUI>();
         weaponHandTransform = FindObjectOfType<FindWeaponHand>().transform;
-        expBar = GameObject.Find("ExpSlider").GetComponent<Slider>();
+        
         skillUses = FindObjectsOfType<SkillUse>();
+        skillUI = FindObjectOfType<SkillUI>();
     }
 
     /// <summary>
@@ -212,10 +236,15 @@ public class Player : MonoBehaviour, IHealth
     {
         hp = maxHp;
         SetHP();
-        potion = new ItemData_Potion();
         SetExp();
+        SetLevel();
+        potion = new ItemData_Potion();
         myWeapon = new ItemData_Weapon();
-        if(!isDie)
+
+        newDel_LevelUp = LevelUp;
+
+
+        if (!isDie)
         {
             Time.timeScale = 1.0f;
         }
@@ -351,9 +380,32 @@ public class Player : MonoBehaviour, IHealth
         expBar.value = Exp / MaxExp;
     }
 
+    public void SetLevel()
+    {
+        lvText.text = level.ToString();
+    }
+
+    public void SetSkillPointUp()
+    {
+        skillPoint++;
+        skillUI.SynchronizeSkillPoint();
+    }
+
+    public void SetSkillPointDown()
+    {
+        if(SkillPoint > 0)
+        {
+            skillPoint--;
+            skillUI.SynchronizeSkillPoint();
+        }
+    }
+
     public void LevelUp()
     {
         level++;
+        SetLevel();
+        SetSkillPointUp();
+
         Exp -= MaxExp;
         MaxExp *= 1.3f;
         SetExp();

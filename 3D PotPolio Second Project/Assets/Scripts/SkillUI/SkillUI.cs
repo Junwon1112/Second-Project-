@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 /// <summary>
 /// 스킬창 UI에 대한 클래스
@@ -18,7 +19,10 @@ public class SkillUI : MonoBehaviour
     UI_Player_MoveOnOff ui_OnOff;
 
     Button skillCloseButton;
-    
+
+    TextMeshProUGUI skillPoint_Num;
+
+    UpDownButton upDownButton;
 
     private void Awake()
     {
@@ -27,6 +31,8 @@ public class SkillUI : MonoBehaviour
         skillCanvasGroup = GetComponent<CanvasGroup>();
         ui_OnOff = GetComponentInParent<UI_Player_MoveOnOff>();
         skillCloseButton = transform.Find("CloseButton").GetComponent<Button>();
+        skillPoint_Num = transform.Find("SkillPointUI").GetChild(1).GetComponent<TextMeshProUGUI>();
+        upDownButton = FindObjectOfType<UpDownButton>();
     }
 
     private void OnEnable()
@@ -51,13 +57,16 @@ public class SkillUI : MonoBehaviour
             skillSlotUIs[i].skillData = skillDatas[i];
             skillSlotUIs[i].SetSkillUIInfo();
         }
+
+        SynchronizeSkillPoint();
+
+        GameManager.Instance.MainPlayer.newDel_LevelUp += SynchronizeSkillPoint;
         
     }
 
     private void OnSkillWindowOnOff(UnityEngine.InputSystem.InputAction.CallbackContext obj)
     {
         OnSkillOnOffSetting();
-        
     }
 
     private void OnSkillOnOffSetting()
@@ -84,4 +93,11 @@ public class SkillUI : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 플레이어 스킬포인트와 동기화
+    /// </summary>
+    public void SynchronizeSkillPoint()
+    {
+        skillPoint_Num.text = GameManager.Instance.MainPlayer.SkillPoint.ToString();
+    }
 }
