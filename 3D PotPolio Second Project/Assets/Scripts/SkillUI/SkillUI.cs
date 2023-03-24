@@ -20,9 +20,8 @@ public class SkillUI : MonoBehaviour
 
     Button skillCloseButton;
 
+    
     TextMeshProUGUI skillPoint_Num;
-
-    UpDownButton upDownButton;
 
     private void Awake()
     {
@@ -32,7 +31,13 @@ public class SkillUI : MonoBehaviour
         ui_OnOff = GetComponentInParent<UI_Player_MoveOnOff>();
         skillCloseButton = transform.Find("CloseButton").GetComponent<Button>();
         skillPoint_Num = transform.Find("SkillPointUI").GetChild(1).GetComponent<TextMeshProUGUI>();
-        upDownButton = FindObjectOfType<UpDownButton>();
+
+        for(int i = 0; i < skillDatas.Count; i++)
+        {
+            if(skillDatas[i] != null)
+            skillDatas[i].SkillLevel = 0;
+        }
+
     }
 
     private void OnEnable()
@@ -54,8 +59,17 @@ public class SkillUI : MonoBehaviour
 
         for(int i = 0; i < skillSlotUIs.Length; i++)
         {
-            skillSlotUIs[i].skillData = skillDatas[i];
-            skillSlotUIs[i].SetSkillUIInfo();
+            if (skillDatas[i] == null)
+            {
+                Destroy(skillSlotUIs[i].transform.parent.gameObject);
+            }
+            else
+            {
+                skillSlotUIs[i].skillData = skillDatas[i];
+                skillSlotUIs[i].upDownButton.SkillLevelToText();
+                skillSlotUIs[i].SetSkillUIInfo();
+            }
+           
         }
 
         SynchronizeSkillPoint();

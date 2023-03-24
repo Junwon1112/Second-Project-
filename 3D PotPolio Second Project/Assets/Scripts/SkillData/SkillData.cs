@@ -20,17 +20,30 @@ public class SkillData : ScriptableObject
     public int requireLevel;
     public float skillCooltime;
     public float skillDamage;
+    public uint skillLevel = 0;
 
     public SkillTypeCode skillType;
 
     public string skillStateName;
     public string skillInformation;
 
+    public uint SkillLevel
+    {
+        get { return skillLevel; }
+        set 
+        { 
+            if( value >=0)
+            {
+                skillLevel = value;
+            }
+        }
+    }
+
     public virtual float SetSkillDamage(float attackDamage)
     {
-        float finalSkillDamage = 0;
+        float finalSkillDamage;
 
-        finalSkillDamage = skillDamage + (attackDamage * 0.7f);
+        finalSkillDamage = skillDamage * (skillLevel + 1) + (attackDamage * 0.7f);
 
 
         return finalSkillDamage;

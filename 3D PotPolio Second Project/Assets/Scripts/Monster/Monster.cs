@@ -57,10 +57,10 @@ public class Monster : MonoBehaviour, IHealth
 
     Animator anim;
 
-    public float giveExp = 30.0f;
+    public float giveExp = 20.0f;
 
 
-    float attackDamage = 60;
+    float attackDamage = 30;
   
     float defence = 3;
 

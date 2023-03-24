@@ -27,12 +27,18 @@ public class SkillSlotUI : MonoBehaviour, IBeginDragHandler, IEndDragHandler, ID
     TextMeshProUGUI skillInfo;
     TempSlotSkillUI tempSlotSkillUI;
 
+    uint currentSkillLevel;
+
+    public UpDownButton upDownButton;
+
     private void Awake()
     {
         skillIcon = GetComponent<Image>();
         skillInfo = transform.parent.GetComponentInChildren<TextMeshProUGUI>();
         tempSlotSkillUI = GameObject.FindObjectOfType<TempSlotSkillUI>();
+        upDownButton = transform.parent.GetComponentInChildren<UpDownButton>();
     }
+
 
     /// <summary>
     /// 스킬 아이콘 위에 일정시간 올려둘시 Info가 나오는 메서드
@@ -50,6 +56,8 @@ public class SkillSlotUI : MonoBehaviour, IBeginDragHandler, IEndDragHandler, ID
             skillInfo.text = "No Assigned Skill";
         }
     }
+
+
 
     /// <summary>
     /// 드래그 시작시 실행될 메서드, 임시 슬롯 생성
