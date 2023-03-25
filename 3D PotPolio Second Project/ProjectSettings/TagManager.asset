@@ -9,6 +9,7 @@ TagManager:
   - PatrolPoint
   - SplitUI
   - DropUI
+  - FxTemporaire
   layers:
   - Default
   - TransparentFX
@@ -20,7 +21,7 @@ TagManager:
   - Player
   - Monster
   - Item
-  - 
+  - MiniMapMarker
   - 
   - 
   - 
