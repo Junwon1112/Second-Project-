@@ -48,8 +48,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.TOKEN }}
         with:
           tag_name: ${{ env.custom_tag }}-${{ GITHUB.RUN_NUMBER }}
-          release_name: Latest_Unstable
-          body: Keep_Testing
+          release_name: Latest-Auto-Uploading
+          body: Thank-you-for-visiting.-Please-download-the-Asset-below-this-page. 
           draft: false
           prerelease: false
 
