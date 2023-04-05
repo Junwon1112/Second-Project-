@@ -1,0 +1,76 @@
+name: Release project
+
+on:
+  workflow_run:
+    workflows:
+      - 'Build project'
+    branches:
+      - 'release/release-*'
+    types:
+      - completed
+
+jobs:
+  buildForAllSupportedPlatforms:
+    name: Release for ${{ matrix.targetPlatform }}
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    strategy:
+      fail-fast: false
+      matrix:
+        targetPlatform:
+          - StandaloneWindows # Build a Windows standalone.
+    outputs:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+          lfs: true
+      - uses: dawidd6/action-download-artifact@v2
+        with:
+          name: Build-${{ matrix.targetPlatform }}
+          path: build/${{ matrix.targetPlatform }}
+          workflow: main.yml
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          
+      #- run: ls -FlasR "build/${{ matrix.targetPlatform }}"
+          
+      - run: zip -r "build/Build-${{ matrix.targetPlatform }}.zip" "build/${{ matrix.targetPlatform }}"
+          
+
+      - name: Replace part of tag
+        run: echo "custom_tag=latest-unstable" >> $GITHUB_ENV
+
+      - name: Create release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.TOKEN }}
+        with:
+          tag_name: ${{ env.custom_tag }}-${{ GITHUB.RUN_NUMBER }}
+          release_name: Latest_Unstable
+          body: Keep_Testing
+          draft: false
+          prerelease: false
+
+      - name: list up
+        run: |
+          ls -al
+          echo "Now PWD"
+          pwd
+          ls -al ./build
+          echo "OOOOOOOOOOOOOOOOOO"
+          ls -al ./build/${{ matrix.targetPlatform }}
+          echo "asdf"
+          echo ${{ steps.create_release.outputs.upload_url }}
+        shell: bash
+        
+      - name: Upload asset to release
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: build/Build-${{ matrix.targetPlatform }}.zip
+          asset_name: Build-${{ matrix.targetPlatform }}.zip
+          asset_content_type: application/zip
