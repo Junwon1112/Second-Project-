@@ -9,9 +9,12 @@ using UnityEngine.UI;
 /// </summary>
 public abstract class Base_InteractableObject : MonoBehaviour,IHealth
 {
+    [SerializeField]
+    protected Data_InteractableObject objectData;
+
     protected float hp;
-    protected float maxHP = 50;
-    protected float defence = 0;
+    protected float maxHP;
+    protected float defence;
 
     protected Slider hpSlider;
 
@@ -46,6 +49,7 @@ public abstract class Base_InteractableObject : MonoBehaviour,IHealth
     protected virtual void Awake()
     {
         hpSlider = GetComponentInChildren<Slider>();
+        SetData();
         SetHP();
     }
 
@@ -57,4 +61,13 @@ public abstract class Base_InteractableObject : MonoBehaviour,IHealth
         hpSlider.value = HP / MaxHP;
     }
 
+    /// <summary>
+    /// 처음에 세팅하는 단계고 클래스 내부라 프로퍼티 안거치고 바로 변수에 넣음
+    /// </summary>
+    protected void SetData()
+    {
+        hp = objectData.hp;
+        maxHP = objectData.maxHP;
+        defence = objectData.defence;
+    }
 }
