@@ -32075,6 +32075,13 @@ AnimationClip:
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
+  - time: 0
+    functionName: IsAttackOn
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
   - time: 0.06666667
     functionName: AttackTriggerOn
     data: 
@@ -32084,6 +32091,13 @@ AnimationClip:
     messageOptions: 0
   - time: 0.23333333
     functionName: AttackTriggerOff
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
+  - time: 0.53333336
+    functionName: IsAttackOff
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0

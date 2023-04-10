@@ -12268,7 +12268,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1785351285520561232, guid: ae18e827b6e70394f9698a5c9faa8610, type: 3}
       propertyPath: m_Color.a
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1785351285520561234, guid: ae18e827b6e70394f9698a5c9faa8610, type: 3}
       propertyPath: m_Pivot.x

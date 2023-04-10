@@ -80,7 +80,7 @@ public class Player : MonoBehaviour, IHealth
     float turnToY;
     float turnToZ;
 
-    float turnSpeed = 30.0f;
+    float turnSpeed = 25.0f;
 
     /// <summary>
     /// 아이템 관련 변수
@@ -111,6 +111,8 @@ public class Player : MonoBehaviour, IHealth
     SkillUse[] skillUses;
 
     bool isDie = false;
+    bool isAttack = false;
+    bool isMove = false;
 
     public Transform CharacterTransform
     {
@@ -252,7 +254,7 @@ public class Player : MonoBehaviour, IHealth
 
     private void Update()
     {
-        transform.Translate(dir * Time.deltaTime * 10, Space.Self);
+        transform.Translate(dir * Time.deltaTime * 10, Space.Self);   
         if (dir == Vector3.zero)
         {
             anim.SetBool("IsMove", false);
@@ -261,11 +263,12 @@ public class Player : MonoBehaviour, IHealth
 
     private void OnMoveInput(InputAction.CallbackContext obj)
     {
-        if(canMove && !isDie)
+        
+        if (CanMove())
         {
+            Vector3 tempDir;
             //2개의 축만 필요해 2d vector로 만들면 readvalue값을 2d로 받아야만 한다.
             //이후 3d로 변환하는 과정을 거친다.
-            Vector3 tempDir;
             tempDir = obj.ReadValue<Vector2>();
             dir.x = tempDir.x;
             dir.z = tempDir.y;
@@ -274,14 +277,37 @@ public class Player : MonoBehaviour, IHealth
             anim.SetFloat("DirSignal_Side", dir.x);
             anim.SetBool("IsMove", true);
         }
+        else
+        {
+            StopMove();
+        }
         
+    }
+
+    /// <summary>
+    /// 움직일 수 있는지 체크
+    /// </summary>
+    /// <returns></returns>
+    private bool CanMove()
+    {
+        if (isDie || isAttack || isSkillUsing)
+        {
+            return false;
+        }
+        return true;
+    }
+
+    private void StopMove()
+    {
+        dir = Vector3.zero;
     }
 
 
     private void OnAttackInput(InputAction.CallbackContext obj)
     {
-        if(!isDie)
+        if(!isDie || !isSkillUsing || !isMove)
         {
+            StopMove();
             anim.SetBool("IsMove", false);
             anim.SetTrigger("AttackOn");
         }
@@ -451,7 +477,7 @@ public class Player : MonoBehaviour, IHealth
     private void Die()
     {
         isDie = true;
-        canMove = false;
+        CanMove();
         anim.SetBool("isDie", true);
         rigid.drag = 1000;
         rigid.angularDrag = 1000;
@@ -468,13 +494,39 @@ public class Player : MonoBehaviour, IHealth
         Time.timeScale = 0.0f;
     }
 
+    
+
     /// <summary>
     /// 유니티 애니메이션에서 이벤트로 활성화 할 함수
     /// </summary>
+    
+    public void IsMoveOn()
+    {
+        isMove = true;
+    }
+
+    public void IsMoveOff()
+    {
+        isMove = false;
+    }
+
+    public void IsAttackOn()
+    {
+        isAttack = true;
+    }
+
+    public void IsAttackOff()
+    {
+        isAttack = false;
+    }
+
     public void AttackTriggerOn()
     {
         if(isFindWeapon)
-        weaponCollider.enabled = true;
+        {
+            weaponCollider.enabled = true;
+        }
+        
     }
 
     /// <summary>
@@ -483,7 +535,10 @@ public class Player : MonoBehaviour, IHealth
     public void AttackTriggerOff()
     {
         if(isFindWeapon)
-        weaponCollider.enabled = false;
+        {
+            weaponCollider.enabled = false;
+        }
+        
     }
 
     /// <summary>
