@@ -21,9 +21,9 @@ TagManager:
   - Player
   - Monster
   - Item
-  - MiniMapMarker
+  - EquipItem
   - MapObject
-  - 
+  - MiniMapMarker
   - 
   - 
   - 

@@ -28,6 +28,10 @@ public class Player : MonoBehaviour, IHealth
     /// 이동 방향 받고 리턴용
     /// </summary>
     Vector3 dir = Vector3.zero;
+    /// <summary>
+    /// 이동 중 다른 행위를 한뒤 다시 이동할 때 사용하기 위해 중간 버퍼용
+    /// </summary>
+    Vector3 restartDir = Vector3.zero;
 
     float walkSoundVolume = 1.0f;
     float AttackSoundVolume = 0.7f;
@@ -36,11 +40,6 @@ public class Player : MonoBehaviour, IHealth
     /// 애니메이션 용 
     /// </summary>
     Animator anim;
-
-    /// <summary>
-    /// 다른 행동중 움직임을 제한하기 위해
-    /// </summary>
-    bool canMove = true;
 
     /// <summary>
     /// 체력 관련 변수들
@@ -113,6 +112,7 @@ public class Player : MonoBehaviour, IHealth
     bool isDie = false;
     bool isAttack = false;
     bool isMove = false;
+    bool isKeepMoving = false;
 
     public Transform CharacterTransform
     {
@@ -210,6 +210,7 @@ public class Player : MonoBehaviour, IHealth
     {
         input.Player.Enable();
         input.Player.Move.performed += OnMoveInput;
+        input.Player.Move.canceled += OnMoveInput;
         input.Player.Attack.performed += OnAttackInput;
         input.Player.Look.performed += OnLookInput;
         input.Player.TempItemUse.performed += OnTempItemUse;
@@ -226,6 +227,7 @@ public class Player : MonoBehaviour, IHealth
         input.Player.TestMakeItem.performed -= OnTestMakeItem;
         input.Player.TempItemUse.performed -= OnTempItemUse;
         input.Player.Attack.performed -= OnAttackInput;
+        input.Player.Move.canceled -= OnMoveInput;
         input.Player.Move.performed -= OnMoveInput;
         input.Player.Look.performed -= OnLookInput;
         input.Player.Disable();
@@ -263,25 +265,34 @@ public class Player : MonoBehaviour, IHealth
 
     private void OnMoveInput(InputAction.CallbackContext obj)
     {
-        
         if (CanMove())
         {
+            isKeepMoving = true;
+
             Vector3 tempDir;
             //2개의 축만 필요해 2d vector로 만들면 readvalue값을 2d로 받아야만 한다.
             //이후 3d로 변환하는 과정을 거친다.
             tempDir = obj.ReadValue<Vector2>();
-            dir.x = tempDir.x;
-            dir.z = tempDir.y;
+            
+            restartDir.x = tempDir.x;
+            restartDir.z = tempDir.y;
+
+            dir = restartDir;
 
             anim.SetFloat("DirSignal_Front", dir.z);
             anim.SetFloat("DirSignal_Side", dir.x);
             anim.SetBool("IsMove", true);
         }
-        else
+        //else
+        //{
+        //    StopMove();
+        //}
+        if(obj.canceled)
         {
             StopMove();
+            isKeepMoving = false;
         }
-        
+
     }
 
     /// <summary>
@@ -527,6 +538,17 @@ public class Player : MonoBehaviour, IHealth
             weaponCollider.enabled = true;
         }
         
+    }
+
+    public void IsRestartMove()
+    {
+        if(isKeepMoving)
+        {
+            dir = restartDir;
+            anim.SetFloat("DirSignal_Front", dir.z);
+            anim.SetFloat("DirSignal_Side", dir.x);
+            anim.SetBool("IsMove", true);
+        }
     }
 
     /// <summary>
