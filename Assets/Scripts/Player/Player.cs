@@ -215,7 +215,7 @@ public class Player : MonoBehaviour, IHealth
         input.Player.Look.performed += OnLookInput;
         input.Player.TempItemUse.performed += OnTempItemUse;
         input.Player.TakeItem.performed += OnTakeItem;
-        input.Player.TestMakeItem.performed += OnTestMakeItem;
+        //input.Player.TestMakeItem.performed += OnTestMakeItem;
     }
 
 
@@ -224,7 +224,7 @@ public class Player : MonoBehaviour, IHealth
     /// </summary>
     private void OnDisable()
     {
-        input.Player.TestMakeItem.performed -= OnTestMakeItem;
+        //input.Player.TestMakeItem.performed -= OnTestMakeItem;
         input.Player.TempItemUse.performed -= OnTempItemUse;
         input.Player.Attack.performed -= OnAttackInput;
         input.Player.Move.canceled -= OnMoveInput;
@@ -402,10 +402,10 @@ public class Player : MonoBehaviour, IHealth
     /// Mouse Right Click (UI≤®¡Æ¿÷¿ª ∂ß)
     /// </summary>
     /// <param name="obj"></param>
-    private void OnTestMakeItem(InputAction.CallbackContext obj)    
-    {
-        ItemFactory.MakeItem(ItemIDCode.Basic_Weapon_1, transform.position, Quaternion.identity);
-    }
+    //private void OnTestMakeItem(InputAction.CallbackContext obj)    
+    //{
+    //    ItemFactory.MakeItem(ItemIDCode.Basic_Weapon_1, transform.position, Quaternion.identity);
+    //}
 
     public void SetHP()
     {
