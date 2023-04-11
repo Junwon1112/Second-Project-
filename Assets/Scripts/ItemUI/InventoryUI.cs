@@ -216,6 +216,7 @@ public class InventoryUI : MonoBehaviour
                             equipmentUI.equipSlotUIs[i].SetTempSlotWithData(tempSlotUI.slotUIData, 1);  //장비슬롯 설정
                             GameObject tempWeaponObject;    //장착한 아이템을 무기위치에 만들고 잘 작동되도록 player에서 TakeWeapon을 통해 컴포넌트를 가져온다.
                             tempWeaponObject = ItemFactory.MakeItem(tempSlotUI.slotUIData.ID, Vector3.zero, Quaternion.identity); // player.weaponHandTransform.rotation
+                            tempWeaponObject.layer = 10;    //9(Item)레이어에서 10(EquipItem)으로 변경 -> 아이템을 주울 때 layer로 판단하는데 장착한 무기가 주워지는것을 막기위해  
                             tempWeaponObject.transform.SetParent(player.weaponHandTransform, false);
                             player.TakeWeapon();
                             player.myWeapon = (ItemData_Weapon)tempSlotUI.slotUIData;   //무기에 데미지를 추가하기 위해 플레이어에게 변수로 무기데이터 저장

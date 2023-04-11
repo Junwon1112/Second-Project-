@@ -28,6 +28,10 @@ public class Player : MonoBehaviour, IHealth
     /// 이동 방향 받고 리턴용
     /// </summary>
     Vector3 dir = Vector3.zero;
+    /// <summary>
+    /// 이동 중 다른 행위를 한뒤 다시 이동할 때 사용하기 위해 중간 버퍼용
+    /// </summary>
+    Vector3 restartDir = Vector3.zero;
 
     float walkSoundVolume = 1.0f;
     float AttackSoundVolume = 0.7f;
@@ -36,11 +40,6 @@ public class Player : MonoBehaviour, IHealth
     /// 애니메이션 용 
     /// </summary>
     Animator anim;
-
-    /// <summary>
-    /// 다른 행동중 움직임을 제한하기 위해
-    /// </summary>
-    bool canMove = true;
 
     /// <summary>
     /// 체력 관련 변수들
@@ -80,7 +79,7 @@ public class Player : MonoBehaviour, IHealth
     float turnToY;
     float turnToZ;
 
-    float turnSpeed = 30.0f;
+    float turnSpeed = 25.0f;
 
     /// <summary>
     /// 아이템 관련 변수
@@ -111,6 +110,9 @@ public class Player : MonoBehaviour, IHealth
     SkillUse[] skillUses;
 
     bool isDie = false;
+    bool isAttack = false;
+    bool isMove = false;
+    bool isKeepMoving = false;
 
     public Transform CharacterTransform
     {
@@ -208,6 +210,7 @@ public class Player : MonoBehaviour, IHealth
     {
         input.Player.Enable();
         input.Player.Move.performed += OnMoveInput;
+        input.Player.Move.canceled += OnMoveInput;
         input.Player.Attack.performed += OnAttackInput;
         input.Player.Look.performed += OnLookInput;
         input.Player.TempItemUse.performed += OnTempItemUse;
@@ -224,6 +227,7 @@ public class Player : MonoBehaviour, IHealth
         input.Player.TestMakeItem.performed -= OnTestMakeItem;
         input.Player.TempItemUse.performed -= OnTempItemUse;
         input.Player.Attack.performed -= OnAttackInput;
+        input.Player.Move.canceled -= OnMoveInput;
         input.Player.Move.performed -= OnMoveInput;
         input.Player.Look.performed -= OnLookInput;
         input.Player.Disable();
@@ -252,7 +256,7 @@ public class Player : MonoBehaviour, IHealth
 
     private void Update()
     {
-        transform.Translate(dir * Time.deltaTime * 10, Space.Self);
+        transform.Translate(dir * Time.deltaTime * 10, Space.Self);   
         if (dir == Vector3.zero)
         {
             anim.SetBool("IsMove", false);
@@ -261,27 +265,60 @@ public class Player : MonoBehaviour, IHealth
 
     private void OnMoveInput(InputAction.CallbackContext obj)
     {
-        if(canMove && !isDie)
+        if (CanMove())
         {
+            isKeepMoving = true;
+
+            Vector3 tempDir;
             //2개의 축만 필요해 2d vector로 만들면 readvalue값을 2d로 받아야만 한다.
             //이후 3d로 변환하는 과정을 거친다.
-            Vector3 tempDir;
             tempDir = obj.ReadValue<Vector2>();
-            dir.x = tempDir.x;
-            dir.z = tempDir.y;
+            
+            restartDir.x = tempDir.x;
+            restartDir.z = tempDir.y;
+
+            dir = restartDir;
 
             anim.SetFloat("DirSignal_Front", dir.z);
             anim.SetFloat("DirSignal_Side", dir.x);
             anim.SetBool("IsMove", true);
         }
-        
+        //else
+        //{
+        //    StopMove();
+        //}
+        if(obj.canceled)
+        {
+            StopMove();
+            isKeepMoving = false;
+        }
+
+    }
+
+    /// <summary>
+    /// 움직일 수 있는지 체크
+    /// </summary>
+    /// <returns></returns>
+    private bool CanMove()
+    {
+        if (isDie || isAttack || isSkillUsing)
+        {
+            return false;
+        }
+        return true;
+    }
+
+    private void StopMove()
+    {
+        dir = Vector3.zero;
     }
 
 
     private void OnAttackInput(InputAction.CallbackContext obj)
     {
-        if(!isDie)
+        if(!isDie || !isSkillUsing || !isMove)
         {
+            StopMove();
             anim.SetBool("IsMove", false);
             anim.SetTrigger("AttackOn");
         }
@@ -451,7 +488,7 @@ public class Player : MonoBehaviour, IHealth
     private void Die()
     {
         isDie = true;
-        canMove = false;
+        CanMove();
         anim.SetBool("isDie", true);
         rigid.drag = 1000;
         rigid.angularDrag = 1000;
@@ -468,13 +505,50 @@ public class Player : MonoBehaviour, IHealth
         Time.timeScale = 0.0f;
     }
 
+    
+
     /// <summary>
     /// 유니티 애니메이션에서 이벤트로 활성화 할 함수
     /// </summary>
+    
+    public void IsMoveOn()
+    {
+        isMove = true;
+    }
+
+    public void IsMoveOff()
+    {
+        isMove = false;
+    }
+
+    public void IsAttackOn()
+    {
+        isAttack = true;
+    }
+
+    public void IsAttackOff()
+    {
+        isAttack = false;
+    }
+
     public void AttackTriggerOn()
     {
         if(isFindWeapon)
-        weaponCollider.enabled = true;
+        {
+            weaponCollider.enabled = true;
+        }
+        
+    }
+
+    public void IsRestartMove()
+    {
+        if(isKeepMoving)
+        {
+            dir = restartDir;
+            anim.SetFloat("DirSignal_Front", dir.z);
+            anim.SetFloat("DirSignal_Side", dir.x);
+            anim.SetBool("IsMove", true);
+        }
     }
 
     /// <summary>
@@ -483,7 +557,10 @@ public class Player : MonoBehaviour, IHealth
     public void AttackTriggerOff()
     {
         if(isFindWeapon)
-        weaponCollider.enabled = false;
+        {
+            weaponCollider.enabled = false;
+        }
+        
     }
 
     /// <summary>
