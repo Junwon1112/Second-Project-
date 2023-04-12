@@ -33,8 +33,8 @@ public class Player : MonoBehaviour, IHealth
     /// </summary>
     Vector3 restartDir = Vector3.zero;
 
-    float walkSoundVolume = 1.0f;
-    float AttackSoundVolume = 0.7f;
+    //float walkSoundVolume = 1.0f;
+    //float AttackSoundVolume = 0.7f;
 
     /// <summary>
     /// 애니메이션 용 
@@ -584,7 +584,7 @@ public class Player : MonoBehaviour, IHealth
     /// </summary>
     public void AttackSoundStart()
     {
-        SoundPlayer.Instance?.PlaySound(SoundType.Sound_Attack, AttackSoundVolume);
+        SoundPlayer.Instance?.PlaySound(SoundType.Sound_Attack);
     }
 
     /// <summary>
@@ -592,7 +592,7 @@ public class Player : MonoBehaviour, IHealth
     /// </summary>
     public void WalkSoundAndEffectStart()
     {
-        SoundPlayer.Instance?.PlaySound(SoundType.Sound_Walk, walkSoundVolume);
+        SoundPlayer.Instance?.PlaySound(SoundType.Sound_Walk);
         ParticlePlayer.Instance?.PlayParticle(ParticleType.ParticleSystem_Walk, transform.position, transform.rotation);
     }
 

@@ -20,7 +20,7 @@ public class SoundPlayer : MonoBehaviour
     [SerializeField]
     protected AudioClip[] audioClips_Effect = null;
 
-    protected List<SoundObject> list_Sound = new List<SoundObject> ();
+    protected List<SoundObject> list_Sound = new List<SoundObject>();
 
     protected Dictionary<SoundType, AudioClip> dic_EffectSound = new Dictionary<SoundType, AudioClip>();
 
@@ -28,6 +28,36 @@ public class SoundPlayer : MonoBehaviour
 
     protected readonly float BGM_VOLUME = 0.25f;
 
+    protected float currentVolume = 1.0f;
+
+    public bool IsBgmPlaying
+    {
+        get
+        {
+            return audioSource_bgm.isPlaying;
+        }
+    }
+
+    public float CurrentVolume
+    {
+        get { return currentVolume; }
+        set
+        {
+            if (value > 1)
+            {
+                currentVolume = 1.0f;
+            }
+            else if (value < 0)
+            {
+                currentVolume = 0.0f;
+            }
+            else
+            {
+                currentVolume = value;
+            }
+
+        }
+    }
 
     private void Awake()
     {
@@ -54,13 +84,15 @@ public class SoundPlayer : MonoBehaviour
         Instance = null;
     }
 
-    ///
-    public bool IsBgmPlaying
+    public void VolumeChange(float _ChangeVolume)
     {
-        get
+        currentVolume = _ChangeVolume;
+
+        foreach (SoundObject sound in list_Sound)
         {
-            return audioSource_bgm.isPlaying;
+            sound.AudioSource.volume = currentVolume;
         }
+
     }
 
     public bool IsPause()
@@ -295,7 +327,7 @@ public class SoundPlayer : MonoBehaviour
     /// <param name="isLoop">루프를 돌지</param>
     /// <param name="isStoppable">멈출수 있는지</param>
     /// <param name="finishListener">끝날 때 실행할 델리게이트</param>
-    public void PlaySound(AudioClip clip, float volume, float delaySeconds, bool isLoop, bool isStoppable, System.Action finishListener)
+    public void PlaySound(AudioClip clip, /*float volume ,*/ float delaySeconds, bool isLoop, bool isStoppable, System.Action finishListener)
     {
         if (clip == null)
         {
@@ -308,7 +340,7 @@ public class SoundPlayer : MonoBehaviour
             SoundObject obj_Sound = CreateSoundObject(clip);
 
             list_Sound.Add(obj_Sound);
-            obj_Sound.Play(volume, delaySeconds, isLoop, isStoppable, () =>
+            obj_Sound.Play(CurrentVolume, delaySeconds, isLoop, isStoppable, () =>
             {
                 list_Sound.Remove(obj_Sound);
                 if (finishListener != null)
@@ -320,7 +352,7 @@ public class SoundPlayer : MonoBehaviour
         else
         {
             audio_basic.AudioClip = clip;
-            audio_basic.Play(volume, delaySeconds, isLoop, isStoppable, () =>
+            audio_basic.Play(CurrentVolume, delaySeconds, isLoop, isStoppable, () =>
             {
                 if (finishListener != null)
                 {
@@ -331,34 +363,30 @@ public class SoundPlayer : MonoBehaviour
         }
     }
 
-    public void PlaySound(AudioClip clip, float volume, float delaySeconds, bool isLoop, System.Action finishListener)
+    public void PlaySound(AudioClip clip, /*float volume,*/ float delaySeconds, bool isLoop, System.Action finishListener)
     {
-        PlaySound(clip, volume, delaySeconds, isLoop, true, finishListener);
+        PlaySound(clip, /*volume,*/delaySeconds, isLoop, true, finishListener);
     }
 
-    public void PlaySound(AudioClip clip, float volume, float delaySeconds, System.Action finishListener)
+    public void PlaySound(AudioClip clip, /*float volume,*/ float delaySeconds, System.Action finishListener)
     {
-        PlaySound(clip, volume, delaySeconds, false, finishListener);
+        PlaySound(clip, /*volume,*/ delaySeconds, false, finishListener);
     }
 
-    public void PlaySound(AudioClip clip, float volume, System.Action finishListener)
+    public void PlaySound(AudioClip clip, /*float volume,*/ System.Action finishListener)
     {
-        PlaySound(clip, volume, 0, false, finishListener);
+        PlaySound(clip, /*volume,*/ 0, false, finishListener);
     }
 
-    public void PlaySound(AudioClip clip, System.Action finishListener)
-    {
-        PlaySound(clip, 1f, finishListener);
-    }
 
-    public void PlaySound(SoundType soundType, float volume)
+    public void PlaySound(SoundType soundType/*, float volume*/)
     {
         if (soundType == SoundType.None)
         {
             return;
         }
 
-        PlaySound(GetSoundClip(soundType), volume, null);
+        PlaySound(GetSoundClip(soundType), /*volume,*/ null);
     }
 
     public void PlaySound(SoundType soundType, bool isStoppable)
@@ -368,7 +396,7 @@ public class SoundPlayer : MonoBehaviour
             return;
         }
 
-        PlaySound(GetSoundClip(soundType), 1.0f, 0, false, isStoppable, null);
+        PlaySound(GetSoundClip(soundType), /*1.0f,*/ 0, false, isStoppable, null);
     }
 
     public void PlaySound(AudioClip clip)
@@ -376,10 +404,10 @@ public class SoundPlayer : MonoBehaviour
         PlaySound(clip, null);
     }
 
-    public void PlaySound(SoundType soundType)
-    {
-        PlaySound(soundType, true);
-    }
+    //public void PlaySound(SoundType soundType)
+    //{
+    //    PlaySound(soundType, true);
+    //}
 
     public IEnumerator CoPlaySound(AudioClip clip, float minWaitSec = 0.5f)
     {

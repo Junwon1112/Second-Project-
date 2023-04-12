@@ -426,6 +426,34 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""MainMenu"",
+            ""id"": ""40214cc4-be9c-40eb-a560-22336753277d"",
+            ""actions"": [
+                {
+                    ""name"": ""StartMainMenu"",
+                    ""type"": ""Button"",
+                    ""id"": ""9e79fb37-3dd8-4144-855f-72d09af10623"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""85f831a9-f3cc-4409-891b-8fce083981de"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""StartMainMenu"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": [
@@ -473,6 +501,9 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         m_QuickSlot_QuickSlot4 = m_QuickSlot.FindAction("QuickSlot4", throwIfNotFound: true);
         m_QuickSlot_QuickSlot5 = m_QuickSlot.FindAction("QuickSlot5", throwIfNotFound: true);
         m_QuickSlot_QuickSlot6 = m_QuickSlot.FindAction("QuickSlot6", throwIfNotFound: true);
+        // MainMenu
+        m_MainMenu = asset.FindActionMap("MainMenu", throwIfNotFound: true);
+        m_MainMenu_StartMainMenu = m_MainMenu.FindAction("StartMainMenu", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -781,6 +812,39 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         }
     }
     public QuickSlotActions @QuickSlot => new QuickSlotActions(this);
+
+    // MainMenu
+    private readonly InputActionMap m_MainMenu;
+    private IMainMenuActions m_MainMenuActionsCallbackInterface;
+    private readonly InputAction m_MainMenu_StartMainMenu;
+    public struct MainMenuActions
+    {
+        private @PlayerInput m_Wrapper;
+        public MainMenuActions(@PlayerInput wrapper) { m_Wrapper = wrapper; }
+        public InputAction @StartMainMenu => m_Wrapper.m_MainMenu_StartMainMenu;
+        public InputActionMap Get() { return m_Wrapper.m_MainMenu; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(MainMenuActions set) { return set.Get(); }
+        public void SetCallbacks(IMainMenuActions instance)
+        {
+            if (m_Wrapper.m_MainMenuActionsCallbackInterface != null)
+            {
+                @StartMainMenu.started -= m_Wrapper.m_MainMenuActionsCallbackInterface.OnStartMainMenu;
+                @StartMainMenu.performed -= m_Wrapper.m_MainMenuActionsCallbackInterface.OnStartMainMenu;
+                @StartMainMenu.canceled -= m_Wrapper.m_MainMenuActionsCallbackInterface.OnStartMainMenu;
+            }
+            m_Wrapper.m_MainMenuActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @StartMainMenu.started += instance.OnStartMainMenu;
+                @StartMainMenu.performed += instance.OnStartMainMenu;
+                @StartMainMenu.canceled += instance.OnStartMainMenu;
+            }
+        }
+    }
+    public MainMenuActions @MainMenu => new MainMenuActions(this);
     private int m_PlayerSchemeIndex = -1;
     public InputControlScheme PlayerScheme
     {
@@ -820,5 +884,9 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         void OnQuickSlot4(InputAction.CallbackContext context);
         void OnQuickSlot5(InputAction.CallbackContext context);
         void OnQuickSlot6(InputAction.CallbackContext context);
+    }
+    public interface IMainMenuActions
+    {
+        void OnStartMainMenu(InputAction.CallbackContext context);
     }
 }

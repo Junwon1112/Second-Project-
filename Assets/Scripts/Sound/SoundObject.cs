@@ -28,6 +28,7 @@ public class SoundObject : MonoBehaviour
 
     private bool isPlaying = false;
 
+
     [SerializeField]
     private bool isDestroyWhenPlayEnd = true;
 
@@ -66,6 +67,7 @@ public class SoundObject : MonoBehaviour
             isPlaying = value; 
         }
     }
+
 
     private void Awake()
     {
