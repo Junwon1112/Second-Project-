@@ -28,7 +28,11 @@ public class SoundPlayer : MonoBehaviour
 
     protected readonly float BGM_VOLUME = 0.25f;
 
-    protected float currentVolume = 1.0f;
+    protected readonly float Effect_VOLUME = 0.75f;
+
+    protected float bgmCurrentVolume = 1.0f;
+
+    protected float effectCurrentVolume = 1.0f;
 
     public bool IsBgmPlaying
     {
@@ -38,22 +42,42 @@ public class SoundPlayer : MonoBehaviour
         }
     }
 
-    public float CurrentVolume
+    public float BGMCurrentVolume
     {
-        get { return currentVolume; }
+        get { return bgmCurrentVolume; }
         set
         {
             if (value > 1)
             {
-                currentVolume = 1.0f;
+                bgmCurrentVolume = 1.0f;
             }
             else if (value < 0)
             {
-                currentVolume = 0.0f;
+                bgmCurrentVolume = 0.0f;
             }
             else
             {
-                currentVolume = value;
+                bgmCurrentVolume = value;
+            }
+
+        }
+    }
+    public float EffectCurrentVolume
+    {
+        get { return effectCurrentVolume; }
+        set
+        {
+            if (value > 1)
+            {
+                effectCurrentVolume = 1.0f;
+            }
+            else if (value < 0)
+            {
+                effectCurrentVolume = 0.0f;
+            }
+            else
+            {
+                effectCurrentVolume = value;
             }
 
         }
@@ -74,7 +98,11 @@ public class SoundPlayer : MonoBehaviour
             //등록된 오디오클립의 이름이 Enum의 멤버라고 했으므로 오디오클립 파일명과 Enum멤버의 이름이 같아야한다
             dic_EffectSound.Add((SoundType)System.Enum.Parse(typeof(SoundType), audioClips_Effect[i].name), audioClips_Effect[i]);
         }
+
+        InitializeVolume();
+
     }
+
 
     /// <summary>
     /// 이 메서드는 이 MonoBehavior가 사라질 때 호출
@@ -84,20 +112,26 @@ public class SoundPlayer : MonoBehaviour
         Instance = null;
     }
 
+    public void InitializeVolume()
+    {
+        BGMVolumeChange(BGM_VOLUME);
+        EffectVolumeChange(Effect_VOLUME);
+    }
+
     public void BGMVolumeChange(float _ChangeVolume)
     {
-        CurrentVolume = _ChangeVolume;
+        BGMCurrentVolume = _ChangeVolume;
 
-        audioSource_bgm.volume = CurrentVolume;
+        audioSource_bgm.volume = BGMCurrentVolume;
     }
 
     public void EffectVolumeChange(float _ChangeVolume)
     {
-        CurrentVolume = _ChangeVolume;
+        effectCurrentVolume = _ChangeVolume;
 
         foreach (SoundObject sound in list_Sound)
         {
-            sound.AudioSource.volume = CurrentVolume;
+            sound.AudioSource.volume = effectCurrentVolume;
         }
 
     }
@@ -348,7 +382,7 @@ public class SoundPlayer : MonoBehaviour
             SoundObject obj_Sound = CreateSoundObject(clip);
 
             list_Sound.Add(obj_Sound);
-            obj_Sound.Play(CurrentVolume, delaySeconds, isLoop, isStoppable, () =>
+            obj_Sound.Play(effectCurrentVolume, delaySeconds, isLoop, isStoppable, () =>
             {
                 list_Sound.Remove(obj_Sound);
                 if (finishListener != null)
@@ -360,7 +394,7 @@ public class SoundPlayer : MonoBehaviour
         else
         {
             audio_basic.AudioClip = clip;
-            audio_basic.Play(CurrentVolume, delaySeconds, isLoop, isStoppable, () =>
+            audio_basic.Play(effectCurrentVolume, delaySeconds, isLoop, isStoppable, () =>
             {
                 if (finishListener != null)
                 {

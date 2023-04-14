@@ -5,8 +5,8 @@ using UnityEngine.UI;
 
 public class VolumeMenuUI : MonoBehaviour
 {
-    Slider BGMVolumeSlider;
-    Slider EffectVolumeSlider;
+    Slider bgmVolumeSlider;
+    Slider effectVolumeSlider;
 
 
     CanvasGroup canvasGroup;
@@ -19,9 +19,15 @@ public class VolumeMenuUI : MonoBehaviour
 
     private void Awake()
     {
-        BGMVolumeSlider = transform.GetChild(1).GetComponentInChildren<Slider>();
-        EffectVolumeSlider = transform.GetChild(2).GetComponentInChildren<Slider>();
+        bgmVolumeSlider = transform.GetChild(1).GetComponentInChildren<Slider>();
+        effectVolumeSlider = transform.GetChild(2).GetComponentInChildren<Slider>();
         canvasGroup = GetComponent<CanvasGroup>();
+    }
+
+    private void Start()
+    {
+        bgmVolumeSlider.value = SoundPlayer.Instance.BGMCurrentVolume;
+        effectVolumeSlider.value = SoundPlayer.Instance.EffectCurrentVolume;
     }
 
     /// <summary>
@@ -41,12 +47,12 @@ public class VolumeMenuUI : MonoBehaviour
 
     private void BGMVolumeControl()
     {
-        SoundPlayer.Instance.BGMVolumeChange(BGMVolumeSlider.value);
+        SoundPlayer.Instance.BGMVolumeChange(bgmVolumeSlider.value);
     }
 
     private void EffectVolumeControl()
     {
-        SoundPlayer.Instance.EffectVolumeChange(EffectVolumeSlider.value);
+        SoundPlayer.Instance.EffectVolumeChange(effectVolumeSlider.value);
     }
 
     public void OpenVolumeMenu()
@@ -59,8 +65,6 @@ public class VolumeMenuUI : MonoBehaviour
         canvasGroup.alpha = 1;
         canvasGroup.blocksRaycasts = true;
         canvasGroup.interactable = true;
-
-        
     }
 
     public void CloseVolumeMenu()
