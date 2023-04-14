@@ -84,16 +84,24 @@ public class SoundPlayer : MonoBehaviour
         Instance = null;
     }
 
-    public void VolumeChange(float _ChangeVolume)
+    public void BGMVolumeChange(float _ChangeVolume)
     {
-        currentVolume = _ChangeVolume;
+        CurrentVolume = _ChangeVolume;
+
+        audioSource_bgm.volume = CurrentVolume;
+    }
+
+    public void EffectVolumeChange(float _ChangeVolume)
+    {
+        CurrentVolume = _ChangeVolume;
 
         foreach (SoundObject sound in list_Sound)
         {
-            sound.AudioSource.volume = currentVolume;
+            sound.AudioSource.volume = CurrentVolume;
         }
 
     }
+
 
     public bool IsPause()
     {

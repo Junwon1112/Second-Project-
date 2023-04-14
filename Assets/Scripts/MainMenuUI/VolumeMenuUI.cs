@@ -5,17 +5,22 @@ using UnityEngine.UI;
 
 public class VolumeMenuUI : MonoBehaviour
 {
-    Slider volumeSlider;
+    Slider BGMVolumeSlider;
+    Slider EffectVolumeSlider;
+
 
     CanvasGroup canvasGroup;
 
-    bool isVolumeChangeComplete = true;
+    bool isVolumeChangeComplete;
+
+
 
     public bool IsVolumeChangeComplete { get; set; }
 
     private void Awake()
     {
-        volumeSlider = GetComponentInChildren<Slider>();
+        BGMVolumeSlider = transform.GetChild(1).GetComponentInChildren<Slider>();
+        EffectVolumeSlider = transform.GetChild(2).GetComponentInChildren<Slider>();
         canvasGroup = GetComponent<CanvasGroup>();
     }
 
@@ -25,17 +30,23 @@ public class VolumeMenuUI : MonoBehaviour
     /// <returns></returns>
     public IEnumerator CoVolumeChangeUpdate()
     {
-        while(IsVolumeChangeComplete)
+        while (!IsVolumeChangeComplete)
         {
-            yield return new WaitForFixedUpdate();
-            VolumeChange();
+            BGMVolumeControl();
+            EffectVolumeControl();
+            yield return new WaitForSecondsRealtime(0.01f);
         }
 
     }
 
-    private void VolumeChange()
+    private void BGMVolumeControl()
     {
-        SoundPlayer.Instance.VolumeChange(volumeSlider.value);
+        SoundPlayer.Instance.BGMVolumeChange(BGMVolumeSlider.value);
+    }
+
+    private void EffectVolumeControl()
+    {
+        SoundPlayer.Instance.EffectVolumeChange(EffectVolumeSlider.value);
     }
 
     public void OpenVolumeMenu()
