@@ -8,12 +8,9 @@ public class VolumeMenuUI : MonoBehaviour
     Slider bgmVolumeSlider;
     Slider effectVolumeSlider;
 
-
     CanvasGroup canvasGroup;
 
     bool isVolumeChangeComplete;
-
-
 
     public bool IsVolumeChangeComplete { get; set; }
 
@@ -28,6 +25,7 @@ public class VolumeMenuUI : MonoBehaviour
     {
         bgmVolumeSlider.value = SoundPlayer.Instance.BGMCurrentVolume;
         effectVolumeSlider.value = SoundPlayer.Instance.EffectCurrentVolume;
+        IsVolumeChangeComplete = true;
     }
 
     /// <summary>
