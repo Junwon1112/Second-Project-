@@ -24,13 +24,5 @@ public class SkillData_Duration : SkillData     //지속시간이 있는 공격 스킬
     //public string skillInformation;
     public float skillDuration;
 
-    public override float SetSkillDamage(float attackDamage)
-    {
-        float finalSkillDamage;
 
-        finalSkillDamage = this.skillDamage * (this.SkillLevel*0.5f) + (attackDamage * 0.2f);
-
-
-        return finalSkillDamage;
-    }
 }

@@ -25,6 +25,7 @@ public class SkillSlotUI : MonoBehaviour, IBeginDragHandler, IEndDragHandler, ID
     public SkillData skillData;       
     Image skillIcon;
     TextMeshProUGUI skillInfo;
+    TextMeshProUGUI skillName;
     TempSlotSkillUI tempSlotSkillUI;
 
     uint currentSkillLevel;
@@ -34,7 +35,8 @@ public class SkillSlotUI : MonoBehaviour, IBeginDragHandler, IEndDragHandler, ID
     private void Awake()
     {
         skillIcon = GetComponent<Image>();
-        skillInfo = transform.parent.GetComponentInChildren<TextMeshProUGUI>();
+        skillInfo = transform.parent.Find("Info_Text").GetComponent<TextMeshProUGUI>();
+        skillName = transform.parent.Find("SkillName_Text").GetComponent<TextMeshProUGUI>();
         tempSlotSkillUI = GameObject.FindObjectOfType<TempSlotSkillUI>();
         upDownButton = transform.parent.GetComponentInChildren<UpDownButton>();
     }
@@ -49,11 +51,13 @@ public class SkillSlotUI : MonoBehaviour, IBeginDragHandler, IEndDragHandler, ID
         {
             skillIcon.sprite = skillData.skillIcon;
             skillInfo.text = skillData.skillInformation;
+            skillName.text = skillData.skillName;
         }
         else
         {
             skillIcon.color = Color.clear;
             skillInfo.text = "No Assigned Skill";
+            skillName.text = "No Assigned Skill";
         }
     }
 

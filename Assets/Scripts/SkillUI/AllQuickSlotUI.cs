@@ -65,10 +65,6 @@ public class AllQuickSlotUI : MonoBehaviour
         
     }
 
-
-
-
-
     private void OnQuickSlot1(InputAction.CallbackContext obj)
     {
         quickSlotUIs[0].skillUse.UsingSkill(quickSlotUIs[0].quickSlotSkillData);

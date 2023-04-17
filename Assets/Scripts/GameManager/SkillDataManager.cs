@@ -10,7 +10,7 @@ public class SkillDataManager : MonoBehaviour
     public SkillData_Normal[] skillDatas_Normal;
     public SkillData_Buff[] skillDatas_Buff;
     public SkillData_Duration[] skillDatas_Duration;
-
+    public SkillData_Shooting[] skillDatas_Shooting;
 
     //----------------------------------------------------------------------
     /// <summary>
@@ -171,6 +171,62 @@ public class SkillDataManager : MonoBehaviour
             if (skillDatas_Buff[i].skillName == skillName)
             {
                 return skillDatas_Buff[i];
+            }
+        }
+
+        return null;
+    }
+
+    /////////-------------------------------------------------------------------------
+
+    /// <summary>
+    /// ID로 원하는 스킬데이터 찾는 함수, 오버로딩
+    /// </summary>
+    /// <param name="skillID"></param>
+    /// <returns></returns>
+    public SkillData_Shooting FindSkill_Shooting(int skillID)
+    {
+        for (int i = 0; i < skillDatas_Shooting.Length; i++)
+        {
+            if (skillDatas_Shooting[i].skillId == skillID)
+            {
+                return skillDatas_Shooting[i];
+            }
+        }
+
+        return null;
+    }
+
+    /// <summary>
+    /// skillIDCode(열거형)로 원하는 스킬데이터 찾는 함수, 오버로딩
+    /// </summary>
+    /// <param name="skillID"></param>
+    /// <returns></returns>
+    public SkillData_Shooting FindSkill_Shooting(SkillIDCode skillIDCode)
+    {
+        for (int i = 0; i < skillDatas_Shooting.Length; i++)
+        {
+            if (skillDatas_Shooting[i].skillIDCode == skillIDCode)
+            {
+                return skillDatas_Shooting[i];
+            }
+        }
+
+        return null;
+    }
+
+    /// <summary>
+    /// 이름으로 원하는 스킬데이터 찾는 함수, 오버로딩
+    /// </summary>
+    /// <param name="skillID"></param>
+    /// <returns></returns>
+    public SkillData_Shooting FindSkill_Shooting(string skillName)
+    {
+        for (int i = 0; i < skillDatas_Shooting.Length; i++)
+        {
+            if (skillDatas_Shooting[i].skillName == skillName)
+            {
+                return skillDatas_Shooting[i];
             }
         }
 

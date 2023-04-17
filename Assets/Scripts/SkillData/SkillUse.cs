@@ -13,13 +13,14 @@ public class SkillUse : MonoBehaviour
     Animator anim;
     Player player;
     PlayerWeapon weapon;
-
+    Skill_Implement skill_Implement;
 
     private void Awake()
     {
         player = FindObjectOfType<Player>();
         
         anim = player.transform.GetComponent<Animator>();
+        skill_Implement = FindObjectOfType<Skill_Implement>();
     }
 
     private void FixedUpdate()
@@ -45,22 +46,34 @@ public class SkillUse : MonoBehaviour
         if(!isSkillUsed)
         {
             timer = skillData.skillCooltime;
-            weapon.SkillDamage = skillData.SetSkillDamage(player.AttackDamage);
-
-            anim.SetBool("IsSkillUse", true);
-            if(skillData.skillType == SkillTypeCode.Skill_Duration)
+            
+            if(skillData.skillType == SkillTypeCode.Skill_Normal )
             {
+                anim.SetTrigger($"IsSkillUse_{skillData.skillName}");
+                skill_Implement.PlaySkill(skillData.skillId);
+            }
+
+            else if(skillData.skillType == SkillTypeCode.Skill_Duration)
+            {
+                anim.SetBool($"IsSkillUse_{skillData.skillName}", true);
+                skill_Implement.PlaySkill(skillData.skillId);
+
                 SkillData_Duration tempSkill_Duration = GameManager.Instance.SkillDataManager.FindSkill_Duration(skillData.skillId);
-                float skillUsingTime = tempSkill_Duration.skillDuration;
+                float skillUsingTime = tempSkill_Duration.skillDuration;    //스킬지속시간
 
-                float compensateTime = 0.5f;
-                Quaternion compensateRotaion = Quaternion.Euler(-90.0f, 0.0f, 0.0f);
-                Vector3 compensatePosition = new Vector3(0, -1.5f, 0);
+                StartCoroutine(SkillDurationTime(skillData, skillUsingTime));
+            }
 
-                ParticlePlayer.Instance?.PlayParticle(ParticleType.ParticleSystem_WheelWind, player.transform, 
-                    player.transform.position + compensatePosition, player.transform.rotation * compensateRotaion, skillUsingTime+ compensateTime);
+            else if (skillData.skillType == SkillTypeCode.Skill_Shooting)
+            {
+                anim.SetTrigger($"IsSkillUse_{skillData.skillName}");
+                skill_Implement.PlaySkill(skillData.skillId);
+            }
 
-                StartCoroutine(SkillDurationTime(skillUsingTime));
+            else if(skillData.skillType == SkillTypeCode.Skill_Buff)
+            {
+                anim.SetTrigger($"IsSkillUse_{skillData.skillName}");
+                skill_Implement.PlaySkill(skillData.skillId);
             }
         }
     }
@@ -70,10 +83,10 @@ public class SkillUse : MonoBehaviour
     /// </summary>
     /// <param name="skillDuration"></param>
     /// <returns></returns>
-    IEnumerator SkillDurationTime(float skillDuration) //스킬 지속시간
+    IEnumerator SkillDurationTime(SkillData skillData ,float skillDuration) //스킬 지속시간
     {
         yield return new WaitForSeconds(skillDuration);
-        anim.SetBool("IsSkillUse", false);
+        anim.SetBool($"IsSkillUse_{skillData.skillName}", false);
     }
 
     /// <summary>

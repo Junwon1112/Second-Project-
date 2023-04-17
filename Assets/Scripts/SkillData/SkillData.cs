@@ -39,28 +39,19 @@ public class SkillData : ScriptableObject
         }
     }
 
-    public virtual float SetSkillDamage(float attackDamage)
-    {
-        float finalSkillDamage;
-
-        finalSkillDamage = skillDamage * (skillLevel + 1) + (attackDamage * 0.7f);
-
-
-        return finalSkillDamage;
-    }
-    
-
 
 }
 
 public enum SkillIDCode
 {
-    Skill_Wheelwind = 0
+    Skill_Wheelwind = 0,
+    Skill_AirSlash
 }
 
 public enum SkillTypeCode
 {
     Skill_Buff = 0,
     Skill_Duration,
-    Skill_Normal
+    Skill_Normal,
+    Skill_Shooting
 }

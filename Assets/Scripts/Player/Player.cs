@@ -108,6 +108,7 @@ public class Player : MonoBehaviour, IHealth
     public bool isSkillUsing = false;
 
     SkillUse[] skillUses;
+    Skill_Implement skill_Implement;
 
     bool isDie = false;
     bool isAttack = false;
@@ -200,6 +201,7 @@ public class Player : MonoBehaviour, IHealth
         weaponHandTransform = FindObjectOfType<FindWeaponHand>().transform;
         
         skillUses = FindObjectsOfType<SkillUse>();
+        skill_Implement = FindObjectOfType<Skill_Implement>();
         skillUI = FindObjectOfType<SkillUI>();
     }
 
@@ -457,6 +459,7 @@ public class Player : MonoBehaviour, IHealth
         for(int i = 0; i < skillUses.Length; i++)   //무기 장착시 SkillUse클래스에서도 무기를 받아오도록 함(무기가 시작할 땐 장착되어있지 않아 SkillUse Awake에서 안한다)
         {
             skillUses[i].TakeWeapon();
+            skill_Implement.TakeWeapon();
         }
         if (tempPlayerWeapon != null)
         {

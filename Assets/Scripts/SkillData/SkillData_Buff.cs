@@ -25,8 +25,4 @@ public class SkillData_Buff : SkillData //버프 스킬
 
     public float buffDuration;
 
-    public override float SetSkillDamage(float attackDamage)    //버프라서 스킬데미지 따로 존재 X
-    {
-        return 0;
-    }
 }
