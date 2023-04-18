@@ -22,10 +22,10 @@ TagManager:
   - Monster
   - Item
   - EquipItem
+  - Projectile
+  - 
   - MapObject
   - MiniMapMarker
-  - 
-  - 
   - 
   - 
   - 

@@ -2,18 +2,23 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Projectile_DMG_Calculator : MonoBehaviour , IBattle
+public class Projectile_AirSlash : MonoBehaviour, IBattle
 {
     Player player;
     bool isCheckExp = false;
     float skillDamage;
     PlayerWeapon weapon;
+    Vector3 dir;
 
     public float SkillDamage { get; set; }
 
     public float AttackDamage { get; set; }
 
-    
+
+    private float moveSpeed_Z = 10.0f;
+    private float rotateSpeed = 30.0f;
+
+    Quaternion rotate;
 
     private void Awake()
     {
@@ -23,14 +28,19 @@ public class Projectile_DMG_Calculator : MonoBehaviour , IBattle
 
     private void Start()
     {
-        //스킬을 사용하며 무기의 스킬데미지를 설정하고 이 오브젝트가 만들어지므로 문제없을 것으로 예상
         SkillDamage = weapon.SkillDamage;
+        rotate = Quaternion.Euler(0, Time.deltaTime * rotateSpeed, 0);
+        dir = player.transform.forward;
+        transform.localRotation = player.transform.rotation;
     }
 
-    /// <summary>
-    /// Attack이지만 실제로는 스킬데미지임(IBattle로 인해 필수 구현)
-    /// </summary>
-    /// <param name="target"></param>
+    private void Update()
+    {
+        transform.position += dir * Time.deltaTime * moveSpeed_Z;
+            //new Vector3(0, 0, moveSpeed_Z * Time.deltaTime);
+        transform.rotation *=  rotate;
+    }
+
     public void Attack(IHealth target)
     {
         if (target.HP >= 0)
@@ -52,6 +62,9 @@ public class Projectile_DMG_Calculator : MonoBehaviour , IBattle
     {
         if (other.CompareTag("Monster"))
         {
+            SoundPlayer.Instance?.PlaySound(SoundType.Sound_ElectroHit);
+            ParticlePlayer.Instance?.PlayParticle(ParticleType.ParticleSystem_ElectroHit, other.ClosestPoint(transform.position), transform.rotation);
+
             Monster monster;
             monster = other.GetComponent<Monster>();
 
@@ -68,6 +81,9 @@ public class Projectile_DMG_Calculator : MonoBehaviour , IBattle
                     player.newDel_LevelUp();    //레벨업 델리게이트
                 }
             }
+
+            Destroy(this.gameObject, 0.05f);
         }
     }
+
 }

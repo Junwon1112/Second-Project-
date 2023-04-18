@@ -23,4 +23,4 @@ MonoBehaviour:
   skillType: 3
   skillStateName: Skill_AirSlash
   skillInformation: Shoot Slash!
-  projectile_Prefab: {fileID: 1459961361746493487, guid: 52d3f687aa0d0cf42bed5f19d933f3af, type: 3}
+  projectile_Prefab: {fileID: 4212085260660576322, guid: 626cb56b30a81e144babbfecb132e24e, type: 3}
