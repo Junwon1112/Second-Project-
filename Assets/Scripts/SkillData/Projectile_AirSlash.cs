@@ -15,7 +15,7 @@ public class Projectile_AirSlash : MonoBehaviour, IBattle
     public float AttackDamage { get; set; }
 
 
-    private float moveSpeed_Z = 10.0f;
+    private float moveSpeed = 20.0f;
     private float rotateSpeed = 30.0f;
 
     Quaternion rotate;
@@ -32,11 +32,12 @@ public class Projectile_AirSlash : MonoBehaviour, IBattle
         rotate = Quaternion.Euler(0, Time.deltaTime * rotateSpeed, 0);
         dir = player.transform.forward;
         transform.localRotation = player.transform.rotation;
+        Destroy(gameObject, 3.0f);
     }
 
     private void Update()
     {
-        transform.position += dir * Time.deltaTime * moveSpeed_Z;
+        transform.position += dir * Time.deltaTime * moveSpeed;
             //new Vector3(0, 0, moveSpeed_Z * Time.deltaTime);
         transform.rotation *=  rotate;
     }
