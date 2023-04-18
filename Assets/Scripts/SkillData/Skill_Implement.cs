@@ -9,10 +9,22 @@ public class Skill_Implement : MonoBehaviour
 {
     Player player;
     PlayerWeapon weapon;
+    Vector3 dir;
 
     private void Awake()
     {
         player = FindObjectOfType<Player>();
+    }
+
+    private void Start()
+    {
+        
+    }
+
+    private void Update()
+    {
+        dir = player.transform.forward;
+        Debug.DrawRay(player.transform.position, dir, Color.red);
     }
 
     public void TakeWeapon()
@@ -34,7 +46,9 @@ public class Skill_Implement : MonoBehaviour
             case 1:
                 Skill_AirSlash(skillID);
                 break;
-
+            case 2:
+                Skill_DashAttack(skillID);
+                break;
 
             default:
                 Debug.Log("Don't Exist SkillID");
@@ -73,5 +87,27 @@ public class Skill_Implement : MonoBehaviour
         Instantiate(tempSkill_Data.projectile_Prefab, player.transform.position + compensatePosition, player.transform.rotation);
     }    
 
+    private void Skill_DashAttack(int skillID)
+    {
+        SkillData_Normal tempSkill_Data = GameManager.Instance.SkillDataManager.FindSkill_Normal(skillID);
 
+        //스킬데미지 설정
+        weapon.SkillDamage = tempSkill_Data.skillDamage * (tempSkill_Data.skillLevel * 1.0f) + (player.AttackDamage * 0.5f);
+
+        
+        float moveDistance = 20.0f;
+
+        RaycastHit raycastHit;
+
+        if(Physics.Raycast(player.transform.position, dir, out raycastHit, moveDistance, LayerMask.NameToLayer("Monster")))
+        {
+            player.transform.LookAt(raycastHit.transform.position);
+            player.transform.position = Vector3.Lerp(player.transform.position, raycastHit.transform.position , 0.95f);
+        }
+        
+
+        player.transform.position += dir * moveDistance;
+        
+
+    }
 }

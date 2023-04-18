@@ -45,7 +45,8 @@ public class SkillData : ScriptableObject
 public enum SkillIDCode
 {
     Skill_Wheelwind = 0,
-    Skill_AirSlash
+    Skill_AirSlash,
+    Skill_DashAttack
 }
 
 public enum SkillTypeCode
