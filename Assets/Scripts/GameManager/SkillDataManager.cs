@@ -7,10 +7,27 @@ using UnityEngine;
 /// </summary>
 public class SkillDataManager : MonoBehaviour
 {
+    public static SkillDataManager Instance;
+
     public SkillData_Normal[] skillDatas_Normal;
     public SkillData_Buff[] skillDatas_Buff;
     public SkillData_Duration[] skillDatas_Duration;
     public SkillData_Shooting[] skillDatas_Shooting;
+
+    private void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            if (Instance != this)
+            {
+                Destroy(this.gameObject);
+            }
+        }
+    }
 
     //----------------------------------------------------------------------
     /// <summary>

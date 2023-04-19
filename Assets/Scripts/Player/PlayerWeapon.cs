@@ -14,7 +14,7 @@ public class PlayerWeapon : MonoBehaviour, IBattle
     /// <summary>
     /// 몬스터가 죽었을 때 시체때리면 경험치 계속올라서 처음 죽었을 때만 오르도록 Attack함수에서 체력이 0보다 큰상태에서 0보다 작아지면 bool타입 발동
     /// </summary>
-    bool isCheckExp = false;     
+    public bool isCheckExp = false;     
 
     public float AttackDamage { get; set; }
 

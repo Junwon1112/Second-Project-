@@ -10,7 +10,6 @@ public class GameManager : MonoBehaviour
 {
     Player player;
     ItemDataManager itemDataManager;
-    SkillDataManager skillDataManager;
 
     Scene currentScene;
 
@@ -36,16 +35,6 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// SkillDataManager에 대한 프로퍼티
-    /// </summary>
-    public SkillDataManager SkillDataManager
-    {
-        get
-        {
-            return skillDataManager;
-        }
-    }
     /// <summary>
     /// static을 사용해 외부에서도 새로운 클래스를 만들지 않고 바로 가져올 수 있음, 하나의 인스턴스만 존재
     /// </summary>
@@ -99,7 +88,6 @@ public class GameManager : MonoBehaviour
     {
         player = FindObjectOfType<Player>();
         itemDataManager = FindObjectOfType<ItemDataManager>();
-        skillDataManager = FindObjectOfType<SkillDataManager>();
         CurrentScene = SceneManager.GetActiveScene();
     }
 

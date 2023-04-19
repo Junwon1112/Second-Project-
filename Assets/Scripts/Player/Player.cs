@@ -72,6 +72,8 @@ public class Player : MonoBehaviour, IHealth
 
     SkillUI skillUI;
 
+
+
     /// <summary>
     /// 회전 관련 변수들
     /// </summary>
@@ -599,4 +601,12 @@ public class Player : MonoBehaviour, IHealth
         ParticlePlayer.Instance?.PlayParticle(ParticleType.ParticleSystem_Walk, transform.position, transform.rotation);
     }
 
+    //------------------------------스킬 구현용 함수----------------------------------------------------
+    /// <summary>
+    /// 유니티 애니메이션에서 이벤트로 활성화 할 함수
+    /// </summary>
+    public void UsingSkill_DashAttack()
+    {
+        Skill_Implement.Instance.Skill_DashAttack(2);
+    }
 }

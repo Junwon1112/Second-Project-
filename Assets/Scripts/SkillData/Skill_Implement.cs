@@ -7,13 +7,31 @@ using UnityEngine;
 /// </summary>
 public class Skill_Implement : MonoBehaviour
 {
+    public static Skill_Implement Instance;
+
     Player player;
     PlayerWeapon weapon;
-    Vector3 dir;
+
+    Animator anim;
 
     private void Awake()
     {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            if (Instance != this)
+            {
+                Destroy(this.gameObject);
+            }
+        }
+
+
+
         player = FindObjectOfType<Player>();
+        anim = player.transform.GetComponent<Animator>();
     }
 
     private void Start()
@@ -23,8 +41,8 @@ public class Skill_Implement : MonoBehaviour
 
     private void Update()
     {
-        dir = player.transform.forward;
-        Debug.DrawRay(player.transform.position, dir, Color.red);
+        
+        //Debug.DrawRay(player.transform.position + new Vector3(0,0.5f,0), dir, Color.red);
     }
 
     public void TakeWeapon()
@@ -36,18 +54,22 @@ public class Skill_Implement : MonoBehaviour
     /// 스킬 ID를 입력하면 해당 스킬의 구현 함수를 불러옴
     /// </summary>
     /// <param name="skillID"></param>
-    public void PlaySkill(int skillID)
+    public void PlaySkill(int skillID, SkillData skillData)
     {
         switch (skillID)
         {   
             case 0:
+                StartCoroutine(SetAnimTime_SkillDuration(skillData, SkillDataManager.Instance.FindSkill_Duration(skillID).skillDuration));
                 Skill_Wheelwind(skillID);
                 break;
             case 1:
+                anim.SetTrigger($"IsSkillUse_{skillData.skillName}");
                 Skill_AirSlash(skillID);
                 break;
             case 2:
-                Skill_DashAttack(skillID);
+                anim.SetTrigger($"IsSkillUse_{skillData.skillName}");
+                Debug.Log("애니메이션에서 발동");
+                //Skill_DashAttack(skillID);
                 break;
 
             default:
@@ -59,12 +81,15 @@ public class Skill_Implement : MonoBehaviour
 
     private void Skill_Wheelwind(int skillID)
     {
-        SkillData_Duration tempSkill_Duration = GameManager.Instance.SkillDataManager.FindSkill_Duration(skillID);
+        SkillData_Duration tempSkill_Duration = SkillDataManager.Instance.FindSkill_Duration(skillID);
+
+        float skillUsingTime = tempSkill_Duration.skillDuration;    //스킬지속시간
+
+        
+
 
         //스킬 데미지 설정
         weapon.SkillDamage = tempSkill_Duration.skillDamage * (tempSkill_Duration.skillLevel * 0.5f) + (player.AttackDamage * 0.2f);
-
-        float skillUsingTime = tempSkill_Duration.skillDuration;    //스킬지속시간
 
         float compensateTime = 0.5f;    //파티클용 프리팹 지속시간 보정용 시간
         Quaternion compensateRotaion = Quaternion.Euler(-90.0f, 0.0f, 0.0f);    //파티클용 프리팹 회전 보정
@@ -74,9 +99,21 @@ public class Skill_Implement : MonoBehaviour
             player.transform.position + compensatePosition, player.transform.rotation * compensateRotaion, skillUsingTime + compensateTime);
     }
 
+    /// <summary>
+    /// 지속형태의 스킬 공격시 애니메이션 지속시간을 설정
+    /// </summary>
+    /// <param name="skillDuration"></param>
+    /// <returns></returns>
+    IEnumerator SetAnimTime_SkillDuration(SkillData skillData, float skillDuration) //스킬 지속시간
+    {
+        anim.SetBool($"IsSkillUse_{skillData.skillName}", true);
+        yield return new WaitForSeconds(skillDuration);
+        anim.SetBool($"IsSkillUse_{skillData.skillName}", false);
+    }
+
     private void Skill_AirSlash(int skillID)
     {
-        SkillData_Shooting tempSkill_Data = GameManager.Instance.SkillDataManager.FindSkill_Shooting(skillID);
+        SkillData_Shooting tempSkill_Data = SkillDataManager.Instance.FindSkill_Shooting(skillID);
 
         //스킬데미지 설정
         weapon.SkillDamage = tempSkill_Data.skillDamage * (tempSkill_Data.skillLevel * 1.0f) + (player.AttackDamage * 0.7f);
@@ -87,9 +124,9 @@ public class Skill_Implement : MonoBehaviour
         Instantiate(tempSkill_Data.projectile_Prefab, player.transform.position + compensatePosition, player.transform.rotation);
     }    
 
-    private void Skill_DashAttack(int skillID)
+    public void Skill_DashAttack(int skillID)   //플레이어 애니메이션에서 직접 참조해야 해서 얘만 public으로 만듬
     {
-        SkillData_Normal tempSkill_Data = GameManager.Instance.SkillDataManager.FindSkill_Normal(skillID);
+        SkillData_Normal tempSkill_Data = SkillDataManager.Instance.FindSkill_Normal(skillID);
 
         //스킬데미지 설정
         weapon.SkillDamage = tempSkill_Data.skillDamage * (tempSkill_Data.skillLevel * 1.0f) + (player.AttackDamage * 0.5f);
@@ -97,17 +134,62 @@ public class Skill_Implement : MonoBehaviour
         
         float moveDistance = 20.0f;
 
-        RaycastHit raycastHit;
+        Vector3 dir = player.transform.forward;
 
-        if(Physics.Raycast(player.transform.position, dir, out raycastHit, moveDistance, LayerMask.NameToLayer("Monster")))
+
+        Vector3 skillRange = player.transform.position + dir * moveDistance;
+        float radiusRange = 1.0f;
+
+        int checkMonsterNum = 0;
+
+        for(int effectInterval = 0; effectInterval < moveDistance; effectInterval++)
         {
-            player.transform.LookAt(raycastHit.transform.position);
-            player.transform.position = Vector3.Lerp(player.transform.position, raycastHit.transform.position , 0.95f);
+            ParticlePlayer.Instance?.PlayParticle(ParticleType.ParticleSystem_DashAttack, player.transform.position + dir * effectInterval, player.transform.rotation);
         }
         
 
-        player.transform.position += dir * moveDistance;
-        
 
+        Collider[] monsterColliders = new Collider[6];
+        Monster[] monsters = new Monster[6];
+
+        checkMonsterNum = Physics.OverlapCapsuleNonAlloc(player.transform.position, skillRange, radiusRange, monsterColliders, 1 << LayerMask.NameToLayer("Monster"));
+
+        if(checkMonsterNum > 0)
+        {
+            for(int i = 0; i < checkMonsterNum; i++)
+            {
+                monsters[i] = monsterColliders[i].transform.parent.GetComponentInChildren<Monster>();
+
+                SoundPlayer.Instance?.PlaySound(SoundType.Sound_WindHit);
+
+                weapon.SkillAttack(monsters[i]);
+
+                monsters[i].SetHP();
+                if (monsters[i].HP <= 0 && weapon.isCheckExp)
+                {
+                    weapon.isCheckExp = false;
+                    player.Exp += monsters[i].giveExp;
+                    player.SetExp();
+                    if (player.Exp >= player.MaxExp)
+                    {
+                        player.newDel_LevelUp();    //레벨업 델리게이트
+                    }
+                }
+            }
+        }
+
+        player.transform.position += dir * moveDistance;
+
+        //if(Physics.Raycast(ray, out raycastHit, moveDistance , 1<<LayerMask.NameToLayer("Monster")))
+        //{
+        //    player.transform.LookAt(raycastHit.transform.position);
+        //    player.transform.position = Vector3.Lerp(player.transform.position, raycastHit.transform.position , 0.9f);
+        //}
+        //else
+        //{
+        //    player.transform.position += dir * moveDistance;
+        //}
     }
+
+    
 }

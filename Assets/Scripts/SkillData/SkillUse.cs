@@ -10,7 +10,7 @@ public class SkillUse : MonoBehaviour
 {
     public bool isSkillUsed = false;    //쿨타임 체크용 bool함수
     public float timer = 0.0f;
-    Animator anim;
+    
     Player player;
     PlayerWeapon weapon;
     Skill_Implement skill_Implement;
@@ -18,8 +18,6 @@ public class SkillUse : MonoBehaviour
     private void Awake()
     {
         player = FindObjectOfType<Player>();
-        
-        anim = player.transform.GetComponent<Animator>();
         skill_Implement = FindObjectOfType<Skill_Implement>();
     }
 
@@ -46,48 +44,13 @@ public class SkillUse : MonoBehaviour
         if(!isSkillUsed)
         {
             timer = skillData.skillCooltime;
+
+            skill_Implement.PlaySkill(skillData.skillId, skillData);
             
-            if(skillData.skillType == SkillTypeCode.Skill_Normal )
-            {
-                anim.SetTrigger($"IsSkillUse_{skillData.skillName}");
-                skill_Implement.PlaySkill(skillData.skillId);
-            }
-
-            else if(skillData.skillType == SkillTypeCode.Skill_Duration)
-            {
-                anim.SetBool($"IsSkillUse_{skillData.skillName}", true);
-                skill_Implement.PlaySkill(skillData.skillId);
-
-                SkillData_Duration tempSkill_Duration = GameManager.Instance.SkillDataManager.FindSkill_Duration(skillData.skillId);
-                float skillUsingTime = tempSkill_Duration.skillDuration;    //스킬지속시간
-
-                StartCoroutine(SkillDurationTime(skillData, skillUsingTime));
-            }
-
-            else if (skillData.skillType == SkillTypeCode.Skill_Shooting)
-            {
-                anim.SetTrigger($"IsSkillUse_{skillData.skillName}");
-                skill_Implement.PlaySkill(skillData.skillId);
-            }
-
-            else if(skillData.skillType == SkillTypeCode.Skill_Buff)
-            {
-                anim.SetTrigger($"IsSkillUse_{skillData.skillName}");
-                skill_Implement.PlaySkill(skillData.skillId);
-            }
         }
     }
 
-    /// <summary>
-    /// 지속형태의 스킬 공격시 애니메이션 지속시간을 설정
-    /// </summary>
-    /// <param name="skillDuration"></param>
-    /// <returns></returns>
-    IEnumerator SkillDurationTime(SkillData skillData ,float skillDuration) //스킬 지속시간
-    {
-        yield return new WaitForSeconds(skillDuration);
-        anim.SetBool($"IsSkillUse_{skillData.skillName}", false);
-    }
+
 
     /// <summary>
     /// 플레이어가 무기를 장착시 해당 무기를 자동으로 찾도록 하는 메서드

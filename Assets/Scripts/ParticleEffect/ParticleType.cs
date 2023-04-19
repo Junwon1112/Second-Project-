@@ -10,6 +10,6 @@ public enum ParticleType
     ParticleSystem_Walk,
     ParticleSystem_Buff,
     ParticleSystem_WheelWind,
-    ParticleSystem_ElectroHit
-
+    ParticleSystem_ElectroHit,
+    ParticleSystem_DashAttack
 }
