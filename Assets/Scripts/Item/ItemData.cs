@@ -14,6 +14,8 @@ public class ItemData : ScriptableObject
     public Sprite itemIcon;        //아이템 아이콘
     public int itemValue;          //아이템 가치
     public int itemMaxCount;       //아이템 최대 누적수
+    public ItemType itemType;       //아이템 타입
+    public JobType job;             //아이템 사용가능 직업
 }
 
 public enum ItemIDCode
@@ -21,4 +23,10 @@ public enum ItemIDCode
     HP_Potion = 0,
     Basic_Weapon_1,
     Basic_Weapon_2
+}
+
+public enum ItemType
+{
+    ComsumableItem = 0,
+    Weapon
 }

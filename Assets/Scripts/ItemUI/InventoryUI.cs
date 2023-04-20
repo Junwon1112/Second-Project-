@@ -190,7 +190,7 @@ public class InventoryUI : MonoBehaviour
         if(isFindItemSlot)
         {
 
-            if (tempSlotUI.slotUIData.ID == 0)   //data가 포션이라면 (포션id = 0)
+            if (tempSlotUI.slotUIData.itemType == ItemType.ComsumableItem)   //data가 사용형 아이템이라면
             {
                 ItemData_Potion tempPotion = new ItemData_Potion();
                 tempPotion.Use(player);
@@ -205,7 +205,7 @@ public class InventoryUI : MonoBehaviour
                     playerInven.itemSlots[tempSlotUI.slotUIID].DecreaseSlotItem(1);
                 }
             }
-            else if(tempSlotUI.slotUIData.ID == 1 || tempSlotUI.slotUIData.ID == 2)  //data가 무기라면
+            else if(tempSlotUI.slotUIData.itemType == ItemType.Weapon && tempSlotUI.slotUIData.job == player.Job)  //data가 무기고 플레이어와 직업이 같다면
             {
                 for (int i = 0; i < equipmentUI.equipSlotUIs.Length; i++)    //무기 슬롯을 찾아라
                 {

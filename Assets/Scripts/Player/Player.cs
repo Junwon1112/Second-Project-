@@ -11,7 +11,8 @@ public class Player : MonoBehaviour, IHealth
 {
     Player player;
 
-
+    JobType job;
+    public JobType Job { get; set; }
 
     /// <summary>
     /// 움직임을 위한 인풋 시스템용

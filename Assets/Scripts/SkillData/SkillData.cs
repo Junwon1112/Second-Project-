@@ -14,6 +14,7 @@ public class SkillData : ScriptableObject
     
     public int skillId;
     public SkillIDCode skillIDCode;
+    public JobType job;
 
     public Sprite skillIcon;
 

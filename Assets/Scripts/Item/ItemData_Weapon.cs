@@ -17,7 +17,6 @@ public class ItemData_Weapon : ItemData, IEquipable
     /// <param name="player"></param>
     public void Equip(Player player)
     {
-        
         makedItem = Instantiate(itemPrefab, player.transform.position, player.transform.rotation);
         player.AttackDamage += attackDamage;
     }
