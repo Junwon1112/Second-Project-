@@ -206,6 +206,9 @@ public class Player : MonoBehaviour, IHealth
         skillUses = FindObjectsOfType<SkillUse>();
         skill_Implement = FindObjectOfType<Skill_Implement>();
         skillUI = FindObjectOfType<SkillUI>();
+
+        //-----------------테스트용-------------
+        Job = JobType.Witch;
     }
 
     /// <summary>
