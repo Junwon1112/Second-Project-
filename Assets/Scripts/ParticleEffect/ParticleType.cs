@@ -11,5 +11,6 @@ public enum ParticleType
     ParticleSystem_Buff,
     ParticleSystem_WheelWind,
     ParticleSystem_ElectroHit,
+    ParticleSystem_IceHit,
     ParticleSystem_DashAttack
 }

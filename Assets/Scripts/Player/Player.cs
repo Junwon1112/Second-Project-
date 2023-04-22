@@ -11,6 +11,9 @@ public class Player : MonoBehaviour, IHealth
 {
     Player player;
 
+    [SerializeField]
+    GameObject witchAttackPrefab;
+
     JobType job;
     public JobType Job { get; set; }
 
@@ -23,6 +26,13 @@ public class Player : MonoBehaviour, IHealth
     /// 죽었을 때 리지드바디 변화용
     /// </summary>
     Rigidbody rigid;
+
+    /// <summary>
+    /// 공격 애니메이션 실행시 공격 전 위치를 저장하는 역할
+    /// </summary>
+    Vector3 attackPosition_Dir;
+    Vector3 attackPosition;
+    Quaternion attackRotation;
 
 
     /// <summary>
@@ -188,6 +198,7 @@ public class Player : MonoBehaviour, IHealth
         get { return defence; }
         set { defence = value; }
     }
+    
 
 
     private void Awake()
@@ -329,6 +340,7 @@ public class Player : MonoBehaviour, IHealth
             StopMove();
             anim.SetBool("IsMove", false);
             anim.SetTrigger("AttackOn");
+
         }
     }
 
@@ -593,7 +605,14 @@ public class Player : MonoBehaviour, IHealth
     /// </summary>
     public void AttackSoundStart()
     {
-        SoundPlayer.Instance?.PlaySound(SoundType.Sound_Attack);
+        if(Job == JobType.SwordMan)
+        {
+            SoundPlayer.Instance?.PlaySound(SoundType.Sound_Attack_SwordMan);
+        }
+        else if(Job == JobType.Witch)
+        {
+            SoundPlayer.Instance?.PlaySound(SoundType.Sound_Attack_Witch);
+        }
     }
 
     /// <summary>
@@ -606,6 +625,17 @@ public class Player : MonoBehaviour, IHealth
     }
 
     //------------------------------스킬 구현용 함수----------------------------------------------------
+
+    /// <summary>
+    /// 유니티 애니메이션에서 이벤트로 활성화 할 함수
+    /// </summary>
+    public void WitchAttack_IceBall()
+    {
+        Vector3 compensatePosition = new Vector3(0.0f, 0.5f, 0.5f);  //투사체 프리팹 위치 보정
+
+        Instantiate(witchAttackPrefab, transform.position + compensatePosition, transform.rotation);
+    }
+
     /// <summary>
     /// 유니티 애니메이션에서 이벤트로 활성화 할 함수
     /// </summary>

@@ -14649,7 +14649,7 @@ GameObject:
   - component: {fileID: 5883248683190086555}
   - component: {fileID: 776863776289134983}
   m_Layer: 0
-  m_Name: AirSlash
+  m_Name: Projectile_AirSlash
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

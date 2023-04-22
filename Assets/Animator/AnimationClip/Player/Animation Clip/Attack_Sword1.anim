@@ -6,7 +6,7 @@ AnimationClip:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Attack01_SwordAndShiled
+  m_Name: Attack_Sword1
   serializedVersion: 6
   m_Legacy: 0
   m_Compressed: 0
@@ -32082,15 +32082,8 @@ AnimationClip:
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
-  - time: 0.06666667
-    functionName: AttackTriggerOn
-    data: 
-    objectReferenceParameter: {fileID: 0}
-    floatParameter: 0
-    intParameter: 0
-    messageOptions: 0
-  - time: 0.23333333
-    functionName: AttackTriggerOff
+  - time: 0.26666668
+    functionName: WitchAttack_IceBall
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
