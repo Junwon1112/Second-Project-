@@ -13,12 +13,10 @@ public class SkillUse : MonoBehaviour
     
     Player player;
     PlayerWeapon weapon;
-    Skill_Implement skill_Implement;
 
     private void Awake()
     {
         player = FindObjectOfType<Player>();
-        skill_Implement = FindObjectOfType<Skill_Implement>();
     }
 
     private void FixedUpdate()
@@ -44,8 +42,14 @@ public class SkillUse : MonoBehaviour
         if(!isSkillUsed)
         {
             timer = skillData.skillCooltime;
-
-            skill_Implement.PlaySkill(skillData.skillId, skillData);
+            if(skillData.skillId < 10 && skillData.skillId > -1)
+            {
+                Skill_Implement.Instance.PlaySkill_SwordMan(skillData.skillId, skillData);
+            }
+            else if(skillData.skillId < 20)
+            {
+                Skill_Implement.Instance.PlaySkill_Witch(skillData.skillId, skillData);
+            }
             
         }
     }

@@ -4,6 +4,7 @@ using UnityEngine;
 
 /// <summary>
 /// 실제 스킬 구현부
+/// skillId 0~ 9는 swordman, 10~19은 마법사
 /// </summary>
 public class Skill_Implement : MonoBehaviour
 {
@@ -34,16 +35,6 @@ public class Skill_Implement : MonoBehaviour
         anim = player.transform.GetComponent<Animator>();
     }
 
-    private void Start()
-    {
-        
-    }
-
-    private void Update()
-    {
-        
-        //Debug.DrawRay(player.transform.position + new Vector3(0,0.5f,0), dir, Color.red);
-    }
 
     public void TakeWeapon()
     {
@@ -54,17 +45,17 @@ public class Skill_Implement : MonoBehaviour
     /// 스킬 ID를 입력하면 해당 스킬의 구현 함수를 불러옴
     /// </summary>
     /// <param name="skillID"></param>
-    public void PlaySkill(int skillID, SkillData skillData)
+    public void PlaySkill_SwordMan(int skillID, SkillData skillData)
     {
         switch (skillID)
         {   
             case 0:
                 StartCoroutine(SetAnimTime_SkillDuration(skillData, SkillDataManager.Instance.FindSkill_Duration(skillID).skillDuration));
-                Skill_Wheelwind(skillID);
+                SwordMan_Skill_Wheelwind(skillID);
                 break;
             case 1:
                 anim.SetTrigger($"IsSkillUse_{skillData.skillName}");
-                Skill_AirSlash(skillID);
+                SordMan_Skill_AirSlash(skillID);
                 break;
             case 2:
                 anim.SetTrigger($"IsSkillUse_{skillData.skillName}");
@@ -78,15 +69,33 @@ public class Skill_Implement : MonoBehaviour
         }
     }
 
+    public void PlaySkill_Witch(int skillID, SkillData skillData)
+    {
+        switch (skillID)
+        {
+            case 10:
+                anim.SetTrigger($"IsSkillUse_{skillData.skillName}");
+                Witch_Skill_Meteo(skillID);
+                break;
+            case 11:
 
-    private void Skill_Wheelwind(int skillID)
+                break;
+            case 12:
+
+                break;
+
+            default:
+                Debug.Log("Don't Exist SkillID");
+                break;
+        }
+    }
+
+
+    private void SwordMan_Skill_Wheelwind(int skillID)
     {
         SkillData_Duration tempSkill_Duration = SkillDataManager.Instance.FindSkill_Duration(skillID);
 
         float skillUsingTime = tempSkill_Duration.skillDuration;    //스킬지속시간
-
-        
-
 
         //스킬 데미지 설정
         weapon.SkillDamage = tempSkill_Duration.skillDamage * (tempSkill_Duration.skillLevel * 0.5f) + (player.AttackDamage * 0.2f);
@@ -111,7 +120,7 @@ public class Skill_Implement : MonoBehaviour
         anim.SetBool($"IsSkillUse_{skillData.skillName}", false);
     }
 
-    private void Skill_AirSlash(int skillID)
+    private void SordMan_Skill_AirSlash(int skillID)
     {
         SkillData_Shooting tempSkill_Data = SkillDataManager.Instance.FindSkill_Shooting(skillID);
 
@@ -124,7 +133,7 @@ public class Skill_Implement : MonoBehaviour
         Instantiate(tempSkill_Data.projectile_Prefab, player.transform.position + compensatePosition, player.transform.rotation);
     }    
 
-    public void Skill_DashAttack(int skillID)   //플레이어 애니메이션에서 직접 참조해야 해서 얘만 public으로 만듬
+    public void SwordMan_Skill_DashAttack(int skillID)   //플레이어 애니메이션에서 직접 참조해야 해서 얘만 public으로 만듬
     {
         SkillData_Normal tempSkill_Data = SkillDataManager.Instance.FindSkill_Normal(skillID);
 
@@ -180,16 +189,20 @@ public class Skill_Implement : MonoBehaviour
 
         player.transform.position += dir * moveDistance;
 
-        //if(Physics.Raycast(ray, out raycastHit, moveDistance , 1<<LayerMask.NameToLayer("Monster")))
-        //{
-        //    player.transform.LookAt(raycastHit.transform.position);
-        //    player.transform.position = Vector3.Lerp(player.transform.position, raycastHit.transform.position , 0.9f);
-        //}
-        //else
-        //{
-        //    player.transform.position += dir * moveDistance;
-        //}
     }
 
-    
+    public void Witch_Skill_Meteo(int skillID)   //플레이어 애니메이션에서 직접 참조해야 해서 얘만 public으로 만듬
+    {
+        SkillData_Shooting tempSkill_Data = SkillDataManager.Instance.FindSkill_Shooting(skillID);
+
+        //스킬데미지 설정
+        weapon.SkillDamage = tempSkill_Data.skillDamage * (tempSkill_Data.skillLevel * 0.5f) + (player.AttackDamage * 0.2f);
+
+
+        Vector3 compensatePosition = player.transform.forward * 6;  //투사체 프리팹 위치 보정
+
+        Instantiate(tempSkill_Data.projectile_Prefab, player.transform.position + compensatePosition, player.transform.rotation);
+    }
+
+
 }

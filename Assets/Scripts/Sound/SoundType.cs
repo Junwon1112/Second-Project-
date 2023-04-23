@@ -12,6 +12,8 @@ public enum SoundType
     Sound_Walk,
     Sound_ElectroHit,
     Sound_WindHit,
-    Sound_IceHit
+    Sound_IceHit,
+    Sound_FireHit
+    
 }
 

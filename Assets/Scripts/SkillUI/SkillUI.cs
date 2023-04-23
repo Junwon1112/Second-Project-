@@ -58,21 +58,24 @@ public class SkillUI : MonoBehaviour
         skillCloseButton.onClick.AddListener(OnSkillOnOffSetting);
         int slotIndex = 0;
 
-        for(int i = 0; i < skillSlotUIs.Length; i++)
+        for(int i = 0; i < skillDatas.Count; i++)
         {
-            if (skillDatas[i] == null)
-            {
-                Destroy(skillSlotUIs[slotIndex].transform.parent.gameObject);
-                slotIndex++;
-            }
-            else if(GameManager.Instance.MainPlayer.Job == skillDatas[i].job)
+            if(GameManager.Instance.MainPlayer.Job == skillDatas[i].job)
             {
                 skillSlotUIs[slotIndex].skillData = skillDatas[i];
                 skillSlotUIs[slotIndex].upDownButton.SkillLevelToText();
                 skillSlotUIs[slotIndex].SetSkillUIInfo();
                 slotIndex++;
             }
-           
+
+            if (i == skillDatas.Count -1)
+            {
+                int destroyNum = skillSlotUIs.Length - slotIndex;
+                for (int j = 0; j < destroyNum; j++)
+                {
+                    Destroy(skillSlotUIs[destroyNum - j].transform.parent.gameObject);
+                }
+            }
         }
 
         SynchronizeSkillPoint();

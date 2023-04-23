@@ -14,7 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: HP_Potion
   ID: 0
-  itemPrefab: {fileID: 1999239547283070, guid: 872472106f2b48b488e40582293d2ca0, type: 3}
+  itemPrefab: {fileID: 3878753150598820855, guid: ce391f60d57bc5a4585d387aa063fd47, type: 3}
   itemIcon: {fileID: 21300000, guid: 12a4fb90c0269314a8fe636f35764eb4, type: 3}
   itemValue: 100
   itemMaxCount: 5
+  itemType: 0
+  job: 0

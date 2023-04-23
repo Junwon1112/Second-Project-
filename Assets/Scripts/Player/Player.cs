@@ -641,6 +641,6 @@ public class Player : MonoBehaviour, IHealth
     /// </summary>
     public void UsingSkill_DashAttack()
     {
-        Skill_Implement.Instance.Skill_DashAttack(2);
+        Skill_Implement.Instance.SwordMan_Skill_DashAttack(2);
     }
 }

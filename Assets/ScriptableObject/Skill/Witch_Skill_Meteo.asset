@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 778c1638f4a2aa1428a6293b126b7224, type: 3}
+  m_Name: Witch_Skill_Meteo
+  m_EditorClassIdentifier: 
+  skillName: Meteo
+  skillId: 10
+  skillIDCode: 10
+  job: 2
+  skillIcon: {fileID: 21300000, guid: 300abdf8cbdd5c742a05b6506767fd64, type: 3}
+  requireLevel: 0
+  skillCooltime: 7
+  skillDamage: 11
+  skillLevel: 0
+  skillType: 3
+  skillStateName: Skill_Meteo
+  skillInformation: Meteo Strike!
+  projectile_Prefab: {fileID: 3048068202974249484, guid: e6ca21815ec69ab469044d5b6a1a1d10, type: 3}

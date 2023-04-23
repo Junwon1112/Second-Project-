@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: dc390a42ba7386542a79622291776eea, type: 3}
-  m_Name: Skill_DashAttack
+  m_Name: SwordMan_Skill_DashAttack
   m_EditorClassIdentifier: 
   skillName: DashAttack
   skillId: 2

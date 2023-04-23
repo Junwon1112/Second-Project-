@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: BasicSword
   ID: 1
-  itemPrefab: {fileID: 9214620317150788344, guid: 90ad91459ff20d14d9a32f1f1c606f31, type: 3}
+  itemPrefab: {fileID: 723828308738429621, guid: b3e1c2caf7e1b6141b96ec00ec5fc684, type: 3}
   itemIcon: {fileID: 21300000, guid: 95052c6b62fb3de4695beaa99f842ac2, type: 3}
   itemValue: 300
   itemMaxCount: 1
