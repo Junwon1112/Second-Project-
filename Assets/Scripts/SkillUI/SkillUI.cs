@@ -73,7 +73,7 @@ public class SkillUI : MonoBehaviour
                 int destroyNum = skillSlotUIs.Length - slotIndex;
                 for (int j = 0; j < destroyNum; j++)
                 {
-                    Destroy(skillSlotUIs[destroyNum - j].transform.parent.gameObject);
+                    Destroy(skillSlotUIs[skillSlotUIs.Length -1 - j].transform.parent.gameObject);
                 }
             }
         }

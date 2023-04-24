@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 3048068202974249481}
   - component: {fileID: 3048068202974249486}
   - component: {fileID: 3048068202974249487}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Projectile_Meteo
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -111,9 +111,41 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 963298783783106902, guid: 4b950d428ec947b4bbba51280bd6ab5e, type: 3}
+      propertyPath: m_Layer
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 1664122970461900358, guid: 4b950d428ec947b4bbba51280bd6ab5e, type: 3}
+      propertyPath: m_Layer
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 4134699994019013313, guid: 4b950d428ec947b4bbba51280bd6ab5e, type: 3}
+      propertyPath: m_Layer
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 6107513680935249934, guid: 4b950d428ec947b4bbba51280bd6ab5e, type: 3}
+      propertyPath: m_Layer
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 6144081954650167613, guid: 4b950d428ec947b4bbba51280bd6ab5e, type: 3}
+      propertyPath: m_Layer
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 6281197938758783073, guid: 4b950d428ec947b4bbba51280bd6ab5e, type: 3}
+      propertyPath: m_Layer
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 6865372399660772086, guid: 4b950d428ec947b4bbba51280bd6ab5e, type: 3}
+      propertyPath: m_Layer
+      value: 11
+      objectReference: {fileID: 0}
     - target: {fileID: 7957833072274404953, guid: 4b950d428ec947b4bbba51280bd6ab5e, type: 3}
       propertyPath: m_Name
       value: Projectile_Meteo
+      objectReference: {fileID: 0}
+    - target: {fileID: 7957833072274404953, guid: 4b950d428ec947b4bbba51280bd6ab5e, type: 3}
+      propertyPath: m_Layer
+      value: 11
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4b950d428ec947b4bbba51280bd6ab5e, type: 3}

@@ -52877,8 +52877,8 @@ AnimationClip:
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
-  - time: 0.56666666
-    functionName: WitchAttack_IceBall
+  - time: 0.6333333
+    functionName: WitchAttack
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0

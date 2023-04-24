@@ -302,10 +302,7 @@ public class Player : MonoBehaviour, IHealth
             anim.SetFloat("DirSignal_Side", dir.x);
             anim.SetBool("IsMove", true);
         }
-        //else
-        //{
-        //    StopMove();
-        //}
+
         if(obj.canceled)
         {
             StopMove();
@@ -337,9 +334,19 @@ public class Player : MonoBehaviour, IHealth
     {
         if(!isDie || !isSkillUsing || !isMove)
         {
-            StopMove();
-            anim.SetBool("IsMove", false);
-            anim.SetTrigger("AttackOn");
+            if(isFindWeapon)
+            {
+                StopMove();
+                anim.SetBool("IsMove", false);
+                if (Job == JobType.SwordMan)
+                {
+                    anim.SetTrigger("AttackOn_SwordMan");
+                }
+                else if (Job == JobType.Witch)
+                {
+                    anim.SetTrigger("AttackOn_Witch");
+                }
+            }
         }
     }
 
@@ -588,6 +595,7 @@ public class Player : MonoBehaviour, IHealth
     /// </summary>
     public void IsSkillUseOn()
     {
+        StopMove();
         isSkillUsing = true;
     }
 
@@ -625,18 +633,6 @@ public class Player : MonoBehaviour, IHealth
 
     //------------------------------스킬 구현용 함수----------------------------------------------------
 
-    /// <summary>
-    /// 유니티 애니메이션에서 이벤트로 활성화 할 함수
-    /// </summary>
-    public void WitchAttack_IceBall()
-    {
-        if(isFindWeapon)
-        {
-            Vector3 compensatePosition = new Vector3(0.0f, 0.5f, 0.5f);  //투사체 프리팹 위치 보정
-            Instantiate(witchAttackPrefab, transform.position + compensatePosition, transform.rotation);
-        }
-        
-    }
 
     /// <summary>
     /// 유니티 애니메이션에서 이벤트로 활성화 할 함수
@@ -644,5 +640,22 @@ public class Player : MonoBehaviour, IHealth
     public void UsingSkill_DashAttack()
     {
         Skill_Implement.Instance.SwordMan_Skill_DashAttack(2);
+    }
+
+    /// <summary>
+    /// 유니티 애니메이션에서 이벤트로 활성화 할 함수
+    /// </summary>
+    public void WitchAttack()
+    {
+        Vector3 compensatePosition = new Vector3(0.0f, 0.5f, 0.5f);  //투사체 프리팹 위치 보정
+        Instantiate(witchAttackPrefab, transform.position + compensatePosition, transform.rotation);
+    }
+
+    /// <summary>
+    /// 유니티 애니메이션에서 이벤트로 활성화 할 함수
+    /// </summary>
+    public void UsingSkill_Meteo()
+    {
+        Skill_Implement.Instance.Witch_Skill_Meteo(10);
     }
 }

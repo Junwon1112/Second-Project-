@@ -26,6 +26,8 @@ public class Monster : MonoBehaviour, IHealth
     public delegate void Action(NavMeshAgent agent);
     int destinationIndex = 0;
 
+    float initialMonsterSpeed = 3.5f;
+    float monsterSpeed;
 
     float monsterSearchRadius = 5.0f;
     LayerMask playerLayer;
@@ -126,7 +128,7 @@ public class Monster : MonoBehaviour, IHealth
         get { return maxHP; }
     }
    
-
+    public float MonsterSpeed { get; set; }
 
 
     /// <summary>
@@ -167,6 +169,8 @@ public class Monster : MonoBehaviour, IHealth
         {
             patrolPoints[i] = patrolPoint.transform.GetChild(i);
         }
+        MonsterSpeed = initialMonsterSpeed;
+        agent.speed = MonsterSpeed;
 
         //비트플래그, 0000 0001 을 playerLayer(7번째 레이어) 만큼 옮겨라 => 0100 0000 이 됨, 플레이어 찾을 떄 플레이어 레이어용 변수로 활용하기 위해 만듬 
         tempLayerMask = (1 << playerLayer); 
@@ -458,5 +462,17 @@ public class Monster : MonoBehaviour, IHealth
         ItemFactory.MakeItem(ItemIDCode.HP_Potion, transform.position, Quaternion.identity);
     }
 
+    public void MoveSlow(float slowRate, float time)
+    {
+        StartCoroutine(CoMoveSlow(slowRate, time));
+    }
 
+    IEnumerator CoMoveSlow(float slowRate, float time)
+    {
+        MonsterSpeed *= slowRate;
+        agent.speed = MonsterSpeed;
+        yield return new WaitForSeconds(time);
+        MonsterSpeed = initialMonsterSpeed;
+        agent.speed = MonsterSpeed;
+    }
 }

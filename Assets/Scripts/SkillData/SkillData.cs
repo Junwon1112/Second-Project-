@@ -49,7 +49,8 @@ public enum SkillIDCode
     Skill_AirSlash = 1,
     Skill_DashAttack = 2,
 
-    Skill_Meteo = 10  //마법사 스킬
+    Skill_Meteo = 10,  //마법사 스킬
+    Skill_BlackHole = 11    
 }
 
 public enum SkillTypeCode

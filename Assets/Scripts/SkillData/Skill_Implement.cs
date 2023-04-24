@@ -75,10 +75,11 @@ public class Skill_Implement : MonoBehaviour
         {
             case 10:
                 anim.SetTrigger($"IsSkillUse_{skillData.skillName}");
-                Witch_Skill_Meteo(skillID);
+                Debug.Log("애니메이션에서 발동");
                 break;
             case 11:
-
+                anim.SetTrigger($"IsSkillUse_{skillData.skillName}");
+                Witch_Skill_BlackHole(skillID);
                 break;
             case 12:
 
@@ -191,7 +192,7 @@ public class Skill_Implement : MonoBehaviour
 
     }
 
-    public void Witch_Skill_Meteo(int skillID)   //플레이어 애니메이션에서 직접 참조해야 해서 얘만 public으로 만듬
+    public void Witch_Skill_Meteo(int skillID)   
     {
         SkillData_Shooting tempSkill_Data = SkillDataManager.Instance.FindSkill_Shooting(skillID);
 
@@ -205,5 +206,17 @@ public class Skill_Implement : MonoBehaviour
         SoundPlayer.Instance?.PlaySound(SoundType.Sound_Skill_Meteo);
     }
 
+    private void Witch_Skill_BlackHole(int skillID)
+    {
+        SkillData_Shooting tempSkill_Data = SkillDataManager.Instance.FindSkill_Shooting(skillID);
 
+        //스킬데미지 설정
+        weapon.SkillDamage = tempSkill_Data.skillDamage * (tempSkill_Data.skillLevel * 1.0f) + (player.AttackDamage * 0.1f);
+
+
+        Vector3 compensatePosition = new Vector3(0,1.2f,0) + player.transform.forward * 6;  //투사체 프리팹 위치 보정
+
+        Instantiate(tempSkill_Data.projectile_Prefab, player.transform.position + compensatePosition, player.transform.rotation);
+        SoundPlayer.Instance?.PlaySound(SoundType.Sound_Skill_BlackHole);
+    }
 }
