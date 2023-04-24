@@ -13,7 +13,7 @@ public enum SoundType
     Sound_ElectroHit,
     Sound_WindHit,
     Sound_IceHit,
-    Sound_FireHit
-    
+    Sound_FireHit,
+    Sound_Skill_Meteo
 }
 

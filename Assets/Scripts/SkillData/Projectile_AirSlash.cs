@@ -9,6 +9,7 @@ public class Projectile_AirSlash : MonoBehaviour, IBattle
     float skillDamage;
     PlayerWeapon weapon;
     Vector3 dir;
+    float lifetime = 3.0f;
 
     public float SkillDamage { get; set; }
 
@@ -32,7 +33,7 @@ public class Projectile_AirSlash : MonoBehaviour, IBattle
         rotate = Quaternion.Euler(0, Time.deltaTime * rotateSpeed, 0);
         dir = player.transform.forward;
         transform.localRotation = player.transform.rotation;
-        Destroy(gameObject, 3.0f);
+        Destroy(gameObject, lifetime);
     }
 
     private void Update()

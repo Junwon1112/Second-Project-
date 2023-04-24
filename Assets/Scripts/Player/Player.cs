@@ -340,7 +340,6 @@ public class Player : MonoBehaviour, IHealth
             StopMove();
             anim.SetBool("IsMove", false);
             anim.SetTrigger("AttackOn");
-
         }
     }
 
@@ -631,9 +630,12 @@ public class Player : MonoBehaviour, IHealth
     /// </summary>
     public void WitchAttack_IceBall()
     {
-        Vector3 compensatePosition = new Vector3(0.0f, 0.5f, 0.5f);  //투사체 프리팹 위치 보정
-
-        Instantiate(witchAttackPrefab, transform.position + compensatePosition, transform.rotation);
+        if(isFindWeapon)
+        {
+            Vector3 compensatePosition = new Vector3(0.0f, 0.5f, 0.5f);  //투사체 프리팹 위치 보정
+            Instantiate(witchAttackPrefab, transform.position + compensatePosition, transform.rotation);
+        }
+        
     }
 
     /// <summary>

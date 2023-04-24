@@ -261,7 +261,7 @@ public class InventoryUI : MonoBehaviour
             slotUIs[tempItemSlot.slotID].SetSlotWithData(tempEquipSlotUI.takeSlotItemData, 1);          //슬롯UI도 마찬가지
             
             player.UnEquipWeaponAbility();     //무기데미지를 빼고 플레이어에 있는 myWeapon변수를 null로 만듬
-
+            player.isFindWeapon = false;
             tempEquipSlotUI.ClearTempSlot();    //장비슬롯은 비우고
             Destroy(FindObjectOfType<PlayerWeapon>().gameObject);   //무기를 찾아 지운다.
 

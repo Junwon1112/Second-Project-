@@ -9,6 +9,7 @@ public class Projectile_WitchAttack : MonoBehaviour, IBattle
     float skillDamage;
     PlayerWeapon weapon;
     Vector3 dir;
+    float lifetime = 0.5f;
 
     public float AttackDamage { get; set; }
 
@@ -23,10 +24,10 @@ public class Projectile_WitchAttack : MonoBehaviour, IBattle
 
     private void Start()
     {
-        AttackDamage = player.AttackDamage;
+        AttackDamage = weapon.AttackDamage;
         dir = player.transform.forward;
         transform.localRotation = player.transform.rotation;
-        Destroy(gameObject, 0.5f);
+        Destroy(gameObject, lifetime);
     }
 
     private void Update()
