@@ -10,6 +10,7 @@ using TMPro;
 public class Player : MonoBehaviour, IHealth
 {
     Player player;
+    MainCamera_PlayerPos mainCamera_PlayerPos;
 
     [SerializeField]
     GameObject witchAttackPrefab;
@@ -213,7 +214,8 @@ public class Player : MonoBehaviour, IHealth
         playerInventory = GetComponentInChildren<Inventory>();
         playerInventoryUI = FindObjectOfType<InventoryUI>();
         weaponHandTransform = FindObjectOfType<FindWeaponHand>().transform;
-        
+        mainCamera_PlayerPos = FindObjectOfType<MainCamera_PlayerPos>();
+
         skillUses = FindObjectsOfType<SkillUse>();
         skill_Implement = FindObjectOfType<Skill_Implement>();
         skillUI = FindObjectOfType<SkillUI>();
@@ -364,10 +366,10 @@ public class Player : MonoBehaviour, IHealth
             turnToX = turnToX + moveY * turnSpeed * Time.deltaTime;
 
             //turnToY = Mathf.Clamp(turnToY, -80, 80);    //최대값 설정
-            turnToX = Mathf.Clamp(turnToX, -20, 20);
+            turnToX = Mathf.Clamp(turnToX, 0, 20);
 
             transform.eulerAngles = new Vector3(0, turnToY, 0);
-
+            //mainCamera_PlayerPos.transform.localEulerAngles = new Vector3(-turnToX, 0, 0); Y축 넣었다가 어지러워서 뺐음
         }
     }
 

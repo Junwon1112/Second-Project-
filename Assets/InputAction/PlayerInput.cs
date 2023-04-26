@@ -196,7 +196,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
             ]
         },
         {
-            ""name"": ""Inventory"",
+            ""name"": ""InventoryUI"",
             ""id"": ""c6136a03-b10e-4638-8431-feefc00506e7"",
             ""actions"": [
                 {
@@ -244,7 +244,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
             ]
         },
         {
-            ""name"": ""Equipment"",
+            ""name"": ""EquipmentUI"",
             ""id"": ""8f3042f4-179a-485c-ab60-517739098c4f"",
             ""actions"": [
                 {
@@ -272,7 +272,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
             ]
         },
         {
-            ""name"": ""Skill"",
+            ""name"": ""SkillUI"",
             ""id"": ""460549ee-e10f-4b0b-9a55-f5ac34724e92"",
             ""actions"": [
                 {
@@ -300,7 +300,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
             ]
         },
         {
-            ""name"": ""QuickSlot"",
+            ""name"": ""QuickSlotUI"",
             ""id"": ""f6220187-1fcb-4bb7-b43a-e7dff5ce13d3"",
             ""actions"": [
                 {
@@ -428,7 +428,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
             ]
         },
         {
-            ""name"": ""MainMenu"",
+            ""name"": ""MainMenuUI"",
             ""id"": ""40214cc4-be9c-40eb-a560-22336753277d"",
             ""actions"": [
                 {
@@ -450,6 +450,54 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""StartMainMenu"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
+        },
+        {
+            ""name"": ""Skill_Implement"",
+            ""id"": ""407eb8de-d385-4065-84e9-9d45502adfaf"",
+            ""actions"": [
+                {
+                    ""name"": ""FindingTarget"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""d2ae6756-01c2-4923-a06c-d0b5ec85a6fb"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ClickTarget"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""acb2f213-0fcb-4a52-8403-39a8eb0fa759"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""54c3593b-a08b-4e81-8ce7-7e2ba57d1872"",
+                    ""path"": ""<Mouse>/position"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""FindingTarget"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""161e0e57-1198-4129-a26d-94de4b3e2f19"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ClickTarget"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -483,27 +531,31 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         m_Player_TempItemUse = m_Player.FindAction("TempItemUse", throwIfNotFound: true);
         m_Player_TakeItem = m_Player.FindAction("TakeItem", throwIfNotFound: true);
         m_Player_TestMakeItem = m_Player.FindAction("TestMakeItem", throwIfNotFound: true);
-        // Inventory
-        m_Inventory = asset.FindActionMap("Inventory", throwIfNotFound: true);
-        m_Inventory_InventoryOnOff = m_Inventory.FindAction("InventoryOnOff", throwIfNotFound: true);
-        m_Inventory_InventoryItemUse = m_Inventory.FindAction("InventoryItemUse", throwIfNotFound: true);
-        // Equipment
-        m_Equipment = asset.FindActionMap("Equipment", throwIfNotFound: true);
-        m_Equipment_EquipmentOnOff = m_Equipment.FindAction("EquipmentOnOff", throwIfNotFound: true);
-        // Skill
-        m_Skill = asset.FindActionMap("Skill", throwIfNotFound: true);
-        m_Skill_SkillWindowOnOff = m_Skill.FindAction("SkillWindowOnOff", throwIfNotFound: true);
-        // QuickSlot
-        m_QuickSlot = asset.FindActionMap("QuickSlot", throwIfNotFound: true);
-        m_QuickSlot_QuickSlot1 = m_QuickSlot.FindAction("QuickSlot1", throwIfNotFound: true);
-        m_QuickSlot_QuickSlot2 = m_QuickSlot.FindAction("QuickSlot2", throwIfNotFound: true);
-        m_QuickSlot_QuickSlot3 = m_QuickSlot.FindAction("QuickSlot3", throwIfNotFound: true);
-        m_QuickSlot_QuickSlot4 = m_QuickSlot.FindAction("QuickSlot4", throwIfNotFound: true);
-        m_QuickSlot_QuickSlot5 = m_QuickSlot.FindAction("QuickSlot5", throwIfNotFound: true);
-        m_QuickSlot_QuickSlot6 = m_QuickSlot.FindAction("QuickSlot6", throwIfNotFound: true);
-        // MainMenu
-        m_MainMenu = asset.FindActionMap("MainMenu", throwIfNotFound: true);
-        m_MainMenu_StartMainMenu = m_MainMenu.FindAction("StartMainMenu", throwIfNotFound: true);
+        // InventoryUI
+        m_InventoryUI = asset.FindActionMap("InventoryUI", throwIfNotFound: true);
+        m_InventoryUI_InventoryOnOff = m_InventoryUI.FindAction("InventoryOnOff", throwIfNotFound: true);
+        m_InventoryUI_InventoryItemUse = m_InventoryUI.FindAction("InventoryItemUse", throwIfNotFound: true);
+        // EquipmentUI
+        m_EquipmentUI = asset.FindActionMap("EquipmentUI", throwIfNotFound: true);
+        m_EquipmentUI_EquipmentOnOff = m_EquipmentUI.FindAction("EquipmentOnOff", throwIfNotFound: true);
+        // SkillUI
+        m_SkillUI = asset.FindActionMap("SkillUI", throwIfNotFound: true);
+        m_SkillUI_SkillWindowOnOff = m_SkillUI.FindAction("SkillWindowOnOff", throwIfNotFound: true);
+        // QuickSlotUI
+        m_QuickSlotUI = asset.FindActionMap("QuickSlotUI", throwIfNotFound: true);
+        m_QuickSlotUI_QuickSlot1 = m_QuickSlotUI.FindAction("QuickSlot1", throwIfNotFound: true);
+        m_QuickSlotUI_QuickSlot2 = m_QuickSlotUI.FindAction("QuickSlot2", throwIfNotFound: true);
+        m_QuickSlotUI_QuickSlot3 = m_QuickSlotUI.FindAction("QuickSlot3", throwIfNotFound: true);
+        m_QuickSlotUI_QuickSlot4 = m_QuickSlotUI.FindAction("QuickSlot4", throwIfNotFound: true);
+        m_QuickSlotUI_QuickSlot5 = m_QuickSlotUI.FindAction("QuickSlot5", throwIfNotFound: true);
+        m_QuickSlotUI_QuickSlot6 = m_QuickSlotUI.FindAction("QuickSlot6", throwIfNotFound: true);
+        // MainMenuUI
+        m_MainMenuUI = asset.FindActionMap("MainMenuUI", throwIfNotFound: true);
+        m_MainMenuUI_StartMainMenu = m_MainMenuUI.FindAction("StartMainMenu", throwIfNotFound: true);
+        // Skill_Implement
+        m_Skill_Implement = asset.FindActionMap("Skill_Implement", throwIfNotFound: true);
+        m_Skill_Implement_FindingTarget = m_Skill_Implement.FindAction("FindingTarget", throwIfNotFound: true);
+        m_Skill_Implement_ClickTarget = m_Skill_Implement.FindAction("ClickTarget", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -633,34 +685,34 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
     }
     public PlayerActions @Player => new PlayerActions(this);
 
-    // Inventory
-    private readonly InputActionMap m_Inventory;
-    private IInventoryActions m_InventoryActionsCallbackInterface;
-    private readonly InputAction m_Inventory_InventoryOnOff;
-    private readonly InputAction m_Inventory_InventoryItemUse;
-    public struct InventoryActions
+    // InventoryUI
+    private readonly InputActionMap m_InventoryUI;
+    private IInventoryUIActions m_InventoryUIActionsCallbackInterface;
+    private readonly InputAction m_InventoryUI_InventoryOnOff;
+    private readonly InputAction m_InventoryUI_InventoryItemUse;
+    public struct InventoryUIActions
     {
         private @PlayerInput m_Wrapper;
-        public InventoryActions(@PlayerInput wrapper) { m_Wrapper = wrapper; }
-        public InputAction @InventoryOnOff => m_Wrapper.m_Inventory_InventoryOnOff;
-        public InputAction @InventoryItemUse => m_Wrapper.m_Inventory_InventoryItemUse;
-        public InputActionMap Get() { return m_Wrapper.m_Inventory; }
+        public InventoryUIActions(@PlayerInput wrapper) { m_Wrapper = wrapper; }
+        public InputAction @InventoryOnOff => m_Wrapper.m_InventoryUI_InventoryOnOff;
+        public InputAction @InventoryItemUse => m_Wrapper.m_InventoryUI_InventoryItemUse;
+        public InputActionMap Get() { return m_Wrapper.m_InventoryUI; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
         public bool enabled => Get().enabled;
-        public static implicit operator InputActionMap(InventoryActions set) { return set.Get(); }
-        public void SetCallbacks(IInventoryActions instance)
+        public static implicit operator InputActionMap(InventoryUIActions set) { return set.Get(); }
+        public void SetCallbacks(IInventoryUIActions instance)
         {
-            if (m_Wrapper.m_InventoryActionsCallbackInterface != null)
+            if (m_Wrapper.m_InventoryUIActionsCallbackInterface != null)
             {
-                @InventoryOnOff.started -= m_Wrapper.m_InventoryActionsCallbackInterface.OnInventoryOnOff;
-                @InventoryOnOff.performed -= m_Wrapper.m_InventoryActionsCallbackInterface.OnInventoryOnOff;
-                @InventoryOnOff.canceled -= m_Wrapper.m_InventoryActionsCallbackInterface.OnInventoryOnOff;
-                @InventoryItemUse.started -= m_Wrapper.m_InventoryActionsCallbackInterface.OnInventoryItemUse;
-                @InventoryItemUse.performed -= m_Wrapper.m_InventoryActionsCallbackInterface.OnInventoryItemUse;
-                @InventoryItemUse.canceled -= m_Wrapper.m_InventoryActionsCallbackInterface.OnInventoryItemUse;
+                @InventoryOnOff.started -= m_Wrapper.m_InventoryUIActionsCallbackInterface.OnInventoryOnOff;
+                @InventoryOnOff.performed -= m_Wrapper.m_InventoryUIActionsCallbackInterface.OnInventoryOnOff;
+                @InventoryOnOff.canceled -= m_Wrapper.m_InventoryUIActionsCallbackInterface.OnInventoryOnOff;
+                @InventoryItemUse.started -= m_Wrapper.m_InventoryUIActionsCallbackInterface.OnInventoryItemUse;
+                @InventoryItemUse.performed -= m_Wrapper.m_InventoryUIActionsCallbackInterface.OnInventoryItemUse;
+                @InventoryItemUse.canceled -= m_Wrapper.m_InventoryUIActionsCallbackInterface.OnInventoryItemUse;
             }
-            m_Wrapper.m_InventoryActionsCallbackInterface = instance;
+            m_Wrapper.m_InventoryUIActionsCallbackInterface = instance;
             if (instance != null)
             {
                 @InventoryOnOff.started += instance.OnInventoryOnOff;
@@ -672,31 +724,31 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
             }
         }
     }
-    public InventoryActions @Inventory => new InventoryActions(this);
+    public InventoryUIActions @InventoryUI => new InventoryUIActions(this);
 
-    // Equipment
-    private readonly InputActionMap m_Equipment;
-    private IEquipmentActions m_EquipmentActionsCallbackInterface;
-    private readonly InputAction m_Equipment_EquipmentOnOff;
-    public struct EquipmentActions
+    // EquipmentUI
+    private readonly InputActionMap m_EquipmentUI;
+    private IEquipmentUIActions m_EquipmentUIActionsCallbackInterface;
+    private readonly InputAction m_EquipmentUI_EquipmentOnOff;
+    public struct EquipmentUIActions
     {
         private @PlayerInput m_Wrapper;
-        public EquipmentActions(@PlayerInput wrapper) { m_Wrapper = wrapper; }
-        public InputAction @EquipmentOnOff => m_Wrapper.m_Equipment_EquipmentOnOff;
-        public InputActionMap Get() { return m_Wrapper.m_Equipment; }
+        public EquipmentUIActions(@PlayerInput wrapper) { m_Wrapper = wrapper; }
+        public InputAction @EquipmentOnOff => m_Wrapper.m_EquipmentUI_EquipmentOnOff;
+        public InputActionMap Get() { return m_Wrapper.m_EquipmentUI; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
         public bool enabled => Get().enabled;
-        public static implicit operator InputActionMap(EquipmentActions set) { return set.Get(); }
-        public void SetCallbacks(IEquipmentActions instance)
+        public static implicit operator InputActionMap(EquipmentUIActions set) { return set.Get(); }
+        public void SetCallbacks(IEquipmentUIActions instance)
         {
-            if (m_Wrapper.m_EquipmentActionsCallbackInterface != null)
+            if (m_Wrapper.m_EquipmentUIActionsCallbackInterface != null)
             {
-                @EquipmentOnOff.started -= m_Wrapper.m_EquipmentActionsCallbackInterface.OnEquipmentOnOff;
-                @EquipmentOnOff.performed -= m_Wrapper.m_EquipmentActionsCallbackInterface.OnEquipmentOnOff;
-                @EquipmentOnOff.canceled -= m_Wrapper.m_EquipmentActionsCallbackInterface.OnEquipmentOnOff;
+                @EquipmentOnOff.started -= m_Wrapper.m_EquipmentUIActionsCallbackInterface.OnEquipmentOnOff;
+                @EquipmentOnOff.performed -= m_Wrapper.m_EquipmentUIActionsCallbackInterface.OnEquipmentOnOff;
+                @EquipmentOnOff.canceled -= m_Wrapper.m_EquipmentUIActionsCallbackInterface.OnEquipmentOnOff;
             }
-            m_Wrapper.m_EquipmentActionsCallbackInterface = instance;
+            m_Wrapper.m_EquipmentUIActionsCallbackInterface = instance;
             if (instance != null)
             {
                 @EquipmentOnOff.started += instance.OnEquipmentOnOff;
@@ -705,31 +757,31 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
             }
         }
     }
-    public EquipmentActions @Equipment => new EquipmentActions(this);
+    public EquipmentUIActions @EquipmentUI => new EquipmentUIActions(this);
 
-    // Skill
-    private readonly InputActionMap m_Skill;
-    private ISkillActions m_SkillActionsCallbackInterface;
-    private readonly InputAction m_Skill_SkillWindowOnOff;
-    public struct SkillActions
+    // SkillUI
+    private readonly InputActionMap m_SkillUI;
+    private ISkillUIActions m_SkillUIActionsCallbackInterface;
+    private readonly InputAction m_SkillUI_SkillWindowOnOff;
+    public struct SkillUIActions
     {
         private @PlayerInput m_Wrapper;
-        public SkillActions(@PlayerInput wrapper) { m_Wrapper = wrapper; }
-        public InputAction @SkillWindowOnOff => m_Wrapper.m_Skill_SkillWindowOnOff;
-        public InputActionMap Get() { return m_Wrapper.m_Skill; }
+        public SkillUIActions(@PlayerInput wrapper) { m_Wrapper = wrapper; }
+        public InputAction @SkillWindowOnOff => m_Wrapper.m_SkillUI_SkillWindowOnOff;
+        public InputActionMap Get() { return m_Wrapper.m_SkillUI; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
         public bool enabled => Get().enabled;
-        public static implicit operator InputActionMap(SkillActions set) { return set.Get(); }
-        public void SetCallbacks(ISkillActions instance)
+        public static implicit operator InputActionMap(SkillUIActions set) { return set.Get(); }
+        public void SetCallbacks(ISkillUIActions instance)
         {
-            if (m_Wrapper.m_SkillActionsCallbackInterface != null)
+            if (m_Wrapper.m_SkillUIActionsCallbackInterface != null)
             {
-                @SkillWindowOnOff.started -= m_Wrapper.m_SkillActionsCallbackInterface.OnSkillWindowOnOff;
-                @SkillWindowOnOff.performed -= m_Wrapper.m_SkillActionsCallbackInterface.OnSkillWindowOnOff;
-                @SkillWindowOnOff.canceled -= m_Wrapper.m_SkillActionsCallbackInterface.OnSkillWindowOnOff;
+                @SkillWindowOnOff.started -= m_Wrapper.m_SkillUIActionsCallbackInterface.OnSkillWindowOnOff;
+                @SkillWindowOnOff.performed -= m_Wrapper.m_SkillUIActionsCallbackInterface.OnSkillWindowOnOff;
+                @SkillWindowOnOff.canceled -= m_Wrapper.m_SkillUIActionsCallbackInterface.OnSkillWindowOnOff;
             }
-            m_Wrapper.m_SkillActionsCallbackInterface = instance;
+            m_Wrapper.m_SkillUIActionsCallbackInterface = instance;
             if (instance != null)
             {
                 @SkillWindowOnOff.started += instance.OnSkillWindowOnOff;
@@ -738,56 +790,56 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
             }
         }
     }
-    public SkillActions @Skill => new SkillActions(this);
+    public SkillUIActions @SkillUI => new SkillUIActions(this);
 
-    // QuickSlot
-    private readonly InputActionMap m_QuickSlot;
-    private IQuickSlotActions m_QuickSlotActionsCallbackInterface;
-    private readonly InputAction m_QuickSlot_QuickSlot1;
-    private readonly InputAction m_QuickSlot_QuickSlot2;
-    private readonly InputAction m_QuickSlot_QuickSlot3;
-    private readonly InputAction m_QuickSlot_QuickSlot4;
-    private readonly InputAction m_QuickSlot_QuickSlot5;
-    private readonly InputAction m_QuickSlot_QuickSlot6;
-    public struct QuickSlotActions
+    // QuickSlotUI
+    private readonly InputActionMap m_QuickSlotUI;
+    private IQuickSlotUIActions m_QuickSlotUIActionsCallbackInterface;
+    private readonly InputAction m_QuickSlotUI_QuickSlot1;
+    private readonly InputAction m_QuickSlotUI_QuickSlot2;
+    private readonly InputAction m_QuickSlotUI_QuickSlot3;
+    private readonly InputAction m_QuickSlotUI_QuickSlot4;
+    private readonly InputAction m_QuickSlotUI_QuickSlot5;
+    private readonly InputAction m_QuickSlotUI_QuickSlot6;
+    public struct QuickSlotUIActions
     {
         private @PlayerInput m_Wrapper;
-        public QuickSlotActions(@PlayerInput wrapper) { m_Wrapper = wrapper; }
-        public InputAction @QuickSlot1 => m_Wrapper.m_QuickSlot_QuickSlot1;
-        public InputAction @QuickSlot2 => m_Wrapper.m_QuickSlot_QuickSlot2;
-        public InputAction @QuickSlot3 => m_Wrapper.m_QuickSlot_QuickSlot3;
-        public InputAction @QuickSlot4 => m_Wrapper.m_QuickSlot_QuickSlot4;
-        public InputAction @QuickSlot5 => m_Wrapper.m_QuickSlot_QuickSlot5;
-        public InputAction @QuickSlot6 => m_Wrapper.m_QuickSlot_QuickSlot6;
-        public InputActionMap Get() { return m_Wrapper.m_QuickSlot; }
+        public QuickSlotUIActions(@PlayerInput wrapper) { m_Wrapper = wrapper; }
+        public InputAction @QuickSlot1 => m_Wrapper.m_QuickSlotUI_QuickSlot1;
+        public InputAction @QuickSlot2 => m_Wrapper.m_QuickSlotUI_QuickSlot2;
+        public InputAction @QuickSlot3 => m_Wrapper.m_QuickSlotUI_QuickSlot3;
+        public InputAction @QuickSlot4 => m_Wrapper.m_QuickSlotUI_QuickSlot4;
+        public InputAction @QuickSlot5 => m_Wrapper.m_QuickSlotUI_QuickSlot5;
+        public InputAction @QuickSlot6 => m_Wrapper.m_QuickSlotUI_QuickSlot6;
+        public InputActionMap Get() { return m_Wrapper.m_QuickSlotUI; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
         public bool enabled => Get().enabled;
-        public static implicit operator InputActionMap(QuickSlotActions set) { return set.Get(); }
-        public void SetCallbacks(IQuickSlotActions instance)
+        public static implicit operator InputActionMap(QuickSlotUIActions set) { return set.Get(); }
+        public void SetCallbacks(IQuickSlotUIActions instance)
         {
-            if (m_Wrapper.m_QuickSlotActionsCallbackInterface != null)
+            if (m_Wrapper.m_QuickSlotUIActionsCallbackInterface != null)
             {
-                @QuickSlot1.started -= m_Wrapper.m_QuickSlotActionsCallbackInterface.OnQuickSlot1;
-                @QuickSlot1.performed -= m_Wrapper.m_QuickSlotActionsCallbackInterface.OnQuickSlot1;
-                @QuickSlot1.canceled -= m_Wrapper.m_QuickSlotActionsCallbackInterface.OnQuickSlot1;
-                @QuickSlot2.started -= m_Wrapper.m_QuickSlotActionsCallbackInterface.OnQuickSlot2;
-                @QuickSlot2.performed -= m_Wrapper.m_QuickSlotActionsCallbackInterface.OnQuickSlot2;
-                @QuickSlot2.canceled -= m_Wrapper.m_QuickSlotActionsCallbackInterface.OnQuickSlot2;
-                @QuickSlot3.started -= m_Wrapper.m_QuickSlotActionsCallbackInterface.OnQuickSlot3;
-                @QuickSlot3.performed -= m_Wrapper.m_QuickSlotActionsCallbackInterface.OnQuickSlot3;
-                @QuickSlot3.canceled -= m_Wrapper.m_QuickSlotActionsCallbackInterface.OnQuickSlot3;
-                @QuickSlot4.started -= m_Wrapper.m_QuickSlotActionsCallbackInterface.OnQuickSlot4;
-                @QuickSlot4.performed -= m_Wrapper.m_QuickSlotActionsCallbackInterface.OnQuickSlot4;
-                @QuickSlot4.canceled -= m_Wrapper.m_QuickSlotActionsCallbackInterface.OnQuickSlot4;
-                @QuickSlot5.started -= m_Wrapper.m_QuickSlotActionsCallbackInterface.OnQuickSlot5;
-                @QuickSlot5.performed -= m_Wrapper.m_QuickSlotActionsCallbackInterface.OnQuickSlot5;
-                @QuickSlot5.canceled -= m_Wrapper.m_QuickSlotActionsCallbackInterface.OnQuickSlot5;
-                @QuickSlot6.started -= m_Wrapper.m_QuickSlotActionsCallbackInterface.OnQuickSlot6;
-                @QuickSlot6.performed -= m_Wrapper.m_QuickSlotActionsCallbackInterface.OnQuickSlot6;
-                @QuickSlot6.canceled -= m_Wrapper.m_QuickSlotActionsCallbackInterface.OnQuickSlot6;
+                @QuickSlot1.started -= m_Wrapper.m_QuickSlotUIActionsCallbackInterface.OnQuickSlot1;
+                @QuickSlot1.performed -= m_Wrapper.m_QuickSlotUIActionsCallbackInterface.OnQuickSlot1;
+                @QuickSlot1.canceled -= m_Wrapper.m_QuickSlotUIActionsCallbackInterface.OnQuickSlot1;
+                @QuickSlot2.started -= m_Wrapper.m_QuickSlotUIActionsCallbackInterface.OnQuickSlot2;
+                @QuickSlot2.performed -= m_Wrapper.m_QuickSlotUIActionsCallbackInterface.OnQuickSlot2;
+                @QuickSlot2.canceled -= m_Wrapper.m_QuickSlotUIActionsCallbackInterface.OnQuickSlot2;
+                @QuickSlot3.started -= m_Wrapper.m_QuickSlotUIActionsCallbackInterface.OnQuickSlot3;
+                @QuickSlot3.performed -= m_Wrapper.m_QuickSlotUIActionsCallbackInterface.OnQuickSlot3;
+                @QuickSlot3.canceled -= m_Wrapper.m_QuickSlotUIActionsCallbackInterface.OnQuickSlot3;
+                @QuickSlot4.started -= m_Wrapper.m_QuickSlotUIActionsCallbackInterface.OnQuickSlot4;
+                @QuickSlot4.performed -= m_Wrapper.m_QuickSlotUIActionsCallbackInterface.OnQuickSlot4;
+                @QuickSlot4.canceled -= m_Wrapper.m_QuickSlotUIActionsCallbackInterface.OnQuickSlot4;
+                @QuickSlot5.started -= m_Wrapper.m_QuickSlotUIActionsCallbackInterface.OnQuickSlot5;
+                @QuickSlot5.performed -= m_Wrapper.m_QuickSlotUIActionsCallbackInterface.OnQuickSlot5;
+                @QuickSlot5.canceled -= m_Wrapper.m_QuickSlotUIActionsCallbackInterface.OnQuickSlot5;
+                @QuickSlot6.started -= m_Wrapper.m_QuickSlotUIActionsCallbackInterface.OnQuickSlot6;
+                @QuickSlot6.performed -= m_Wrapper.m_QuickSlotUIActionsCallbackInterface.OnQuickSlot6;
+                @QuickSlot6.canceled -= m_Wrapper.m_QuickSlotUIActionsCallbackInterface.OnQuickSlot6;
             }
-            m_Wrapper.m_QuickSlotActionsCallbackInterface = instance;
+            m_Wrapper.m_QuickSlotUIActionsCallbackInterface = instance;
             if (instance != null)
             {
                 @QuickSlot1.started += instance.OnQuickSlot1;
@@ -811,31 +863,31 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
             }
         }
     }
-    public QuickSlotActions @QuickSlot => new QuickSlotActions(this);
+    public QuickSlotUIActions @QuickSlotUI => new QuickSlotUIActions(this);
 
-    // MainMenu
-    private readonly InputActionMap m_MainMenu;
-    private IMainMenuActions m_MainMenuActionsCallbackInterface;
-    private readonly InputAction m_MainMenu_StartMainMenu;
-    public struct MainMenuActions
+    // MainMenuUI
+    private readonly InputActionMap m_MainMenuUI;
+    private IMainMenuUIActions m_MainMenuUIActionsCallbackInterface;
+    private readonly InputAction m_MainMenuUI_StartMainMenu;
+    public struct MainMenuUIActions
     {
         private @PlayerInput m_Wrapper;
-        public MainMenuActions(@PlayerInput wrapper) { m_Wrapper = wrapper; }
-        public InputAction @StartMainMenu => m_Wrapper.m_MainMenu_StartMainMenu;
-        public InputActionMap Get() { return m_Wrapper.m_MainMenu; }
+        public MainMenuUIActions(@PlayerInput wrapper) { m_Wrapper = wrapper; }
+        public InputAction @StartMainMenu => m_Wrapper.m_MainMenuUI_StartMainMenu;
+        public InputActionMap Get() { return m_Wrapper.m_MainMenuUI; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
         public bool enabled => Get().enabled;
-        public static implicit operator InputActionMap(MainMenuActions set) { return set.Get(); }
-        public void SetCallbacks(IMainMenuActions instance)
+        public static implicit operator InputActionMap(MainMenuUIActions set) { return set.Get(); }
+        public void SetCallbacks(IMainMenuUIActions instance)
         {
-            if (m_Wrapper.m_MainMenuActionsCallbackInterface != null)
+            if (m_Wrapper.m_MainMenuUIActionsCallbackInterface != null)
             {
-                @StartMainMenu.started -= m_Wrapper.m_MainMenuActionsCallbackInterface.OnStartMainMenu;
-                @StartMainMenu.performed -= m_Wrapper.m_MainMenuActionsCallbackInterface.OnStartMainMenu;
-                @StartMainMenu.canceled -= m_Wrapper.m_MainMenuActionsCallbackInterface.OnStartMainMenu;
+                @StartMainMenu.started -= m_Wrapper.m_MainMenuUIActionsCallbackInterface.OnStartMainMenu;
+                @StartMainMenu.performed -= m_Wrapper.m_MainMenuUIActionsCallbackInterface.OnStartMainMenu;
+                @StartMainMenu.canceled -= m_Wrapper.m_MainMenuUIActionsCallbackInterface.OnStartMainMenu;
             }
-            m_Wrapper.m_MainMenuActionsCallbackInterface = instance;
+            m_Wrapper.m_MainMenuUIActionsCallbackInterface = instance;
             if (instance != null)
             {
                 @StartMainMenu.started += instance.OnStartMainMenu;
@@ -844,7 +896,48 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
             }
         }
     }
-    public MainMenuActions @MainMenu => new MainMenuActions(this);
+    public MainMenuUIActions @MainMenuUI => new MainMenuUIActions(this);
+
+    // Skill_Implement
+    private readonly InputActionMap m_Skill_Implement;
+    private ISkill_ImplementActions m_Skill_ImplementActionsCallbackInterface;
+    private readonly InputAction m_Skill_Implement_FindingTarget;
+    private readonly InputAction m_Skill_Implement_ClickTarget;
+    public struct Skill_ImplementActions
+    {
+        private @PlayerInput m_Wrapper;
+        public Skill_ImplementActions(@PlayerInput wrapper) { m_Wrapper = wrapper; }
+        public InputAction @FindingTarget => m_Wrapper.m_Skill_Implement_FindingTarget;
+        public InputAction @ClickTarget => m_Wrapper.m_Skill_Implement_ClickTarget;
+        public InputActionMap Get() { return m_Wrapper.m_Skill_Implement; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(Skill_ImplementActions set) { return set.Get(); }
+        public void SetCallbacks(ISkill_ImplementActions instance)
+        {
+            if (m_Wrapper.m_Skill_ImplementActionsCallbackInterface != null)
+            {
+                @FindingTarget.started -= m_Wrapper.m_Skill_ImplementActionsCallbackInterface.OnFindingTarget;
+                @FindingTarget.performed -= m_Wrapper.m_Skill_ImplementActionsCallbackInterface.OnFindingTarget;
+                @FindingTarget.canceled -= m_Wrapper.m_Skill_ImplementActionsCallbackInterface.OnFindingTarget;
+                @ClickTarget.started -= m_Wrapper.m_Skill_ImplementActionsCallbackInterface.OnClickTarget;
+                @ClickTarget.performed -= m_Wrapper.m_Skill_ImplementActionsCallbackInterface.OnClickTarget;
+                @ClickTarget.canceled -= m_Wrapper.m_Skill_ImplementActionsCallbackInterface.OnClickTarget;
+            }
+            m_Wrapper.m_Skill_ImplementActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @FindingTarget.started += instance.OnFindingTarget;
+                @FindingTarget.performed += instance.OnFindingTarget;
+                @FindingTarget.canceled += instance.OnFindingTarget;
+                @ClickTarget.started += instance.OnClickTarget;
+                @ClickTarget.performed += instance.OnClickTarget;
+                @ClickTarget.canceled += instance.OnClickTarget;
+            }
+        }
+    }
+    public Skill_ImplementActions @Skill_Implement => new Skill_ImplementActions(this);
     private int m_PlayerSchemeIndex = -1;
     public InputControlScheme PlayerScheme
     {
@@ -863,20 +956,20 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         void OnTakeItem(InputAction.CallbackContext context);
         void OnTestMakeItem(InputAction.CallbackContext context);
     }
-    public interface IInventoryActions
+    public interface IInventoryUIActions
     {
         void OnInventoryOnOff(InputAction.CallbackContext context);
         void OnInventoryItemUse(InputAction.CallbackContext context);
     }
-    public interface IEquipmentActions
+    public interface IEquipmentUIActions
     {
         void OnEquipmentOnOff(InputAction.CallbackContext context);
     }
-    public interface ISkillActions
+    public interface ISkillUIActions
     {
         void OnSkillWindowOnOff(InputAction.CallbackContext context);
     }
-    public interface IQuickSlotActions
+    public interface IQuickSlotUIActions
     {
         void OnQuickSlot1(InputAction.CallbackContext context);
         void OnQuickSlot2(InputAction.CallbackContext context);
@@ -885,8 +978,13 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         void OnQuickSlot5(InputAction.CallbackContext context);
         void OnQuickSlot6(InputAction.CallbackContext context);
     }
-    public interface IMainMenuActions
+    public interface IMainMenuUIActions
     {
         void OnStartMainMenu(InputAction.CallbackContext context);
+    }
+    public interface ISkill_ImplementActions
+    {
+        void OnFindingTarget(InputAction.CallbackContext context);
+        void OnClickTarget(InputAction.CallbackContext context);
     }
 }

@@ -22,14 +22,14 @@ public class MainMenuUI : MonoBehaviour
 
     private void OnEnable()
     {
-        inputActions.MainMenu.Enable();
-        inputActions.MainMenu.StartMainMenu.performed += OnMainMenu;
+        inputActions.MainMenuUI.Enable();
+        inputActions.MainMenuUI.StartMainMenu.performed += OnMainMenu;
     }
 
     private void OnDisable()
     {
-        inputActions.MainMenu.StartMainMenu.performed -= OnMainMenu;
-        inputActions.MainMenu.Disable();
+        inputActions.MainMenuUI.StartMainMenu.performed -= OnMainMenu;
+        inputActions.MainMenuUI.Disable();
     }
 
     private void OnMainMenu(InputAction.CallbackContext obj)

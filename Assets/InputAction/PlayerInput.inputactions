@@ -174,7 +174,7 @@
             ]
         },
         {
-            "name": "Inventory",
+            "name": "InventoryUI",
             "id": "c6136a03-b10e-4638-8431-feefc00506e7",
             "actions": [
                 {
@@ -222,7 +222,7 @@
             ]
         },
         {
-            "name": "Equipment",
+            "name": "EquipmentUI",
             "id": "8f3042f4-179a-485c-ab60-517739098c4f",
             "actions": [
                 {
@@ -250,7 +250,7 @@
             ]
         },
         {
-            "name": "Skill",
+            "name": "SkillUI",
             "id": "460549ee-e10f-4b0b-9a55-f5ac34724e92",
             "actions": [
                 {
@@ -278,7 +278,7 @@
             ]
         },
         {
-            "name": "QuickSlot",
+            "name": "QuickSlotUI",
             "id": "f6220187-1fcb-4bb7-b43a-e7dff5ce13d3",
             "actions": [
                 {
@@ -406,7 +406,7 @@
             ]
         },
         {
-            "name": "MainMenu",
+            "name": "MainMenuUI",
             "id": "40214cc4-be9c-40eb-a560-22336753277d",
             "actions": [
                 {
@@ -428,6 +428,54 @@
                     "processors": "",
                     "groups": "",
                     "action": "StartMainMenu",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "Skill_Implement",
+            "id": "407eb8de-d385-4065-84e9-9d45502adfaf",
+            "actions": [
+                {
+                    "name": "FindingTarget",
+                    "type": "PassThrough",
+                    "id": "d2ae6756-01c2-4923-a06c-d0b5ec85a6fb",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "ClickTarget",
+                    "type": "PassThrough",
+                    "id": "acb2f213-0fcb-4a52-8403-39a8eb0fa759",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "54c3593b-a08b-4e81-8ce7-7e2ba57d1872",
+                    "path": "<Mouse>/position",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "FindingTarget",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "161e0e57-1198-4129-a26d-94de4b3e2f19",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ClickTarget",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

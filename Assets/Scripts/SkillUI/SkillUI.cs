@@ -43,13 +43,13 @@ public class SkillUI : MonoBehaviour
     private void OnEnable()
     {
         skillWindowControl.Enable();
-        skillWindowControl.Skill.SkillWindowOnOff.performed += OnSkillWindowOnOff;
+        skillWindowControl.SkillUI.SkillWindowOnOff.performed += OnSkillWindowOnOff;
     }
 
 
     private void OnDisable()
     {
-        skillWindowControl.Skill.SkillWindowOnOff.performed -= OnSkillWindowOnOff;
+        skillWindowControl.SkillUI.SkillWindowOnOff.performed -= OnSkillWindowOnOff;
         skillWindowControl.Disable();
     }
 

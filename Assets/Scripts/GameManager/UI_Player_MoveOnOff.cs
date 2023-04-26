@@ -38,7 +38,7 @@ public class UI_Player_MoveOnOff : MonoBehaviour
                 if(!isOnInventoryItemUseConnect)
                 {
                     isOnInventoryItemUseConnect = true;
-                    inventoryUI.inventoryControl.Inventory.InventoryItemUse.performed += inventoryUI.OnInventoryItemUse;
+                    inventoryUI.inventoryControl.InventoryUI.InventoryItemUse.performed += inventoryUI.OnInventoryItemUse;
                     Debug.Log("OnInventoryItemUseConnect");
                 }
                 break;
@@ -52,7 +52,7 @@ public class UI_Player_MoveOnOff : MonoBehaviour
                     if(isOnInventoryItemUseConnect)
                     {
                         isOnInventoryItemUseConnect = false;
-                        inventoryUI.inventoryControl.Inventory.InventoryItemUse.performed -= inventoryUI.OnInventoryItemUse;
+                        inventoryUI.inventoryControl.InventoryUI.InventoryItemUse.performed -= inventoryUI.OnInventoryItemUse;
                         Debug.Log("NO OnInventoryItemUseConnect");
                     }
                     

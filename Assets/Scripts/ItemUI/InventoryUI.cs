@@ -99,16 +99,16 @@ public class InventoryUI : MonoBehaviour
 
     private void OnEnable()
     {
-        inventoryControl.Inventory.Enable();
-        inventoryControl.Inventory.InventoryOnOff.performed += OnInventoryOnOff;
+        inventoryControl.InventoryUI.Enable();
+        inventoryControl.InventoryUI.InventoryOnOff.performed += OnInventoryOnOff;
     }
 
     
 
     private void OnDisable()
     {
-        inventoryControl.Inventory.InventoryOnOff.performed -= OnInventoryOnOff;
-        inventoryControl.Inventory.Disable();
+        inventoryControl.InventoryUI.InventoryOnOff.performed -= OnInventoryOnOff;
+        inventoryControl.InventoryUI.Disable();
     }
 
     /// <summary>

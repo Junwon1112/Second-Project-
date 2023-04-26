@@ -15,6 +15,7 @@ public enum SoundType
     Sound_IceHit,
     Sound_FireHit,
     Sound_DarkHit,
+    Sound_LeafHit,
     Sound_Skill_Meteo,
     Sound_Skill_BlackHole
 

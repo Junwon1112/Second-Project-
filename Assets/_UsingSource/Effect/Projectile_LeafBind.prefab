@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 4772634663558095668}
   - component: {fileID: 4772634663576830967}
   m_Layer: 0
-  m_Name: ParticleSystem_LeafBind
+  m_Name: Projectile_LeafBind
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

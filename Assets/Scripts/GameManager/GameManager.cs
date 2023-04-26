@@ -13,6 +13,7 @@ public class GameManager : MonoBehaviour
 
     Scene currentScene;
 
+
     /// <summary>
     /// player에 대한 프로퍼티
     /// </summary>

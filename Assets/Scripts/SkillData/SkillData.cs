@@ -50,7 +50,8 @@ public enum SkillIDCode
     Skill_DashAttack = 2,
 
     Skill_Meteo = 10,  //마법사 스킬
-    Skill_BlackHole = 11    
+    Skill_BlackHole = 11,
+    Skill_LeafBind = 12
 }
 
 public enum SkillTypeCode

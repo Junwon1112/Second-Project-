@@ -55,14 +55,14 @@ public class EquipmentUI : InventoryUI
 
     private void OnEnable()
     {
-        equipmentControl.Equipment.Enable();
-        equipmentControl.Equipment.EquipmentOnOff.performed += OnEquipmentOnOff;
+        equipmentControl.EquipmentUI.Enable();
+        equipmentControl.EquipmentUI.EquipmentOnOff.performed += OnEquipmentOnOff;
     }
 
     private void OnDisable()
     {
-        equipmentControl.Equipment.EquipmentOnOff.performed -= OnEquipmentOnOff;
-        equipmentControl.Equipment.Disable();
+        equipmentControl.EquipmentUI.EquipmentOnOff.performed -= OnEquipmentOnOff;
+        equipmentControl.EquipmentUI.Disable();
     }
 
     /// <summary>

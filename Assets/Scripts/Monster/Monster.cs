@@ -130,7 +130,6 @@ public class Monster : MonoBehaviour, IHealth
    
     public float MonsterSpeed { get; set; }
 
-
     /// <summary>
     /// 몬스터 상태 체크용 enum
     /// </summary>
@@ -156,7 +155,6 @@ public class Monster : MonoBehaviour, IHealth
         player = GameObject.FindGameObjectWithTag("Player").transform.GetComponent<Player>();
         hpSlider = GetComponentInChildren<Slider>();
         anim = GetComponent<Animator>();
-    
     }
 
     private void Start()
@@ -475,4 +473,6 @@ public class Monster : MonoBehaviour, IHealth
         MonsterSpeed = initialMonsterSpeed;
         agent.speed = MonsterSpeed;
     }
+
+
 }

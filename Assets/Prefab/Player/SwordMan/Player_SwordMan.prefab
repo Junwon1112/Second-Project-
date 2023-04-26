@@ -381,7 +381,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1850878434139739639
 Transform:
   m_ObjectHideFlags: 0
@@ -416,6 +416,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff85e40217fa7744487c9ba32acfb1a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  witchAttackPrefab: {fileID: 0}
   level: 1
   myWeapon: {fileID: 0}
   weaponHandTransform: {fileID: 0}

@@ -34,23 +34,23 @@ public class AllQuickSlotUI : MonoBehaviour
     private void OnEnable()
     {
         input.Enable();
-        input.QuickSlot.QuickSlot1.performed += OnQuickSlot1;
-        input.QuickSlot.QuickSlot2.performed += OnQuickSlot2;
-        input.QuickSlot.QuickSlot3.performed += OnQuickSlot3;
-        input.QuickSlot.QuickSlot4.performed += OnQuickSlot4;
-        input.QuickSlot.QuickSlot5.performed += OnQuickSlot5;
-        input.QuickSlot.QuickSlot6.performed += OnQuickSlot6;
+        input.QuickSlotUI.QuickSlot1.performed += OnQuickSlot1;
+        input.QuickSlotUI.QuickSlot2.performed += OnQuickSlot2;
+        input.QuickSlotUI.QuickSlot3.performed += OnQuickSlot3;
+        input.QuickSlotUI.QuickSlot4.performed += OnQuickSlot4;
+        input.QuickSlotUI.QuickSlot5.performed += OnQuickSlot5;
+        input.QuickSlotUI.QuickSlot6.performed += OnQuickSlot6;
     }
 
 
     private void OnDisable()
     {
-        input.QuickSlot.QuickSlot1.performed -= OnQuickSlot1;
-        input.QuickSlot.QuickSlot2.performed -= OnQuickSlot2;
-        input.QuickSlot.QuickSlot3.performed -= OnQuickSlot3;
-        input.QuickSlot.QuickSlot4.performed -= OnQuickSlot4;
-        input.QuickSlot.QuickSlot5.performed -= OnQuickSlot5;
-        input.QuickSlot.QuickSlot6.performed -= OnQuickSlot6;
+        input.QuickSlotUI.QuickSlot1.performed -= OnQuickSlot1;
+        input.QuickSlotUI.QuickSlot2.performed -= OnQuickSlot2;
+        input.QuickSlotUI.QuickSlot3.performed -= OnQuickSlot3;
+        input.QuickSlotUI.QuickSlot4.performed -= OnQuickSlot4;
+        input.QuickSlotUI.QuickSlot5.performed -= OnQuickSlot5;
+        input.QuickSlotUI.QuickSlot6.performed -= OnQuickSlot6;
         input.Disable();
     }
 
