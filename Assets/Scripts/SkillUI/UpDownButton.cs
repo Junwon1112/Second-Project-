@@ -62,6 +62,22 @@ public class UpDownButton : MonoBehaviour
             skillSlotUI.skillData.SkillLevel--;
             SkillLevelToText();
 
+            //스킬레벨이 0이 되면 퀵슬롯으로 자동으로 빠지게 함
+            if (skillSlotUI.skillData.SkillLevel == 0)
+            {
+                for (int i = 0; i < allQuickSlotUI.quickSlotUIs.Length; i++)
+                {
+                    if(allQuickSlotUI.quickSlotUIs[i].quickSlotSkillData == skillSlotUI.skillData)
+                    {
+                        allQuickSlotUI.quickSlotUIs[i].QuickSlotSetData();
+
+                    }
+
+                }
+            }
+
+            
+
             StartCoroutine(ClickImage(downClickImage));
         }
     }

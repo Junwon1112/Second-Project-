@@ -17,7 +17,8 @@ public enum SoundType
     Sound_DarkHit,
     Sound_LeafHit,
     Sound_Skill_Meteo,
-    Sound_Skill_BlackHole
+    Sound_Skill_BlackHole,
+    Sound_Skill_LeafBind
 
 }
 

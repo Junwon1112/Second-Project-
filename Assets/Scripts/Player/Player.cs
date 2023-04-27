@@ -221,7 +221,7 @@ public class Player : MonoBehaviour, IHealth
         skillUI = FindObjectOfType<SkillUI>();
 
         //-----------------테스트용-------------
-        Job = JobType.Witch;
+        Job = JobType.SwordMan;
     }
 
     /// <summary>
@@ -332,7 +332,7 @@ public class Player : MonoBehaviour, IHealth
     }
 
 
-    private void OnAttackInput(InputAction.CallbackContext obj)
+    public void OnAttackInput(InputAction.CallbackContext obj)
     {
         if(!isDie || !isSkillUsing || !isMove)
         {

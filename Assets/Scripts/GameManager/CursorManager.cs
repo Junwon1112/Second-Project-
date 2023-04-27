@@ -10,6 +10,7 @@ public class CursorManager : MonoBehaviour
 
     public Texture2D defaultCursorImage;
     public Texture2D targetCursorImage;
+    public Texture2D findCursorImage;
 
     private void Awake()
     {

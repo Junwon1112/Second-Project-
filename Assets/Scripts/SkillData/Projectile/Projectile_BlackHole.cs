@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Projectile_BlackHole : MonoBehaviour
+public class Projectile_BlackHole : MonoBehaviour, IBattle
 {
     Player player;
     bool isCheckExp = false;
@@ -57,8 +57,8 @@ public class Projectile_BlackHole : MonoBehaviour
                 SoundPlayer.Instance?.PlaySound(SoundType.Sound_DarkHit);
                 ParticlePlayer.Instance?.PlayParticle(ParticleType.ParticleSystem_DarkHit, other.ClosestPoint(transform.position), transform.rotation);
 
-                Monster monster;
-                monster = other.GetComponent<Monster>();
+                Monster_Basic monster;
+                monster = other.GetComponent<Monster_Basic>();
 
                 Attack(monster);
 
@@ -66,7 +66,7 @@ public class Projectile_BlackHole : MonoBehaviour
                 if (monster.HP <= 0 && isCheckExp)
                 {
                     isCheckExp = false;
-                    player.Exp += monster.giveExp;
+                    player.Exp += monster.GiveExp;
                     player.SetExp();
                     if (player.Exp >= player.MaxExp)
                     {

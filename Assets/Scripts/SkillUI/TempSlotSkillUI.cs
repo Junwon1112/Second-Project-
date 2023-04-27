@@ -27,9 +27,17 @@ public class TempSlotSkillUI : MonoBehaviour
         transform.position = (Vector3)Mouse.current.position.ReadValue();
     }
 
-    public void SetTempSkillSlotUIData(SkillData skillData)
+    public void SetTempSkillSlotUIData(SkillData skillData = null)
     {
-        tempSkillData = skillData;
-        skillImage.sprite = tempSkillData.skillIcon;
+        if(skillData != null)
+        {
+            tempSkillData = skillData;
+            skillImage.sprite = tempSkillData.skillIcon;
+        }
+        else
+        {
+            tempSkillData = null;
+            skillImage.sprite = null;
+        }
     }
 }

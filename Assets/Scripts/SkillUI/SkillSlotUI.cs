@@ -69,8 +69,11 @@ public class SkillSlotUI : MonoBehaviour, IBeginDragHandler, IEndDragHandler, ID
     /// <param name="eventData"></param>
     void IBeginDragHandler.OnBeginDrag(PointerEventData eventData)
     {
-        GameObject.Find("SkillMoveSlotUI").transform.GetChild(0).gameObject.SetActive(true);
-        tempSlotSkillUI.SetTempSkillSlotUIData(skillData);
+        if(skillData.skillLevel > 0)
+        {
+            GameObject.Find("SkillMoveSlotUI").transform.GetChild(0).gameObject.SetActive(true);
+            tempSlotSkillUI.SetTempSkillSlotUIData(skillData);
+        }
     }
 
     /// <summary>
@@ -88,7 +91,7 @@ public class SkillSlotUI : MonoBehaviour, IBeginDragHandler, IEndDragHandler, ID
         }
 
 
-
+        tempSlotSkillUI.SetTempSkillSlotUIData();
         tempSlotSkillUI.transform.gameObject.SetActive(false);
     }
 

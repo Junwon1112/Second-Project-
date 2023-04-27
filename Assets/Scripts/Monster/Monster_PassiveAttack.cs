@@ -1,13 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.AI;
 using UnityEngine.UI;
+using UnityEngine.AI;
 
-/// <summary>
-/// 몬스터 행동과 관련된 메서드
-/// </summary>
-public class Monster : MonoBehaviour, IHealth
+public class Monster_PassiveAttack : Monster_Basic
 {
     //몬스터가 해야할 일들
     //1, 일정 구간 순찰 => 구현
@@ -21,15 +18,15 @@ public class Monster : MonoBehaviour, IHealth
     /// <summary>
     /// 순찰지점의 위치
     /// </summary>
-    Transform[] patrolPoints;   
+    Transform[] patrolPoints;
 
     public delegate void Action(NavMeshAgent agent);
     int destinationIndex = 0;
 
     float initialMonsterSpeed = 3.5f;
-    float monsterSpeed;
+    float moveSpeed;
 
-    float monsterSearchRadius = 5.0f;
+    float monsterChaseRadius = 20.0f;
     LayerMask playerLayer;
     int tempLayerMask;
 
@@ -43,6 +40,9 @@ public class Monster : MonoBehaviour, IHealth
     /// </summary>
     Player player;
 
+    [SerializeField]
+    MonsterData monsterData;
+
     /// <summary>
     /// 몬스터 상태 체크용
     /// </summary>
@@ -50,6 +50,7 @@ public class Monster : MonoBehaviour, IHealth
     bool isPatrol = true;
     bool isCombat = false;
     bool isDie = false;
+    bool isAttacked = false;
 
     float hp;
     float maxHP = 100;
@@ -63,7 +64,7 @@ public class Monster : MonoBehaviour, IHealth
 
 
     float attackDamage = 30;
-  
+
     float defence = 3;
 
     float attackDelay = 1.5f;
@@ -72,7 +73,12 @@ public class Monster : MonoBehaviour, IHealth
     bool isAttackContinue = false;
     public bool playerTriggerOff = false;
 
-    public Transform CharacterTransform
+    /// <summary>
+    /// enum 인스턴스만들고 기본값을 patrol로 설정
+    /// </summary>
+    MonsterState monsterState = MonsterState.patrol;
+
+    public override Transform CharacterTransform
     {
         get { return this.transform; }
     }
@@ -80,7 +86,7 @@ public class Monster : MonoBehaviour, IHealth
     /// <summary>
     /// 공격력과 관련된 프로퍼티
     /// </summary>
-    public float AttackDamage
+    public override float AttackDamage
     {
         get
         {
@@ -94,7 +100,7 @@ public class Monster : MonoBehaviour, IHealth
     /// <summary>
     /// 방어력과 관련된 프로퍼티
     /// </summary>
-    public float Defence
+    public override float Defence
     {
         get { return defence; }
         set { defence = value; }
@@ -103,11 +109,15 @@ public class Monster : MonoBehaviour, IHealth
     /// <summary>
     /// 체력과 관련된 프로퍼티, 0이될 경우 아이템 드랍
     /// </summary>
-    public float HP
+    public override float HP
     {
         get { return hp; }
-        set 
+        set
         {
+            if(hp > value)
+            {
+                isAttacked = true;
+            }
             hp = value;
 
             if (hp <= 0 && !isDie)
@@ -123,29 +133,27 @@ public class Monster : MonoBehaviour, IHealth
     /// <summary>
     /// 최대체력에 대한 프로퍼티
     /// </summary>
-    public float MaxHP
+    public override float MaxHP
     {
         get { return maxHP; }
+        set { maxHP = value; }
     }
-   
-    public float MonsterSpeed { get; set; }
 
-    /// <summary>
-    /// 몬스터 상태 체크용 enum
-    /// </summary>
-    enum MonsterState
+    public override float GiveExp
     {
-        patrol = 0,
-        chase,
-        combat,
-        die
+        get { return giveExp; }
+        set { giveExp = value; }
     }
-
-    /// <summary>
-    /// enum 인스턴스만들고 기본값을 patrol로 설정
-    /// </summary>
-    MonsterState monsterState = MonsterState.patrol;
-
+    public override float AttackDelay
+    {
+        get { return attackDelay; }
+        set { attackDelay = value; }
+    }
+    public override float MoveSpeed
+    {
+        get { return moveSpeed; }
+        set { moveSpeed = value; }
+    }
 
     private void Awake()
     {
@@ -155,6 +163,18 @@ public class Monster : MonoBehaviour, IHealth
         player = GameObject.FindGameObjectWithTag("Player").transform.GetComponent<Player>();
         hpSlider = GetComponentInChildren<Slider>();
         anim = GetComponent<Animator>();
+
+        Initialize();
+    }
+
+    private void Initialize()
+    {
+        MoveSpeed = monsterData.moveSpeed;
+        AttackDamage = monsterData.attackDamage;
+        Defence = monsterData.defence;
+        AttackDelay = monsterData.attackDelay;
+        GiveExp = monsterData.exp;
+        MaxHP = monsterData.maxHP;
     }
 
     private void Start()
@@ -167,13 +187,12 @@ public class Monster : MonoBehaviour, IHealth
         {
             patrolPoints[i] = patrolPoint.transform.GetChild(i);
         }
-        MonsterSpeed = initialMonsterSpeed;
-        agent.speed = MonsterSpeed;
+        agent.speed = MoveSpeed;
 
         //비트플래그, 0000 0001 을 playerLayer(7번째 레이어) 만큼 옮겨라 => 0100 0000 이 됨, 플레이어 찾을 떄 플레이어 레이어용 변수로 활용하기 위해 만듬 
-        tempLayerMask = (1 << playerLayer); 
+        tempLayerMask = (1 << playerLayer);
 
-        hp = maxHP;
+        HP = MaxHP;
 
         SetHP();
 
@@ -185,31 +204,26 @@ public class Monster : MonoBehaviour, IHealth
 
     }
 
-    /// <summary>
-    /// 매 프레임마다 주변을 체크하고 해당되는 상황의 메서드를 실행
-    /// </summary>
     private void Update()
     {
         LookingCameraHPBar();
 
-        if(isPatrol)
+        if (isPatrol)
         {
             PatrolUpdate(); // 순찰을 하며 주변에 플레이어가 없는지 polling방식으로 계속체크
         }
-        else if(isMonsterChase)
+        else if (isMonsterChase)
         {
             ChaseUpdate();  //플레이어에게 도착할 때까지 추적, 도중에 플레이어가 사라지면 patrol로 돌아가도록 만들어야 됨
         }
-        else if(isCombat)
+        else if (isCombat)
         {
-            CombatUpdate(); 
+            CombatUpdate();
         }
-        //else if (isDie)
-        //{
-        //    DieUpdate();
-        //}
-
     }
+
+
+
 
     /// <summary>
     /// 순찰시 실제 실행되는 메서드 
@@ -218,32 +232,26 @@ public class Monster : MonoBehaviour, IHealth
     {
         //0번 경로가 설정되긴 하는데 그뒤 remainingDistance가 0으로 설정돼서 바로 1번 경로로 넘어가 버림,
         //계산 시간이 필요해 그런 듯, 앞으로는 update에서 하지말고 코루틴으로 시간 넉넉하게 돌리고 이번엔 그냥 남은거리 0이면 계산 안 하도록 진행  
-        if (agent.remainingDistance <= agent.stoppingDistance && agent.remainingDistance != 0)  
+        if (agent.remainingDistance <= agent.stoppingDistance && agent.remainingDistance != 0)
         {
-            
+
             destinationIndex++;
             destinationIndex %= patrolPoints.Length;
             agent.SetDestination(patrolPoints[destinationIndex].transform.position);
         }
-        
+
     }
 
     /// <summary>
     /// 주변에 플레이어가 있는지 찾는 메서드
     /// </summary>
-    private void FindPlayer()  //ontrigger쓰면 되는건데 연습해보고 싶어 사용함
+    private void FindPlayer()
     {
-        Collider[] colliders = Physics.OverlapSphere(transform.position, monsterSearchRadius, tempLayerMask);
-        //여기서 null값 뜨는 중, tempLayerMask 값은 128, player도 7번쨰 layer
-        //player에 컬라이더가 없어 생기던 문제였음
-        
-
-        if (colliders.Length > 0)  //플레이어는 한명뿐이니 존재하기만 하면 찾은것으로 판단
+        if(isAttacked)  //플레이어는 한명뿐이니 존재하기만 하면 찾은것으로 판단
         {
             monsterState = MonsterState.chase;
             SetMonsterState(monsterState);
             agent.SetDestination(playerTransform.position);
-
         }
     }
 
@@ -258,8 +266,9 @@ public class Monster : MonoBehaviour, IHealth
             monsterState = MonsterState.combat;
             SetMonsterState(monsterState);
         }
-        else if(agent.remainingDistance > monsterSearchRadius)    //너무 멀어지면 다시 순찰
+        else if (agent.remainingDistance > monsterChaseRadius)    //너무 멀어지면 다시 순찰
         {
+            isAttacked = false;
             monsterState = MonsterState.patrol;
             SetMonsterState(monsterState);
             agent.SetDestination(patrolPoints[destinationIndex].transform.position);
@@ -279,7 +288,7 @@ public class Monster : MonoBehaviour, IHealth
     private void CombatPlayer()
     {
         //agent.remainingDistance썼다가 계속 체크하려면 setDestination을 계속 해야돼서 포기함
-        if ((transform.position - playerTransform.position).sqrMagnitude < 2.5f * 2.5f) 
+        if ((transform.position - playerTransform.position).sqrMagnitude < 2.5f * 2.5f)
         {
             if (player.HP > 0)
             {
@@ -309,7 +318,7 @@ public class Monster : MonoBehaviour, IHealth
     /// </summary>
     private void MonsterAttack()
     {
-        if(!isAttackContinue)   //업데이트에서 여러번 실행되지않도록
+        if (!isAttackContinue)   //업데이트에서 여러번 실행되지않도록
         {
             isAttackContinue = true;
             StartCoroutine(MonsterAttackCoroutine(attackDelay));
@@ -338,30 +347,17 @@ public class Monster : MonoBehaviour, IHealth
     {
         float criticalAttack;
         criticalAttack = Random.Range(0, 100.0f);
-        if(criticalAttack < criticalPercent)
+        if (criticalAttack < criticalPercent)
         {
             anim.SetTrigger("OnCritical");
         }
     }
 
-
-    // OntriggerEnter를 무기 스크립트에서 실행하는것으로 변경, 몬스터가 공격했을때 플레이어의 트리거도 발동되어 몬스터 자신도 피해입는 문제를 해결하기 위해
-    //private void OnTriggerEnter(Collider other) //공격할때 공격용 컬라이더가 활성되며 트리거를 파악, 플레이어가 들어오면 
-    //{
-    //    if(other.CompareTag("Player"))
-    //    {
-    //        playerTriggerOff = true;
-    //        Attack(player); //Attack은 매개변수로 IBattle을 받는데 Player클래스는 IBattle을 상속받았으므로 사용할 수 있다.
-    //        player.SetHP();
-    //        Debug.Log($"{player.HP}");
-    //    }
-    //}
-
     /// <summary>
     /// 몬스터의 AI상태를 상황에 따라 바꾸는 함수
     /// </summary>
     /// <param name="mon"></param>
-    private void SetMonsterState(MonsterState mon)  //플레이어 상태 세팅해주는 함수
+    public override void SetMonsterState(MonsterState mon)  //플레이어 상태 세팅해주는 함수
     {
 
         switch (mon)
@@ -429,17 +425,31 @@ public class Monster : MonoBehaviour, IHealth
     /// </summary>
     private void CombatUpdate()
     {
-        CombatPlayer();   
+        CombatPlayer();
     }
     //private void DieUpdate()
     //{
     //    Die();
     //}
 
+    public override void MoveSlow(float slowRate, float time)
+    {
+        StartCoroutine(CoMoveSlow(slowRate, time));
+    }
+
+    IEnumerator CoMoveSlow(float slowRate, float time)
+    {
+        MoveSpeed *= slowRate;
+        agent.speed = MoveSpeed;
+        yield return new WaitForSeconds(time);
+        MoveSpeed = initialMonsterSpeed;
+        agent.speed = MoveSpeed;
+    }
+
     /// <summary>
     /// 체력 계산하는 메서드
     /// </summary>
-    public void SetHP()
+    public override void SetHP()
     {
         hpSlider.value = HP / MaxHP;
     }
@@ -459,20 +469,4 @@ public class Monster : MonoBehaviour, IHealth
     {
         ItemFactory.MakeItem(ItemIDCode.HP_Potion, transform.position, Quaternion.identity);
     }
-
-    public void MoveSlow(float slowRate, float time)
-    {
-        StartCoroutine(CoMoveSlow(slowRate, time));
-    }
-
-    IEnumerator CoMoveSlow(float slowRate, float time)
-    {
-        MonsterSpeed *= slowRate;
-        agent.speed = MonsterSpeed;
-        yield return new WaitForSeconds(time);
-        MonsterSpeed = initialMonsterSpeed;
-        agent.speed = MonsterSpeed;
-    }
-
-
 }

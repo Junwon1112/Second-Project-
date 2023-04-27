@@ -7,7 +7,7 @@ using UnityEngine;
 /// </summary>
 public class MonsterWeapon : MonoBehaviour, IBattle
 {
-    Monster monster;
+    Monster_Basic monster;
 
     float attackDamage;
     float defence;
@@ -15,7 +15,7 @@ public class MonsterWeapon : MonoBehaviour, IBattle
     public float Defence { get; set; }
     private void Awake()
     {
-        monster = transform.parent.GetComponent<Monster>();
+        monster = transform.parent.GetComponent<Monster_Basic>();
     }
 
     private void Start()

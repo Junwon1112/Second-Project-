@@ -9,7 +9,7 @@ using UnityEngine.EventSystems;
 /// 실제 스킬 구현부
 /// skillId 0~ 9는 swordman, 10~19은 마법사
 /// </summary>
-public class Skill_Implement : MonoBehaviour, IPointerClickHandler
+public class Skill_Implement : MonoBehaviour
 {
     public static Skill_Implement Instance;
 
@@ -20,8 +20,10 @@ public class Skill_Implement : MonoBehaviour, IPointerClickHandler
     Camera camera;
 
     PointerEventData pointerEventData;
+    RaycastHit hit;
 
     public bool IsWitchLeafBind_ClickUsing { get; private set; }
+    public bool IsFindTarget { get; private set; }
 
     private void Awake()
     {
@@ -88,7 +90,7 @@ public class Skill_Implement : MonoBehaviour, IPointerClickHandler
                 Witch_Skill_BlackHole(skillID);
                 break;
             case 12:
-
+                anim.SetTrigger($"IsSkillUse_{skillData.skillName}");
                 Witch_Skill_LeafBind(skillID);
                 break;
 
@@ -169,7 +171,7 @@ public class Skill_Implement : MonoBehaviour, IPointerClickHandler
 
 
         Collider[] monsterColliders = new Collider[6];
-        Monster[] monsters = new Monster[6];
+        Monster_Basic[] monsters = new Monster_Basic[6];
 
         checkMonsterNum = Physics.OverlapCapsuleNonAlloc(player.transform.position, skillRange, radiusRange, monsterColliders, 1 << LayerMask.NameToLayer("Monster"));
 
@@ -177,7 +179,7 @@ public class Skill_Implement : MonoBehaviour, IPointerClickHandler
         {
             for(int i = 0; i < checkMonsterNum; i++)
             {
-                monsters[i] = monsterColliders[i].transform.parent.GetComponentInChildren<Monster>();
+                monsters[i] = monsterColliders[i].transform.parent.GetComponentInChildren<Monster_Basic>();
 
                 SoundPlayer.Instance?.PlaySound(SoundType.Sound_WindHit);
 
@@ -187,7 +189,7 @@ public class Skill_Implement : MonoBehaviour, IPointerClickHandler
                 if (monsters[i].HP <= 0 && weapon.isCheckExp)
                 {
                     weapon.isCheckExp = false;
-                    player.Exp += monsters[i].giveExp;
+                    player.Exp += monsters[i].GiveExp;
                     player.SetExp();
                     if (player.Exp >= player.MaxExp)
                     {
@@ -232,9 +234,8 @@ public class Skill_Implement : MonoBehaviour, IPointerClickHandler
     private void Witch_Skill_LeafBind(int skillID)
     {
         IsWitchLeafBind_ClickUsing = true;
-
-        //player.input.Skill_Implement.Enable();
-        //player.input.Skill_Implement.ClickTarget.performed += OnClickTarget;
+        player.input.Player.Attack.performed -= player.OnAttackInput;
+        player.input.Skill_Implement.ClickTarget.performed += OnTargetInput;
 
 
         SkillData_Shooting tempSkill_Data = SkillDataManager.Instance.FindSkill_Shooting(skillID);
@@ -242,7 +243,7 @@ public class Skill_Implement : MonoBehaviour, IPointerClickHandler
         //스킬데미지 설정
         weapon.SkillDamage = tempSkill_Data.skillDamage * (tempSkill_Data.skillLevel * 1.0f) + (player.AttackDamage * 0.1f);
 
-        float skillRange = 8.0f;
+        float skillRange = 20.0f;
 
         StartCoroutine(CoFindEnemy(skillRange));
 
@@ -252,40 +253,46 @@ public class Skill_Implement : MonoBehaviour, IPointerClickHandler
         //SoundPlayer.Instance?.PlaySound(SoundType.Sound_Skill_BlackHole);
     }
 
+
     IEnumerator CoFindEnemy(float skillRange)
     {
         while (IsWitchLeafBind_ClickUsing)
         {
-            RaycastHit hit;
+            Cursor.SetCursor(CursorManager.Instance.findCursorImage, new Vector2(5, 5), CursorMode.Auto);
 
-            if(Physics.Raycast(camera.ScreenPointToRay(Mouse.current.position.ReadValue()), out hit, skillRange, 1 << LayerMask.NameToLayer("Monster")));
+            if(Physics.Raycast(camera.ScreenPointToRay(Mouse.current.position.ReadValue()), out hit, skillRange, 1 << LayerMask.NameToLayer("Monster")))
             {
                 Cursor.SetCursor(CursorManager.Instance.targetCursorImage, new Vector2(5, 5), CursorMode.Auto);
+                IsFindTarget = true;
             }
-
+            else
+            {
+                IsFindTarget = false;
+            }
+            
             yield return new WaitForFixedUpdate();
         }
         
     }
 
-
-    public void OnPointerClick(PointerEventData eventData)
+    private void OnTargetInput(InputAction.CallbackContext obj)
     {
         if (IsWitchLeafBind_ClickUsing)
         {
-            GameObject targetMonster = eventData.pointerClick;
-            if(targetMonster == null)
+            Transform targetMonster = hit.transform;
+            int leafBindSkillID = 12;
+            if (targetMonster != null)
             {
-                IsWitchLeafBind_ClickUsing = false;
-                Cursor.SetCursor(CursorManager.Instance.defaultCursorImage, new Vector2(5, 5), CursorMode.Auto);
+                SkillData_Shooting tempSkill_Data = SkillDataManager.Instance.FindSkill_Shooting(leafBindSkillID);
+                Instantiate(tempSkill_Data.projectile_Prefab ,targetMonster.transform);
+                SoundPlayer.Instance?.PlaySound(SoundType.Sound_Skill_LeafBind);
             }
-            else 
-            {
 
-
-                IsWitchLeafBind_ClickUsing = false;
-            }
+            IsWitchLeafBind_ClickUsing = false;
+            Cursor.SetCursor(CursorManager.Instance.defaultCursorImage, new Vector2(5, 5), CursorMode.Auto);
+            player.input.Player.Attack.performed += player.OnAttackInput;
+            player.input.Skill_Implement.ClickTarget.performed -= OnTargetInput;
         }
-        
     }
+
 }

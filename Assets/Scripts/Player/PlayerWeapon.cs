@@ -102,8 +102,8 @@ public class PlayerWeapon : MonoBehaviour, IBattle
             ParticlePlayer.Instance?.PlayParticle(ParticleType.ParticleSystem_Hit, other.ClosestPoint(transform.position), transform.rotation);
 
 
-            Monster monster;
-            monster = other.GetComponent<Monster>();
+            Monster_Basic monster;
+            monster = other.GetComponent<Monster_Basic>();
 
             if(!player.isSkillUsing)
             {
@@ -119,7 +119,7 @@ public class PlayerWeapon : MonoBehaviour, IBattle
             if(monster.HP <= 0 && isCheckExp)
             {
                 isCheckExp = false;
-                player.Exp += monster.giveExp;
+                player.Exp += monster.GiveExp;
                 player.SetExp();
                 if(player.Exp >= player.MaxExp)
                 {

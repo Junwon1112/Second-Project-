@@ -102,6 +102,7 @@ public class QuickSlotUI : MonoBehaviour, IBeginDragHandler, IEndDragHandler, ID
             }
         }
 
+        tempSlotSkillUI.SetTempSkillSlotUIData();
         tempSlotSkillUI.transform.gameObject.SetActive(false);
     }
 

@@ -294,6 +294,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 666516235701028862}
     m_Modifications:
+    - target: {fileID: 272862268, guid: e90ec6b352223d5438a2bf16295c317b, type: 3}
+      propertyPath: monsterData
+      value: 
+      objectReference: {fileID: 11400000, guid: e269d2c59399cb04da4e8a17c63bee16, type: 2}
     - target: {fileID: 751607339, guid: e90ec6b352223d5438a2bf16295c317b, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
@@ -347,6 +351,26 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4882590064214274, guid: e90ec6b352223d5438a2bf16295c317b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4958735577281076, guid: e90ec6b352223d5438a2bf16295c317b, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 4958735577281076, guid: e90ec6b352223d5438a2bf16295c317b, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4958735577281076, guid: e90ec6b352223d5438a2bf16295c317b, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 4958735577281076, guid: e90ec6b352223d5438a2bf16295c317b, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4958735577281076, guid: e90ec6b352223d5438a2bf16295c317b, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
