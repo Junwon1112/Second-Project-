@@ -212,7 +212,7 @@ public class Player : MonoBehaviour, IHealth
         lvText = GameObject.Find("Level_num").GetComponent<TextMeshProUGUI>();
         player = GetComponent<Player>();
         playerInventory = GetComponentInChildren<Inventory>();
-        playerInventoryUI = FindObjectOfType<InventoryUI>();
+        playerInventoryUI = GameObject.Find("InventoryUI").GetComponent<InventoryUI>();
         weaponHandTransform = FindObjectOfType<FindWeaponHand>().transform;
         mainCamera_PlayerPos = FindObjectOfType<MainCamera_PlayerPos>();
 

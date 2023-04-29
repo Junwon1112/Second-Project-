@@ -247,7 +247,7 @@ public class Monster_PassiveAttack : Monster_Basic
     /// </summary>
     private void FindPlayer()
     {
-        if(isAttacked)  //플레이어는 한명뿐이니 존재하기만 하면 찾은것으로 판단
+        if(isAttacked)  //플레이어는 한명뿐이니 피가 줄어들기만 하면 찾은것으로 판단 (isAttack을 바꾸는게 hp프로퍼티)
         {
             monsterState = MonsterState.chase;
             SetMonsterState(monsterState);

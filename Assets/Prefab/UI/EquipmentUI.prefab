@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 5823087227090583268}
   - component: {fileID: 5823087227090583269}
   - component: {fileID: 5823087227090583267}
-  - component: {fileID: 5823087227090583266}
+  - component: {fileID: 4075282831354162300}
   m_Layer: 5
   m_Name: EquipmentUI
   m_TagString: Untagged
@@ -89,11 +89,11 @@ CanvasGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5823087227090583271}
   m_Enabled: 1
-  m_Alpha: 1
+  m_Alpha: 0
   m_Interactable: 0
   m_BlocksRaycasts: 0
   m_IgnoreParentGroups: 0
---- !u!114 &5823087227090583266
+--- !u!114 &4075282831354162300
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -102,11 +102,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 5823087227090583271}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 44a59edec1b5f114497d0b583844bc28, type: 3}
+  m_Script: {fileID: 11500000, guid: 7da4927c4e303c64799c955c86b94dff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isInvenCanvasGroupOff: 1
+  isInvenCanvasGroupOff: 0
   slotUIs: []
+  isEquipCanvasGroupOff: 1
+  equipSlotUIs: []
 --- !u!1 &5823087227130451966
 GameObject:
   m_ObjectHideFlags: 0
@@ -701,7 +703,7 @@ GameObject:
   - component: {fileID: 5823087228441955086}
   - component: {fileID: 5823087228441955084}
   - component: {fileID: 5823087228441955085}
-  - component: {fileID: 5823087228441955083}
+  - component: {fileID: 1663253637}
   m_Layer: 5
   m_Name: Image
   m_TagString: Untagged
@@ -768,7 +770,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &5823087228441955083
+--- !u!114 &1663253637
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -777,12 +779,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 5823087228441955087}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7fa3aa3c43637d84e9cfe30d04804e7b, type: 3}
+  m_Script: {fileID: 11500000, guid: de103179fc7a0a049a66908c1002d5e3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  slotUIID: -1
-  slotUIData: {fileID: 0}
-  slotUICount: 0
+  itemImage: {fileID: 0}
+  takeSlotItemData: {fileID: 0}
+  takeSlotItemCount: 0
+  equipSlotID: 1001
 --- !u!1 &5823087228592779496
 GameObject:
   m_ObjectHideFlags: 0
@@ -795,6 +798,7 @@ GameObject:
   - component: {fileID: 5823087228592779413}
   - component: {fileID: 5823087228592779414}
   - component: {fileID: 5346035218563273763}
+  - component: {fileID: 883848741}
   m_Layer: 5
   m_Name: TopsideBar
   m_TagString: Untagged
@@ -904,6 +908,18 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &883848741
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5823087228592779496}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c8614ae02222f764d9353a39259a0701, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &5823087228613324161
 GameObject:
   m_ObjectHideFlags: 0
@@ -916,7 +932,7 @@ GameObject:
   - component: {fileID: 5823087228613324174}
   - component: {fileID: 5823087228613324175}
   - component: {fileID: 5823087228613324173}
-  - component: {fileID: 5823087228613324172}
+  - component: {fileID: 1964628280}
   m_Layer: 5
   m_Name: Image
   m_TagString: Untagged
@@ -1035,7 +1051,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &5823087228613324172
+--- !u!114 &1964628280
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1044,9 +1060,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 5823087228613324161}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7fa3aa3c43637d84e9cfe30d04804e7b, type: 3}
+  m_Script: {fileID: 11500000, guid: de103179fc7a0a049a66908c1002d5e3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  slotUIID: -1
-  slotUIData: {fileID: 0}
-  slotUICount: 0
+  itemImage: {fileID: 0}
+  takeSlotItemData: {fileID: 0}
+  takeSlotItemCount: 0
+  equipSlotID: 1001
