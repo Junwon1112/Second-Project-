@@ -17,6 +17,8 @@ public class Player : MonoBehaviour, IHealth
 
     JobType job;
     public JobType Job { get; set; }
+    [SerializeField]
+    ScriptableObj_JobData jobData;
 
     /// <summary>
     /// 움직임을 위한 인풋 시스템용
@@ -213,7 +215,7 @@ public class Player : MonoBehaviour, IHealth
         player = GetComponent<Player>();
         playerInventory = GetComponentInChildren<Inventory>();
         playerInventoryUI = GameObject.Find("InventoryUI").GetComponent<InventoryUI>();
-        weaponHandTransform = FindObjectOfType<FindWeaponHand>().transform;
+        weaponHandTransform = transform.GetComponentInChildren<FindWeaponHand>().transform;
         mainCamera_PlayerPos = FindObjectOfType<MainCamera_PlayerPos>();
 
         skillUses = FindObjectsOfType<SkillUse>();
@@ -221,7 +223,11 @@ public class Player : MonoBehaviour, IHealth
         skillUI = FindObjectOfType<SkillUI>();
 
         //-----------------테스트용-------------
-        Job = JobType.SwordMan;
+        Job = jobData.jobType;
+        if (this.gameObject.name != $"Player_{Job.ToString()}")
+        {
+            Destroy(this.gameObject);
+        }
     }
 
     /// <summary>
@@ -259,6 +265,8 @@ public class Player : MonoBehaviour, IHealth
 
     private void Start()
     {
+        
+
         hp = maxHp;
         SetHP();
         SetExp();
@@ -481,16 +489,14 @@ public class Player : MonoBehaviour, IHealth
     /// </summary>
     public void TakeWeapon()     
     {
-        PlayerWeapon tempPlayerWeapon = FindObjectOfType<PlayerWeapon>();
-        for(int i = 0; i < skillUses.Length; i++)   //무기 장착시 SkillUse클래스에서도 무기를 받아오도록 함(무기가 시작할 땐 장착되어있지 않아 SkillUse Awake에서 안한다)
-        {
-            skillUses[i].TakeWeapon();
-            skill_Implement.TakeWeapon();
-        }
+        PlayerWeapon tempPlayerWeapon = GetComponentInChildren<PlayerWeapon>();
+         //무기 장착시 SkillUse클래스에서도 무기를 받아오도록 함(무기가 시작할 땐 장착되어있지 않아 SkillUse Awake에서 안한다)
+
+        skill_Implement.TakeWeapon();
         if (tempPlayerWeapon != null)
         {
             weaponPrefab = tempPlayerWeapon.gameObject;
-            weaponCollider = this.weaponPrefab.GetComponent<CapsuleCollider>();
+            weaponCollider = weaponPrefab.GetComponent<CapsuleCollider>();
             weaponCollider.enabled = false;
             isFindWeapon = true;
             Debug.Log("무기찾음");

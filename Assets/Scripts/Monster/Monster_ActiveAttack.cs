@@ -162,8 +162,6 @@ public class Monster_ActiveAttack : Monster_Basic
     {
         agent = GetComponent<NavMeshAgent>();
         playerLayer = LayerMask.NameToLayer("Player");
-        playerTransform = GameObject.FindGameObjectWithTag("Player").transform.GetComponent<Transform>();
-        player = GameObject.FindGameObjectWithTag("Player").transform.GetComponent<Player>();
         hpSlider = GetComponentInChildren<Slider>();
         anim = GetComponent<Animator>();
 
@@ -182,6 +180,10 @@ public class Monster_ActiveAttack : Monster_Basic
 
     private void Start()
     {
+        playerTransform = GameManager.Instance.MainPlayer.transform;
+        player = GameManager.Instance.MainPlayer;
+
+
         Transform patrolPoint = transform.parent.GetChild(1);
 
         patrolPoints = new Transform[patrolPoint.childCount];

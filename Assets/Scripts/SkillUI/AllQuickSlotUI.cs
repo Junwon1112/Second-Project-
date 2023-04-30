@@ -17,7 +17,7 @@ public class AllQuickSlotUI : MonoBehaviour
     /// </summary>
     public QuickSlotUI[] quickSlotUIs;
 
-    Animator anim;
+    //Animator anim;
 
 
 
@@ -25,7 +25,7 @@ public class AllQuickSlotUI : MonoBehaviour
     {
         input = new PlayerInput();
         quickSlotUIs = GetComponentsInChildren<QuickSlotUI>();
-        anim = FindObjectOfType<Player>().transform.GetComponent<Animator>();
+        //anim = FindObjectOfType<Player>().transform.GetComponent<Animator>();
     }
 
     /// <summary>

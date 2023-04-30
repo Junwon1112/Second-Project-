@@ -21,6 +21,7 @@ public class Skill_Implement : MonoBehaviour
 
     PointerEventData pointerEventData;
     RaycastHit hit;
+    CapsuleCollider capsuleCollider;
 
     public bool IsWitchLeafBind_ClickUsing { get; private set; }
     public bool IsFindTarget { get; private set; }
@@ -39,14 +40,21 @@ public class Skill_Implement : MonoBehaviour
             }
         }
 
-        player = FindObjectOfType<Player>();
+        
+        
+    }
+
+    private void Start()
+    {
+        player = GameManager.Instance.MainPlayer;
         camera = player.gameObject.GetComponentInChildren<Camera>();
         anim = player.transform.GetComponent<Animator>();
     }
 
     public void TakeWeapon()
     {
-        weapon = FindObjectOfType<PlayerWeapon>();
+        weapon = GameManager.Instance.MainPlayer.GetComponentInChildren<PlayerWeapon>();
+        capsuleCollider = weapon.transform.GetComponent<CapsuleCollider>();
     }
 
     /// <summary>
@@ -63,7 +71,7 @@ public class Skill_Implement : MonoBehaviour
                 break;
             case 1:
                 anim.SetTrigger($"IsSkillUse_{skillData.skillName}");
-                SordMan_Skill_AirSlash(skillID);
+                SwordMan_Skill_AirSlash(skillID);
                 break;
             case 2:
                 anim.SetTrigger($"IsSkillUse_{skillData.skillName}");
@@ -130,9 +138,10 @@ public class Skill_Implement : MonoBehaviour
         anim.SetBool($"IsSkillUse_{skillData.skillName}", true);
         yield return new WaitForSeconds(skillDuration);
         anim.SetBool($"IsSkillUse_{skillData.skillName}", false);
+        capsuleCollider.enabled = false;
     }
 
-    private void SordMan_Skill_AirSlash(int skillID)
+    private void SwordMan_Skill_AirSlash(int skillID)
     {
         SkillData_Shooting tempSkill_Data = SkillDataManager.Instance.FindSkill_Shooting(skillID);
 
@@ -294,5 +303,6 @@ public class Skill_Implement : MonoBehaviour
             player.input.Skill_Implement.ClickTarget.performed -= OnTargetInput;
         }
     }
+
 
 }

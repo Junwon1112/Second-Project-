@@ -463,6 +463,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   witchAttackPrefab: {fileID: 0}
+  jobData: {fileID: 11400000, guid: c4d41165a87799948897bc07d6b8d8af, type: 2}
   level: 1
   myWeapon: {fileID: 0}
   weaponHandTransform: {fileID: 0}

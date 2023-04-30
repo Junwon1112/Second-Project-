@@ -73,10 +73,8 @@ public class InventoryUI : MonoBehaviour
         invenCloseButton = transform.Find("CloseButton").GetComponent<Button>();
         slotUIs = GetComponentsInChildren<ItemSlotUI>();
 
-
-        playerInven = FindObjectOfType<Inventory>();
         graphicRaycaster = GameObject.Find("Canvas").gameObject.GetComponent<GraphicRaycaster>();
-        player = FindObjectOfType<Player>();
+        
         equipmentUI = FindObjectOfType<EquipmentUI>();
         ui_OnOff = GetComponentInParent<UI_Player_MoveOnOff>();
     
@@ -85,6 +83,8 @@ public class InventoryUI : MonoBehaviour
 
     private void Start()
     {
+        player = GameManager.Instance.MainPlayer;
+        playerInven = GameManager.Instance.MainPlayer.transform.GetComponentInChildren<Inventory>();
         invenCloseButton.onClick.AddListener(InventoryOnOffSetting);
 
         /**

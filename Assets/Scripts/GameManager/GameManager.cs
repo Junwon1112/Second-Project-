@@ -13,6 +13,8 @@ public class GameManager : MonoBehaviour
 
     Scene currentScene;
 
+    [SerializeField]
+    ScriptableObj_JobData jobData;
 
     /// <summary>
     /// player에 대한 프로퍼티
@@ -87,7 +89,7 @@ public class GameManager : MonoBehaviour
 
     private void Initialize()   //시작하면 오브젝트 가져오기
     {
-        player = FindObjectOfType<Player>();
+        player = GameObject.Find($"Player_{jobData.jobType.ToString()}").GetComponent<Player>();
         itemDataManager = FindObjectOfType<ItemDataManager>();
         CurrentScene = SceneManager.GetActiveScene();
     }
