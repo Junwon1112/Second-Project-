@@ -95,7 +95,7 @@ public class Player : MonoBehaviour, IHealth
     float turnToY;
     float turnToZ;
 
-    float turnSpeed = 25.0f;
+    float turnSpeed = 20.0f;
 
     /// <summary>
     /// 아이템 관련 변수
@@ -374,7 +374,7 @@ public class Player : MonoBehaviour, IHealth
             turnToX = turnToX + moveY * turnSpeed * Time.deltaTime;
 
             //turnToY = Mathf.Clamp(turnToY, -80, 80);    //최대값 설정
-            turnToX = Mathf.Clamp(turnToX, 0, 20);
+            //turnToX = Mathf.Clamp(turnToX, 0, 20);
 
             transform.eulerAngles = new Vector3(0, turnToY, 0);
             //mainCamera_PlayerPos.transform.localEulerAngles = new Vector3(-turnToX, 0, 0); Y축 넣었다가 어지러워서 뺐음
@@ -482,6 +482,8 @@ public class Player : MonoBehaviour, IHealth
         Exp -= MaxExp;
         MaxExp *= 1.3f;
         SetExp();
+        ParticlePlayer.Instance.PlayParticle(ParticleType.ParticleSystem_LevelUp, transform, transform.position, transform.rotation);
+        SoundPlayer.Instance.PlaySound(SoundType.Sound_LevelUp);
     }
 
     /// <summary>

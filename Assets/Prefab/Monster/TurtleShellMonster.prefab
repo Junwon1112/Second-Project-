@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 6814855352527456211}
   - component: {fileID: 9050717128976484404}
   - component: {fileID: 7794906378227498820}
-  m_Layer: 10
+  m_Layer: 14
   m_Name: MiniMapMarker_Monster
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -120,7 +120,7 @@ GameObject:
   - component: {fileID: 4796644948316558577}
   - component: {fileID: 3016521878384468530}
   - component: {fileID: 4669933859539474414}
-  m_Layer: 10
+  m_Layer: 14
   m_Name: MonsterCanvas_Minimap
   m_TagString: Untagged
   m_Icon: {fileID: 0}

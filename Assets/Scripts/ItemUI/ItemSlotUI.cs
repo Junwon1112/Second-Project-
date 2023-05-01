@@ -57,8 +57,6 @@ public class ItemSlotUI : MonoBehaviour, IPointerClickHandler, IDragHandler, IBe
     {
         itemImage = GetComponentInChildren<Image>();
         itemCountText = GetComponentInChildren<TextMeshProUGUI>();
-        playerInven = FindObjectOfType<Inventory>();
-        playerInvenUI = FindObjectOfType<InventoryUI>();
         itemInfo = FindObjectOfType<ItemInfo>();
         splitUI = GameObject.Find("SplitUI").GetComponent<SplitUI>();  //dropUI가 splitUI를 상속받았는데 findobjectoftype으로 가져오면 dropUI를 받아올수도있다.
         dropUI = GameObject.Find("DropUI").GetComponent<DropUI>();
@@ -66,6 +64,11 @@ public class ItemSlotUI : MonoBehaviour, IPointerClickHandler, IDragHandler, IBe
         tempSlotSplitUI = GameObject.Find("ItemMoveSlotUI").transform.GetChild(0).GetComponent<TempSlotSplitUI>();   //활성화후 컴포넌트 찾은거 변수에 저장하고
     }
 
+    private void Start()
+    {
+        playerInven = GameManager.Instance.MainPlayer.transform.GetComponentInChildren<Inventory>();
+        playerInvenUI = GameObject.Find("InventoryUI").GetComponent<InventoryUI>();
+    }
 
     private void Update()
     {

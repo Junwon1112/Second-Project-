@@ -348,7 +348,7 @@ public class Monster_ActiveAttack : Monster_Basic
     IEnumerator MonsterAttackCoroutine(float attackSpeed)
     {
         yield return new WaitForSeconds(attackSpeed);
-        //monsterCollider.isTrigger = true; => 애니메이션으로 세팅
+        //monsterCollider.isTrigger = true; => 애니메이션에서 녹화 기능으로 구현
         anim.SetTrigger("OnAttack");
         isCriticalAttack(criticalRate);
         isAttackContinue = false;

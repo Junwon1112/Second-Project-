@@ -48,13 +48,14 @@ public class SplitUI : MonoBehaviour
         cancelButton = transform.Find("CancelButton").GetComponent<Button>();
         inputField = GetComponentInChildren<TMP_InputField>();
         splitUICanvasGroup = GetComponent<CanvasGroup>();
-        inventory = FindObjectOfType<Inventory>();
-        inventoryUI = FindObjectOfType<InventoryUI>();
         splitTempSlotSplitUI = GameObject.Find("ItemMoveSlotUI").transform.GetChild(0).GetComponent<TempSlotSplitUI>();   //활성화후 컴포넌트 찾은거 변수에 저장하고
     }
 
     protected virtual void Start()
     {
+        inventory = GameManager.Instance.MainPlayer.transform.GetComponentInChildren<Inventory>();
+        inventoryUI = GameObject.Find("InventoryUI").GetComponent<InventoryUI>();
+
         //스트링타입 리턴받는 함수 실행  => 입력된 숫자가 슬롯의 itemCount보다 크면 itemCount를, 작으면 0을 리턴
         inputField.onEndEdit.AddListener(CheckRightCount); 
         

@@ -47,7 +47,7 @@ public class Skill_Implement : MonoBehaviour
     private void Start()
     {
         player = GameManager.Instance.MainPlayer;
-        camera = player.gameObject.GetComponentInChildren<Camera>();
+        camera = FindObjectOfType<MainCamera>().transform.GetComponent<Camera>();
         anim = player.transform.GetComponent<Animator>();
     }
 

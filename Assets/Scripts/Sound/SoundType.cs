@@ -10,6 +10,7 @@ public enum SoundType
     Sound_Attack_Witch,
     Sound_Hit,
     Sound_Walk,
+    Sound_LevelUp,
     Sound_ElectroHit,
     Sound_WindHit,
     Sound_IceHit,
