@@ -41,6 +41,7 @@ public class SplitUI : MonoBehaviour
     protected Inventory inventory;
     protected InventoryUI inventoryUI;
 
+    public RectTransform rectTransform_Split;
 
     protected virtual void Awake()
     {
@@ -49,6 +50,7 @@ public class SplitUI : MonoBehaviour
         inputField = GetComponentInChildren<TMP_InputField>();
         splitUICanvasGroup = GetComponent<CanvasGroup>();
         splitTempSlotSplitUI = GameObject.Find("ItemMoveSlotUI").transform.GetChild(0).GetComponent<TempSlotSplitUI>();   //활성화후 컴포넌트 찾은거 변수에 저장하고
+        rectTransform_Split = GetComponent<RectTransform>();
     }
 
     protected virtual void Start()
@@ -120,7 +122,7 @@ public class SplitUI : MonoBehaviour
         GameObject.Find("ItemMoveSlotUI").transform.GetChild(0).gameObject.SetActive(true);  //tempSlot을 비활성화 시켰다 부모오브젝트를 통해 찾아서 활성화 시킬것이다.
         
         splitTempSlotSplitUI.SetTempSlotWithData(splitItemData, (uint)splitCount);       //나눌 데이터 tempslot에 전달하고
-
+        splitTempSlotSplitUI.rectTransform_TempSlotSplit.SetAsLastSibling();
 
         isSplitting = true;
 

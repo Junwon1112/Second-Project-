@@ -52,6 +52,7 @@ public class ItemSlotUI : MonoBehaviour, IPointerClickHandler, IDragHandler, IBe
     DropUI dropUI;
     
     TempSlotSplitUI tempSlotSplitUI;
+
    
     private void Awake()
     {
@@ -202,6 +203,7 @@ public class ItemSlotUI : MonoBehaviour, IPointerClickHandler, IDragHandler, IBe
                 splitUI.splitPossibleCount = slotUICount;   //현재 슬롯이 가지고있는 갯수를 전해줌, splitPossibleCount는 splitUI내에서 실제 적용할 splitCount로 변환
                 splitUI.takeID = slotUIID;                  //현재 해당 슬롯의 ID를 전달해 어떤 슬롯인지 구분
                 splitUI.SplitUIOpen();
+                splitUI.rectTransform_Split.SetAsLastSibling();
                 //여기부터
 
             }
@@ -303,6 +305,7 @@ public class ItemSlotUI : MonoBehaviour, IPointerClickHandler, IDragHandler, IBe
             GameObject.Find("ItemMoveSlotUI").transform.GetChild(0).gameObject.SetActive(true); //tempSlot을 비활성화 시켰다 부모오브젝트를 통해 찾아서 활성화 시킬것이다.
 
             tempSlotSplitUI.SetTempSlotWithData(slotUIData, slotUICount);       //이동할 데이터 tempslot에 전달하고
+            tempSlotSplitUI.rectTransform_TempSlotSplit.SetAsLastSibling();
 
             playerInven.itemSlots[slotUIID].ClearSlotItem();             //UI와 슬롯 데이터에서는 데이터와 갯수를 뺌
             slotUICount = 0;
@@ -391,6 +394,7 @@ public class ItemSlotUI : MonoBehaviour, IPointerClickHandler, IDragHandler, IBe
             splitUI.splitTempSlotSplitUI.gameObject.SetActive(false);       //처리 다했으면 tempslotUI끄기
             
             dropUI.SplitUIOpen();
+            dropUI.rectTransform_Drop.SetAsLastSibling();
             //여기부터
 
             

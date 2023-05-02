@@ -20,7 +20,8 @@ public class SkillUI : MonoBehaviour
 
     Button skillCloseButton;
 
-    
+    RectTransform skillRectTransform;
+
     TextMeshProUGUI skillPoint_Num;
 
     private void Awake()
@@ -31,6 +32,7 @@ public class SkillUI : MonoBehaviour
         ui_OnOff = GetComponentInParent<UI_Player_MoveOnOff>();
         skillCloseButton = transform.Find("CloseButton").GetComponent<Button>();
         skillPoint_Num = transform.Find("SkillPointUI").GetChild(1).GetComponent<TextMeshProUGUI>();
+        skillRectTransform = GetComponent<RectTransform>();
 
         for(int i = 0; i < skillDatas.Count; i++)
         {
@@ -87,6 +89,7 @@ public class SkillUI : MonoBehaviour
     private void OnSkillWindowOnOff(UnityEngine.InputSystem.InputAction.CallbackContext obj)
     {
         OnSkillOnOffSetting();
+        skillRectTransform.SetAsLastSibling();
     }
 
     private void OnSkillOnOffSetting()

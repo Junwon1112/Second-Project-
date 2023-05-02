@@ -73,6 +73,7 @@ public class SkillSlotUI : MonoBehaviour, IBeginDragHandler, IEndDragHandler, ID
         {
             GameObject.Find("SkillMoveSlotUI").transform.GetChild(0).gameObject.SetActive(true);
             tempSlotSkillUI.SetTempSkillSlotUIData(skillData);
+            tempSlotSkillUI.rectTransform.SetAsLastSibling();
         }
     }
 

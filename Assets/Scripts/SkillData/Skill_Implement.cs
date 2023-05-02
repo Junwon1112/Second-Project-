@@ -17,7 +17,7 @@ public class Skill_Implement : MonoBehaviour
     PlayerWeapon weapon;
 
     Animator anim;
-    Camera camera;
+    new Camera camera;
 
     PointerEventData pointerEventData;
     RaycastHit hit;
@@ -199,11 +199,11 @@ public class Skill_Implement : MonoBehaviour
                 {
                     weapon.isCheckExp = false;
                     player.Exp += monsters[i].GiveExp;
-                    player.SetExp();
-                    if (player.Exp >= player.MaxExp)
-                    {
-                        player.newDel_LevelUp();    //레벨업 델리게이트
-                    }
+                    //player.SetExp();
+                    //if (player.Exp >= player.MaxExp)
+                    //{
+                    //    player.newDel_LevelUp();    //레벨업 델리게이트
+                    //}
                 }
             }
         }

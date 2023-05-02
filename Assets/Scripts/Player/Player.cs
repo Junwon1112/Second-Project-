@@ -61,6 +61,7 @@ public class Player : MonoBehaviour, IHealth
     float hp;
     float maxHp = 100;
     Slider hpBar;
+    TextMeshProUGUI hpValue_Text;
 
     /// <summary>
     /// 경험치 관련 변수들
@@ -68,6 +69,7 @@ public class Player : MonoBehaviour, IHealth
     float exp = 0.0f;
     float maxExp = 100;
     Slider expBar;
+    TextMeshProUGUI expValue_Text;
 
     [SerializeField]
     int level = 1;
@@ -155,6 +157,7 @@ public class Player : MonoBehaviour, IHealth
     public float MaxHP
     {
         get { return maxHp; }
+        set { maxHp = value; }
     }
 
     public float Exp
@@ -163,7 +166,11 @@ public class Player : MonoBehaviour, IHealth
         set
         {
             exp = value;
-
+            SetExp();
+            if (player.Exp >= player.MaxExp)
+            {
+                player.newDel_LevelUp();    //레벨업 델리게이트
+            }
         }
     }
 
@@ -209,8 +216,10 @@ public class Player : MonoBehaviour, IHealth
         input = new PlayerInput();
         anim = GetComponent<Animator>();
         rigid = GetComponent<Rigidbody>();
-        hpBar = GameObject.Find("HpSlider").GetComponent<Slider>();
-        expBar = GameObject.Find("ExpSlider").GetComponent<Slider>();
+        hpBar = FindObjectOfType<FindPlayerInfoUI>().transform.GetChild(0).GetComponent<Slider>();
+        hpValue_Text = FindObjectOfType<FindPlayerInfoUI>().transform.GetChild(0).GetComponentInChildren<TextMeshProUGUI>();
+        expBar = FindObjectOfType<FindPlayerInfoUI>().transform.GetChild(1).GetComponent<Slider>();
+        expValue_Text = FindObjectOfType<FindPlayerInfoUI>().transform.GetChild(1).GetComponentInChildren<TextMeshProUGUI>();
         lvText = GameObject.Find("Level_num").GetComponent<TextMeshProUGUI>();
         player = GetComponent<Player>();
         playerInventory = GetComponentInChildren<Inventory>();
@@ -265,10 +274,11 @@ public class Player : MonoBehaviour, IHealth
 
     private void Start()
     {
-        
-
-        hp = maxHp;
+        MaxHP = 100;
+        HP = MaxHP;
         SetHP();
+        MaxExp = 100;
+        Exp = 0;
         SetExp();
         SetLevel();
         potion = new ItemData_Potion();
@@ -446,11 +456,13 @@ public class Player : MonoBehaviour, IHealth
     public void SetHP()
     {
         hpBar.value = HP / MaxHP;
+        hpValue_Text.text = (hpBar.value * 100).ToString("F2") + '%';
     }
 
     public void SetExp()
     {
         expBar.value = Exp / MaxExp;
+        expValue_Text.text = (expBar.value * 100).ToString("F2") + '%';
     }
 
     public void SetLevel()

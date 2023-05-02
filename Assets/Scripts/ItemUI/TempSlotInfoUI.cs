@@ -15,11 +15,12 @@ public class TempSlotInfoUI : MonoBehaviour
     public ItemData takeSlotItemData;   //tempSlot을 발생시킨곳에서 받아온다.
     public uint takeSlotItemCount;      //tempSlot을 발생시킨곳에서 받아온다.
 
-    
+    RectTransform rectTransform_TempSlotInfo;
 
     void Awake()
     {
         itemImage = GetComponentInChildren<Image>();
+        rectTransform_TempSlotInfo = GetComponent<RectTransform>();
     }
 
 }

@@ -24,9 +24,9 @@ public class InventoryUI : MonoBehaviour
     /// <summary>
     /// 인벤토리가 꺼져있는지 켜져있는지 확인하기 위한 변수
     /// </summary>
-    public bool isInvenCanvasGroupOff = true;   
+    public bool isInvenCanvasGroupOff = true;
 
-    
+    RectTransform rectTransform_Inven;
 
     private Button invenCloseButton;
 
@@ -72,7 +72,7 @@ public class InventoryUI : MonoBehaviour
         invenCanvasGroupOnOff = GetComponent<CanvasGroup>();
         invenCloseButton = transform.Find("CloseButton").GetComponent<Button>();
         slotUIs = GetComponentsInChildren<ItemSlotUI>();
-
+        rectTransform_Inven = GetComponent<RectTransform>();
         graphicRaycaster = GameObject.Find("Canvas").gameObject.GetComponent<GraphicRaycaster>();
         
         equipmentUI = FindObjectOfType<EquipmentUI>();
@@ -118,6 +118,7 @@ public class InventoryUI : MonoBehaviour
     private void OnInventoryOnOff(InputAction.CallbackContext obj)
     {
         InventoryOnOffSetting();
+        rectTransform_Inven.SetAsLastSibling();
     }
 
     /// <summary>
@@ -164,6 +165,8 @@ public class InventoryUI : MonoBehaviour
     /// <param name="obj"></param>
     public void OnInventoryItemUse(InputAction.CallbackContext obj)
     {
+        rectTransform_Inven.SetAsLastSibling();
+
         List<RaycastResult> slotItemCheck = new List<RaycastResult>();  //UI인식을 위해서는 GraphicRaycast가 필요하고 이걸 사용 후 리턴할 때 (RaycastResult)를 받는 리스트에 저장함
         pointerEventData = new PointerEventData(null);                  //GraphicRaycast에서 마우스 위치를 PointerEventData에서 받으므로 정의 해줌
 

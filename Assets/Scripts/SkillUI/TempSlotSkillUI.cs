@@ -11,10 +11,11 @@ public class TempSlotSkillUI : MonoBehaviour
 {
     Image skillImage;
     public SkillData tempSkillData;
-
+    public RectTransform rectTransform;
     private void Awake()
     {
         skillImage = GetComponent<Image>();
+        rectTransform = transform.parent.GetComponent<RectTransform>();
     }
 
     private void Start()

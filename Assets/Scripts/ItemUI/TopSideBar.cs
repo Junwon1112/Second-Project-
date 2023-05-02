@@ -24,6 +24,8 @@ public class TopSideBar : MonoBehaviour,  IBeginDragHandler, IEndDragHandler, ID
     /// <param name="eventData"></param>
     public void OnBeginDrag(PointerEventData eventData)  //눌렀을 때 해당 위치를 pivot값으로 설정하는 함수
     {
+        parentRectTransform.SetAsLastSibling();
+
         float absoluteMinPosition_x = (parentRectTransform.position.x - parentRectTransform.rect.width * (parentRectTransform.pivot.x));
         float absoluteMinPosition_y = (parentRectTransform.position.y - parentRectTransform.rect.height * (parentRectTransform.pivot.y));
 

@@ -10,6 +10,7 @@ using TMPro;
 public class DropUI : SplitUI
 {
     private Transform playerTransform;
+    public RectTransform rectTransform_Drop;
 
     protected override void Awake()
     {
@@ -19,6 +20,7 @@ public class DropUI : SplitUI
         splitUICanvasGroup = GetComponent<CanvasGroup>();
         
         splitTempSlotSplitUI = GameObject.Find("ItemMoveSlotUI").transform.GetChild(0).GetComponent<TempSlotSplitUI>();   //활성화후 컴포넌트 찾은거 변수에 저장하고
+        rectTransform_Drop = GetComponent<RectTransform>();
     }
 
     protected override void Start()

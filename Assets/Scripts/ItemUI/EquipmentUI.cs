@@ -21,6 +21,7 @@ public class EquipmentUI : InventoryUI
 
     protected Button equipCloseButton;
 
+    RectTransform rectTransform_Equip;
     /// <summary>
     /// 인벤토리가 꺼져있는지 켜져있는지 확인하기 위한 변수
     /// </summary>
@@ -37,6 +38,7 @@ public class EquipmentUI : InventoryUI
         canvasGroupOnOff = GetComponent<CanvasGroup>();
         equipCloseButton = transform.Find("CloseButton").GetComponent<Button>();
         equipSlotUIs = GetComponentsInChildren<EquipSlotUI>();
+        rectTransform_Equip = GetComponent<RectTransform>();
 
         graphicRaycaster = GameObject.Find("Canvas").gameObject.GetComponent<GraphicRaycaster>();
         player = FindObjectOfType<Player>();
@@ -72,6 +74,7 @@ public class EquipmentUI : InventoryUI
     private void OnEquipmentOnOff(InputAction.CallbackContext obj)
     {
         EquipmentOnOffSetting();
+        rectTransform_Equip.SetAsLastSibling();
     }
 
     /// <summary>

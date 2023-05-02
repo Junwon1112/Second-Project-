@@ -77,11 +77,11 @@ public class Projectile_AirSlash : MonoBehaviour, IBattle
             {
                 isCheckExp = false;
                 player.Exp += monster.GiveExp;
-                player.SetExp();
-                if (player.Exp >= player.MaxExp)
-                {
-                    player.newDel_LevelUp();    //레벨업 델리게이트
-                }
+                //player.SetExp();
+                //if (player.Exp >= player.MaxExp)
+                //{
+                //    player.newDel_LevelUp();    //레벨업 델리게이트
+                //}
             }
 
             Destroy(this.gameObject, 0.05f);
