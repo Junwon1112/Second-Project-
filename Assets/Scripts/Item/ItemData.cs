@@ -16,6 +16,7 @@ public class ItemData : ScriptableObject
     public int itemMaxCount;       //아이템 최대 누적수
     public ItemType itemType;       //아이템 타입
     public JobType job;             //아이템 사용가능 직업
+    public string ItemInfo;         //아이템 설명
 }
 
 public enum ItemIDCode

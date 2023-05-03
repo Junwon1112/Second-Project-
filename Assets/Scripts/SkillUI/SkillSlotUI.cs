@@ -8,7 +8,7 @@ using UnityEngine.EventSystems;
 /// <summary>
 /// 스킬 슬롯 UI에 관한 클래스, 주로 스킬 데이터의 슬롯 간 이동에 관해 다룸
 /// </summary>
-public class SkillSlotUI : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHandler
+public class SkillSlotUI : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHandler, IPointerClickHandler
 {
     //스킬 슬롯 UI에서 구현해야 할것 
     //1. 드래그해서 퀵슬롯으로 옮길 수 있어야함, 스킬 사용 요구레벨보다 레벨이 높고 할당된 스킬 포인트가 있어야 드래그 가능하게 만들고 싶음
@@ -61,6 +61,10 @@ public class SkillSlotUI : MonoBehaviour, IBeginDragHandler, IEndDragHandler, ID
         }
     }
 
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        
+    }
 
 
     /// <summary>
@@ -100,4 +104,5 @@ public class SkillSlotUI : MonoBehaviour, IBeginDragHandler, IEndDragHandler, ID
     {
         
     }
+
 }

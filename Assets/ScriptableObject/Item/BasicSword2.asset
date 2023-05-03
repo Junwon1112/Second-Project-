@@ -20,4 +20,5 @@ MonoBehaviour:
   itemMaxCount: 1
   itemType: 1
   job: 1
+  ItemInfo: Better than other Sword. 60AttackDamage
   attackDamage: 60

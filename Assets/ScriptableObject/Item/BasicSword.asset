@@ -20,4 +20,5 @@ MonoBehaviour:
   itemMaxCount: 1
   itemType: 1
   job: 1
+  ItemInfo: Just Common Sword. 30AttackDamage
   attackDamage: 30

@@ -45,9 +45,8 @@ public class ItemSlotUI : MonoBehaviour, IPointerClickHandler, IDragHandler, IBe
 
     bool isDrag = false;
     bool isOnPointer = false;   //마우스가 슬롯위에 올라가 있는지
-    bool isInfoOpen = false;
 
-    ItemInfo itemInfo;  //슬롯위에 마우스 올려놨을 때 활성시킬 아이템 인포창 가져오기
+    ItemInfoUI itemInfo;  //슬롯위에 마우스 올려놨을 때 활성시킬 아이템 인포창 가져오기
     SplitUI splitUI;
     DropUI dropUI;
     
@@ -58,7 +57,7 @@ public class ItemSlotUI : MonoBehaviour, IPointerClickHandler, IDragHandler, IBe
     {
         itemImage = GetComponentInChildren<Image>();
         itemCountText = GetComponentInChildren<TextMeshProUGUI>();
-        itemInfo = FindObjectOfType<ItemInfo>();
+        itemInfo = transform.parent.parent.parent.GetComponentInChildren<ItemInfoUI>();
         splitUI = GameObject.Find("SplitUI").GetComponent<SplitUI>();  //dropUI가 splitUI를 상속받았는데 findobjectoftype으로 가져오면 dropUI를 받아올수도있다.
         dropUI = GameObject.Find("DropUI").GetComponent<DropUI>();
         //tempSlotSplitUI = FindObjectOfType<TempSlotSplitUI>();    //비활성화 체크해놓으면 Awake에서 찾아도 못찾는다. 비활성화 타이밍이 Awake보다 빠른것 같다. 그래서 아래처럼 찾는다. 
@@ -132,10 +131,10 @@ public class ItemSlotUI : MonoBehaviour, IPointerClickHandler, IDragHandler, IBe
         {
             infoOpenTime = 1.0f;
             
-            if(isInfoOpen)
+            if(itemInfo.isInfoOpen)
             {
                 itemInfo.CloseInfo();
-                isInfoOpen = false;
+                itemInfo.isInfoOpen = false;
             }
             mousePos = eventData.position;
 
@@ -155,15 +154,15 @@ public class ItemSlotUI : MonoBehaviour, IPointerClickHandler, IDragHandler, IBe
     /// <summary>
     /// 인포창 표시할 때 실행할 애들
     /// </summary>
-    private void SetInfo()  
-    {
-        itemInfo.infoTempSlotUI.itemImage.sprite = slotUIData.itemIcon;
-        itemInfo.infoTransform.position = mousePos;
-        itemInfo.OpenInfo();
-        itemInfo.infoName.text = slotUIData.itemName;
-        itemInfo.itemInformation.text = "No Information";
-        isInfoOpen = true;
-    }
+    //private void SetInfo()  
+    //{
+    //    itemInfo.InfoTempSlotUI.itemImage.sprite = slotUIData.itemIcon;
+    //    itemInfo.infoTransform.position = mousePos;
+    //    itemInfo.OpenInfo();
+    //    itemInfo.infoName.text = slotUIData.itemName;
+    //    itemInfo.itemInformation.text = "No Information";
+    //    isInfoOpen = true;
+    //}
 
     /// <summary>
     /// 업데이트에서 실행할 인포창 오픈관련 함수
@@ -176,11 +175,11 @@ public class ItemSlotUI : MonoBehaviour, IPointerClickHandler, IDragHandler, IBe
             {
                 infoOpenTime -= Time.deltaTime;
             }
-            if (isOnPointer && !isInfoOpen && infoOpenTime < 0.0f)
+            if (isOnPointer && !itemInfo.isInfoOpen && infoOpenTime < 0.0f)
             {
                 if (slotUIData != null)  //데이터가 있어야 표시한다.
                 {
-                    SetInfo();
+                    itemInfo.SetInfo(slotUIData, mousePos);
                 }
             }
         }
