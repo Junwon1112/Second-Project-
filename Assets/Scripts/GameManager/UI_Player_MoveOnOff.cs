@@ -11,7 +11,8 @@ public class UI_Player_MoveOnOff : MonoBehaviour
     /// playerInputSystem에 있는 Inventroy에 UI전용 우클릭 입력이 있어서 전체 UI에 사용하려면 끌어와야 했다. 
     /// 다음에는 전체 UI를 관리하는 InputSystem항목을 만들고 거기서 우클릭 입력을 구현해야 함 (확장성에 대한 고려 필요)
     /// </summary>
-    InventoryUI inventoryUI;    
+    InventoryUI inventoryUI;
+    EquipmentUI equipmentUI;
 
     bool isOnInventoryItemUseConnect = false;
 
@@ -20,6 +21,7 @@ public class UI_Player_MoveOnOff : MonoBehaviour
     private void Awake()
     {
         inventoryUI = GetComponentInChildren<InventoryUI>();
+        equipmentUI = GetComponentInChildren<EquipmentUI>();
     }
 
 
@@ -38,7 +40,8 @@ public class UI_Player_MoveOnOff : MonoBehaviour
                 if(!isOnInventoryItemUseConnect)
                 {
                     isOnInventoryItemUseConnect = true;
-                    inventoryUI.inventoryControl.InventoryUI.InventoryItemUse.performed += inventoryUI.OnInventoryItemUse;
+                    inventoryUI.Input_Control.InventoryUI.InventoryItemUse.performed += inventoryUI.OnInventoryItemUse;
+                    equipmentUI.Input_Control.EquipmentUI.EquipmentItemUse.performed += equipmentUI.OnInventoryItemUse;
                     Debug.Log("OnInventoryItemUseConnect");
                 }
                 break;
@@ -52,7 +55,7 @@ public class UI_Player_MoveOnOff : MonoBehaviour
                     if(isOnInventoryItemUseConnect)
                     {
                         isOnInventoryItemUseConnect = false;
-                        inventoryUI.inventoryControl.InventoryUI.InventoryItemUse.performed -= inventoryUI.OnInventoryItemUse;
+                        inventoryUI.input_Control.InventoryUI.InventoryItemUse.performed -= inventoryUI.OnInventoryItemUse;
                         Debug.Log("NO OnInventoryItemUseConnect");
                     }
                     

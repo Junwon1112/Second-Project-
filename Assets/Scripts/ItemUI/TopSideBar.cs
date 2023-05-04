@@ -9,12 +9,10 @@ using UnityEngine.EventSystems;
 /// </summary>
 public class TopSideBar : MonoBehaviour,  IBeginDragHandler, IEndDragHandler, IDragHandler
 {
-    //Button topSideBarButton;
     RectTransform parentRectTransform;
 
     private void Awake()
     {
-        //topSideBarButton = GetComponent<Button>();
         parentRectTransform = transform.parent.GetComponent<RectTransform>();
     }
 

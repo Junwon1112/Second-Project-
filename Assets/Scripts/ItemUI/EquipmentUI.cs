@@ -3,52 +3,69 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
+using UnityEngine.EventSystems;
+using System;
 
 /// <summary>
 /// 인벤토리 UI를 상속받은 장비 클래스, 완성 후 UI클래스를 만들어서 상속을 할 걸..이라는 걸 느꼈다.
 /// </summary>
-public class EquipmentUI : InventoryUI     
+public class EquipmentUI : BasicUIForm_Parent
 {
     /// <summary>
-    /// u키로 껐다키기위한 인풋시스템용 변수
+    /// i키로 껐다키기위한 인풋시스템용 변수
     /// </summary>
-    public PlayerInput equipmentControl;   
-
+    PlayerInput input_Control;
     /// <summary>
     /// 껐다 키는걸 canvasGroup을 이용한 변수
     /// </summary>
-    protected CanvasGroup canvasGroupOnOff;   
-
-    protected Button equipCloseButton;
-
-    RectTransform rectTransform_Equip;
+    CanvasGroup canvasGroupOnOff;
     /// <summary>
     /// 인벤토리가 꺼져있는지 켜져있는지 확인하기 위한 변수
     /// </summary>
-    public bool isEquipCanvasGroupOff = true;   
+    bool isUIOnOff;
+
+    RectTransform rectTransform_UI;
+
+    GraphicRaycaster uiGraphicRaycaster;
+    PointerEventData uiPointerEventData;
+    Player player;
+    UI_Player_MoveOnOff ui_OnOff;
 
     public EquipSlotUI[] equipSlotUIs;
+    Inventory playerInven;
 
-    UI_Player_MoveOnOff ui_OnOff_E;
+    public override PlayerInput Input_Control { get => input_Control; set => input_Control = value; }
+    public override CanvasGroup CanvasGroupOnOff { get => canvasGroupOnOff; set => canvasGroupOnOff = value; }
+    public override bool IsUIOnOff { get => isUIOnOff; set => isUIOnOff = value; }
+    public override RectTransform RectTransform_UI { get => rectTransform_UI; set => rectTransform_UI = value; }
+    public override GraphicRaycaster UIGraphicRaycaster { get => uiGraphicRaycaster; set => uiGraphicRaycaster = value; }
+    public override PointerEventData UIPointerEventData { get => uiPointerEventData; set => uiPointerEventData = value; }
 
-    protected override void Awake()
+
+    public override Player Player { get => player; set => player = value; }
+    public override UI_Player_MoveOnOff UI_OnOff { get => ui_OnOff; set => ui_OnOff = value; }
+
+    public Inventory PlayerInven { get => playerInven; set => playerInven = value; }
+
+    protected void Awake()
     {
-        inventoryControl = new PlayerInput();   //아이템 우클릭은 inven에서 구현해서 필요할 때 가져오기 위해서
-        equipmentControl = new PlayerInput();
-        canvasGroupOnOff = GetComponent<CanvasGroup>();
-        equipCloseButton = transform.Find("CloseButton").GetComponent<Button>();
-        equipSlotUIs = GetComponentsInChildren<EquipSlotUI>();
-        rectTransform_Equip = GetComponent<RectTransform>();
+        Input_Control = new PlayerInput();
+        CanvasGroupOnOff = GetComponent<CanvasGroup>();
+        RectTransform_UI = GetComponent<RectTransform>();
 
-        graphicRaycaster = GameObject.Find("Canvas").gameObject.GetComponent<GraphicRaycaster>();
-        player = FindObjectOfType<Player>();
-        ui_OnOff_E = GetComponentInParent<UI_Player_MoveOnOff>();
+        UIGraphicRaycaster = GameObject.Find("Canvas").gameObject.GetComponent<GraphicRaycaster>();
+        
+        UI_OnOff = GetComponentInParent<UI_Player_MoveOnOff>();
+
+        equipSlotUIs = GetComponentsInChildren<EquipSlotUI>();
     }
 
     private void Start()
     {
-        equipCloseButton.onClick.AddListener(EquipmentOnOffSetting);
-        isEquipCanvasGroupOff = true;
+        Player = GameManager.Instance.MainPlayer;
+        PlayerInven = GameManager.Instance.MainPlayer.transform.GetComponentInChildren<Inventory>();
+
+        IsUIOnOff = true;
         for(int i = 0; i < equipSlotUIs.Length; i++)
         {
             equipSlotUIs[i].equipSlotID = 1001 + i; //1000번대 슬롯은 장비슬롯임을 구분하기 위해 추가
@@ -57,14 +74,14 @@ public class EquipmentUI : InventoryUI
 
     private void OnEnable()
     {
-        equipmentControl.EquipmentUI.Enable();
-        equipmentControl.EquipmentUI.EquipmentOnOff.performed += OnEquipmentOnOff;
+        Input_Control.EquipmentUI.Enable();
+        Input_Control.EquipmentUI.EquipmentOnOff.performed += OnEquipmentOnOff;
     }
 
     private void OnDisable()
     {
-        equipmentControl.EquipmentUI.EquipmentOnOff.performed -= OnEquipmentOnOff;
-        equipmentControl.EquipmentUI.Disable();
+        Input_Control.EquipmentUI.EquipmentOnOff.performed -= OnEquipmentOnOff;
+        Input_Control.EquipmentUI.Disable();
     }
 
     /// <summary>
@@ -73,48 +90,42 @@ public class EquipmentUI : InventoryUI
     /// <param name="obj"></param>
     private void OnEquipmentOnOff(InputAction.CallbackContext obj)
     {
-        EquipmentOnOffSetting();
-        rectTransform_Equip.SetAsLastSibling();
+        UIOnOffSetting();
+        RectTransform_UI.SetAsLastSibling();
     }
 
     /// <summary>
     /// 장비창 UI를 키거나 껐을 때 실행해야 될 메서드
     /// </summary>
-    private void EquipmentOnOffSetting()
+    public override void UIOnOffSetting()
     {
-        if (isEquipCanvasGroupOff)
+        if (IsUIOnOff)
         {
-            isEquipCanvasGroupOff = false;
+            if (IsUIOnOff)
+            {
+                IsUIOnOff = false;
 
-            canvasGroupOnOff.alpha = 1;
-            canvasGroupOnOff.interactable = true;
-            canvasGroupOnOff.blocksRaycasts = true;
+                CanvasGroupOnOff.alpha = 1;
+                CanvasGroupOnOff.interactable = true;
+                CanvasGroupOnOff.blocksRaycasts = true;
 
-            ui_OnOff_E.IsUIOnOff();  //전체 UI ONOFF상태를 확인하고 InputSystem을 Enable과 Disable해주는 함수
+                UI_OnOff.IsUIOnOff();
+            }
+            else
+            {
+                isUIOnOff = true;
 
-            //if(inventoryUI.isInvenCanvasGroupOff)
-            //{
-            //    GameManager.Instance.MainPlayer.input.Disable();
-            //    inventoryUI.inventoryControl.Inventory.InventoryItemUse.performed += inventoryUI.OnInventoryItemUse;
-            //}
+                CanvasGroupOnOff.alpha = 0;
+                CanvasGroupOnOff.interactable = false;
+                CanvasGroupOnOff.blocksRaycasts = false;
+
+                UI_OnOff.IsUIOnOff();
+            }
         }
-        else
-        {
-            isEquipCanvasGroupOff = true;
-
-
-            canvasGroupOnOff.alpha = 0;
-            canvasGroupOnOff.interactable = false;
-            canvasGroupOnOff.blocksRaycasts = false;
-            
-            ui_OnOff_E.IsUIOnOff();
-
-            //if (inventoryUI.isInvenCanvasGroupOff)
-            //{
-            //    GameManager.Instance.MainPlayer.input.Enable();
-            //    inventoryUI.inventoryControl.Inventory.InventoryItemUse.performed -= inventoryUI.OnInventoryItemUse;
-            //}
-        }
+    }
+    internal void OnInventoryItemUse(InputAction.CallbackContext obj)
+    {
+        
     }
 
 

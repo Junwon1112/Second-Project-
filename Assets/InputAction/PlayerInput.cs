@@ -255,6 +255,15 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""EquipmentItemUse"",
+                    ""type"": ""Button"",
+                    ""id"": ""a6c252da-fad2-4e39-837d-6472b52dafeb"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -266,6 +275,17 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""EquipmentOnOff"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c910ba6a-7769-45c7-bbe0-8f1bb097094a"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""EquipmentItemUse"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -538,6 +558,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         // EquipmentUI
         m_EquipmentUI = asset.FindActionMap("EquipmentUI", throwIfNotFound: true);
         m_EquipmentUI_EquipmentOnOff = m_EquipmentUI.FindAction("EquipmentOnOff", throwIfNotFound: true);
+        m_EquipmentUI_EquipmentItemUse = m_EquipmentUI.FindAction("EquipmentItemUse", throwIfNotFound: true);
         // SkillUI
         m_SkillUI = asset.FindActionMap("SkillUI", throwIfNotFound: true);
         m_SkillUI_SkillWindowOnOff = m_SkillUI.FindAction("SkillWindowOnOff", throwIfNotFound: true);
@@ -730,11 +751,13 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
     private readonly InputActionMap m_EquipmentUI;
     private IEquipmentUIActions m_EquipmentUIActionsCallbackInterface;
     private readonly InputAction m_EquipmentUI_EquipmentOnOff;
+    private readonly InputAction m_EquipmentUI_EquipmentItemUse;
     public struct EquipmentUIActions
     {
         private @PlayerInput m_Wrapper;
         public EquipmentUIActions(@PlayerInput wrapper) { m_Wrapper = wrapper; }
         public InputAction @EquipmentOnOff => m_Wrapper.m_EquipmentUI_EquipmentOnOff;
+        public InputAction @EquipmentItemUse => m_Wrapper.m_EquipmentUI_EquipmentItemUse;
         public InputActionMap Get() { return m_Wrapper.m_EquipmentUI; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -747,6 +770,9 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 @EquipmentOnOff.started -= m_Wrapper.m_EquipmentUIActionsCallbackInterface.OnEquipmentOnOff;
                 @EquipmentOnOff.performed -= m_Wrapper.m_EquipmentUIActionsCallbackInterface.OnEquipmentOnOff;
                 @EquipmentOnOff.canceled -= m_Wrapper.m_EquipmentUIActionsCallbackInterface.OnEquipmentOnOff;
+                @EquipmentItemUse.started -= m_Wrapper.m_EquipmentUIActionsCallbackInterface.OnEquipmentItemUse;
+                @EquipmentItemUse.performed -= m_Wrapper.m_EquipmentUIActionsCallbackInterface.OnEquipmentItemUse;
+                @EquipmentItemUse.canceled -= m_Wrapper.m_EquipmentUIActionsCallbackInterface.OnEquipmentItemUse;
             }
             m_Wrapper.m_EquipmentUIActionsCallbackInterface = instance;
             if (instance != null)
@@ -754,6 +780,9 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 @EquipmentOnOff.started += instance.OnEquipmentOnOff;
                 @EquipmentOnOff.performed += instance.OnEquipmentOnOff;
                 @EquipmentOnOff.canceled += instance.OnEquipmentOnOff;
+                @EquipmentItemUse.started += instance.OnEquipmentItemUse;
+                @EquipmentItemUse.performed += instance.OnEquipmentItemUse;
+                @EquipmentItemUse.canceled += instance.OnEquipmentItemUse;
             }
         }
     }
@@ -964,6 +993,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
     public interface IEquipmentUIActions
     {
         void OnEquipmentOnOff(InputAction.CallbackContext context);
+        void OnEquipmentItemUse(InputAction.CallbackContext context);
     }
     public interface ISkillUIActions
     {
