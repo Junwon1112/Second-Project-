@@ -409,15 +409,15 @@ public class Player : MonoBehaviour, IHealth
             {
                 tempID = playerInventory.FindSameItemSlotForUseItem(potion).slotID;
                 playerInventory.FindSameItemSlotForUseItem(potion).ClearSlotItem();
-                playerInventoryUI.slotUIs[tempID].slotUIData = null;
-                playerInventoryUI.slotUIs[tempID].slotUICount = 0;
+                playerInventoryUI.slotUIs[tempID].ItemData = null;
+                playerInventoryUI.slotUIs[tempID].SlotUICount = 0;
                 playerInventoryUI.SetAllSlotWithData();
             }
             else
             {
                 tempID = playerInventory.FindSameItemSlotForUseItem(potion).slotID;
                 playerInventory.FindSameItemSlotForUseItem(potion).ItemCount--;
-                playerInventoryUI.slotUIs[tempID].slotUICount--;
+                playerInventoryUI.slotUIs[tempID].SlotUICount--;
                 playerInventoryUI.SetAllSlotWithData();
             }
             

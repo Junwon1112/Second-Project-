@@ -2,25 +2,28 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
 
 /// <summary>
 /// Info창 아이템 이미지로 이용
 /// </summary>
-public class TempSlotInfoUI : MonoBehaviour
+public class TempSlotInfoUI : ItemSlotUI_Basic
 {
-    public Image itemImage;                //Image에 프로퍼티로 스프라이트가 존재한다. 
+    Image itemImage;                //Image에 프로퍼티로 스프라이트가 존재한다. 
 
     // 아이템 움직일 떄 사용
-    public ItemData takeSlotItemData;   //tempSlot을 발생시킨곳에서 받아온다.
-    public uint takeSlotItemCount;      //tempSlot을 발생시킨곳에서 받아온다.
+    ItemData itemData;   //tempSlot을 발생시킨곳에서 받아온다.
+    uint slotUICount;      //tempSlot을 발생시킨곳에서 받아온다.
 
-    RectTransform rectTransform_TempSlotInfo;
+    public override Image ItemImage { get => itemImage; set => itemImage = value; }
+    public override ItemData ItemData { get => itemData; set =>itemData = value; }
+    public override uint SlotUICount { get => slotUICount; set =>slotUICount = value; }
+
+    //RectTransform rectTransform_TempSlotInfo;
 
     void Awake()
     {
         itemImage = GetComponentInChildren<Image>();
-        rectTransform_TempSlotInfo = GetComponent<RectTransform>();
+
     }
 
 }

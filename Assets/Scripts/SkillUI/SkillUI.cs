@@ -64,7 +64,7 @@ public class SkillUI : MonoBehaviour
         {
             if(GameManager.Instance.MainPlayer.Job == skillDatas[i].job)
             {
-                skillSlotUIs[slotIndex].skillData = skillDatas[i];
+                skillSlotUIs[slotIndex].SkillData = skillDatas[i];
                 skillSlotUIs[slotIndex].upDownButton.SkillLevelToText();
                 skillSlotUIs[slotIndex].SetSkillUIInfo();
                 slotIndex++;

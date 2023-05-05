@@ -127,7 +127,7 @@ public class SplitUI : MonoBehaviour
         isSplitting = true;
 
         inventory.itemSlots[takeID].DecreaseSlotItem((uint)splitCount);             //UI와 슬롯 데이터에서는 뺌
-        inventoryUI.slotUIs[takeID].slotUICount -= (uint)splitCount; ;
+        inventoryUI.slotUIs[takeID].SlotUICount -= (uint)splitCount; ;
 
         inventoryUI.SetAllSlotWithData();
 

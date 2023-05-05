@@ -178,71 +178,64 @@ public class InventoryUI : BasicUIForm_Parent
         Debug.Log($"{returnObject.name}");
         
         ItemSlotUI tempSlotUI;
-        EquipSlotUI tempEquipSlotUI = new();
 
-        bool isFindEquipSlot = false;
         bool isFindItemSlot = false;
 
         isFindItemSlot = returnObject.TryGetComponent<ItemSlotUI>(out tempSlotUI);
-        if(!isFindItemSlot)
-        {
-            
-            isFindEquipSlot = returnObject.TryGetComponent<EquipSlotUI>(out tempEquipSlotUI);
-        }
 
         if(isFindItemSlot)
         {
 
-            if (tempSlotUI.slotUIData.itemType == ItemType.ComsumableItem)   //data가 사용형 아이템이라면
+            if (tempSlotUI.ItemData.itemType == ItemType.ComsumableItem)   //data가 사용형 아이템이라면
             {
                 ItemData_Potion tempPotion = new ItemData_Potion();
                 tempPotion.Use(player);
-                if (tempSlotUI.slotUICount <= 1)
+                if (tempSlotUI.SlotUICount <= 1)
                 {
-                    tempSlotUI.SetSlotWithData(tempSlotUI.slotUIData, 0);
+                    tempSlotUI.SetSlotWithData(tempSlotUI.ItemData, 0);
                     PlayerInven.itemSlots[tempSlotUI.slotUIID].ClearSlotItem();
                 }
                 else
                 {
-                    tempSlotUI.SetSlotWithData(tempSlotUI.slotUIData, tempSlotUI.slotUICount - 1);
+                    tempSlotUI.SetSlotWithData(tempSlotUI.ItemData, tempSlotUI.SlotUICount - 1);
                     PlayerInven.itemSlots[tempSlotUI.slotUIID].DecreaseSlotItem(1);
                 }
             }
-            else if(tempSlotUI.slotUIData.itemType == ItemType.Weapon && tempSlotUI.slotUIData.job == player.Job)  //data가 무기고 플레이어와 직업이 같다면
+            else if(tempSlotUI.ItemData.itemType == ItemType.Weapon && tempSlotUI.ItemData.job == player.Job)  //data가 무기고 플레이어와 직업이 같다면
             {
                 for (int i = 0; i < EquipmentUI.equipSlotUIs.Length; i++)    //무기 슬롯을 찾아라
                 {
                     if(EquipmentUI.equipSlotUIs[i].equipSlotID == 1001)     //무기 슬롯 ID는 1001이다.
                     {
-                        if (EquipmentUI.equipSlotUIs[i].takeSlotItemData == null)   //현재 장착한 무기가 없을 떄
+                        if (EquipmentUI.equipSlotUIs[i].ItemData == null)   //현재 장착한 무기가 없을 떄
                         {
-                            EquipmentUI.equipSlotUIs[i].SetTempSlotWithData(tempSlotUI.slotUIData, 1);  //장비슬롯 설정
+                            EquipmentUI.equipSlotUIs[i].SetTempSlotWithData(tempSlotUI.ItemData, 1);  //장비슬롯 설정
                             GameObject tempWeaponObject;    //장착한 아이템을 무기위치에 만들고 잘 작동되도록 player에서 TakeWeapon을 통해 컴포넌트를 가져온다.
-                            tempWeaponObject = ItemFactory.MakeItem(tempSlotUI.slotUIData.ID, Vector3.zero, Quaternion.identity); // player.weaponHandTransform.rotation
+                            tempWeaponObject = ItemFactory.MakeItem(tempSlotUI.ItemData.ID, Vector3.zero, Quaternion.identity); // player.weaponHandTransform.rotation
                             tempWeaponObject.layer = 10;    //9(Item)레이어에서 10(EquipItem)으로 변경 -> 아이템을 주울 때 layer로 판단하는데 장착한 무기가 주워지는것을 막기위해  
                             tempWeaponObject.transform.SetParent(player.weaponHandTransform, false);
                             Player.TakeWeapon();
-                            Player.myWeapon = (ItemData_Weapon)tempSlotUI.slotUIData;   //무기에 데미지를 추가하기 위해 플레이어에게 변수로 무기데이터 저장
+                            Player.myWeapon = (ItemData_Weapon)tempSlotUI.ItemData;   //무기에 데미지를 추가하기 위해 플레이어에게 변수로 무기데이터 저장
                             Player.EquipWeaponAbility();     //플레이어에게 있는 무기 데미지와 자기 공격력 합치는 함수
 
-                            tempSlotUI.SetSlotWithData(tempSlotUI.slotUIData, 0);
+                            tempSlotUI.SetSlotWithData(tempSlotUI.ItemData, 0);
                             PlayerInven.itemSlots[tempSlotUI.slotUIID].ClearSlotItem();
                         }
                         else    //현재 장착한 무기가 있을 때
                         {
                             ItemSlot tempItemSlot = new();
-                            tempItemSlot.AssignSlotItem(equipmentUI.equipSlotUIs[i].takeSlotItemData);  //임시슬롯에 현재 무기창에 있는 데이터를 백업
+                            tempItemSlot.AssignSlotItem(equipmentUI.equipSlotUIs[i].ItemData);  //임시슬롯에 현재 무기창에 있는 데이터를 백업
 
                             Destroy(FindObjectOfType<PlayerWeapon>().gameObject);   //기존 무기 프리팹을 찾아 지운다.
                             Player.UnEquipWeaponAbility();       //무기데미지를 빼고 플레이어에 있는 myWeapon변수를 null로 만듬
-                            EquipmentUI.equipSlotUIs[i].SetTempSlotWithData(tempSlotUI.slotUIData, 1);    //장비슬롯에 인벤데이터를 할당하고
+                            EquipmentUI.equipSlotUIs[i].SetTempSlotWithData(tempSlotUI.ItemData, 1);    //장비슬롯에 인벤데이터를 할당하고
 
                             //무기프리팹을 할당하는 일련의 과정을 실행한다.
                             GameObject tempWeaponObject;    //장착한 아이템을 무기위치에 만들고 잘 작동되도록 player에서 TakeWeapon을 통해 컴포넌트를 가져온다.
-                            tempWeaponObject = ItemFactory.MakeItem(tempSlotUI.slotUIData.ID, Vector3.zero, Quaternion.identity); // player.weaponHandTransform.rotation
+                            tempWeaponObject = ItemFactory.MakeItem(tempSlotUI.ItemData.ID, Vector3.zero, Quaternion.identity); // player.weaponHandTransform.rotation
                             tempWeaponObject.transform.SetParent(player.weaponHandTransform, false);
                             Player.TakeWeapon();
-                            Player.myWeapon = (ItemData_Weapon)tempSlotUI.slotUIData;   //무기에 데미지를 추가하기 위해 플레이어에게 변수로 무기데이터 저장
+                            Player.myWeapon = (ItemData_Weapon)tempSlotUI.ItemData;   //무기에 데미지를 추가하기 위해 플레이어에게 변수로 무기데이터 저장
                             Player.EquipWeaponAbility();     //플레이어에게 있는 무기 데미지와 자기 공격력 합치는 함수
 
                             //이제 인벤에서 바뀐 무기자리에 임시슬롯에 백업한 데이터를 저장
@@ -255,20 +248,6 @@ public class InventoryUI : BasicUIForm_Parent
                 }
 
             }
-        }
-        else if(isFindEquipSlot)    //장비슬롯에서 클릭을 했다면
-        {
-            ItemSlot tempItemSlot = new();
-            tempItemSlot = playerInven.FindSameItemSlotForAddItem(tempEquipSlotUI.takeSlotItemData);    //빈 슬롯 찾고
-            tempItemSlot.AssignSlotItem(tempEquipSlotUI.takeSlotItemData);                              //슬롯에 넣어준다.
-            slotUIs[tempItemSlot.slotID].SetSlotWithData(tempEquipSlotUI.takeSlotItemData, 1);          //슬롯UI도 마찬가지
-            
-            Player.UnEquipWeaponAbility();     //무기데미지를 빼고 플레이어에 있는 myWeapon변수를 null로 만듬
-            Player.isFindWeapon = false;
-            tempEquipSlotUI.ClearTempSlot();    //장비슬롯은 비우고
-            Destroy(FindObjectOfType<PlayerWeapon>().gameObject);   //무기를 찾아 지운다.
-
-            //StartCoroutine();
         }
     }
 

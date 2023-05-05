@@ -30,7 +30,7 @@ public class UI_Player_MoveOnOff : MonoBehaviour
     /// </summary>
     public void IsUIOnOff()    
     {
-        uint count = 0;
+        uint count = 0;     //UI°¡ ²¨Áø °¹¼ö
         for (int i = 0; i < canvasGroups.Length; i++)
         {
             
@@ -41,7 +41,7 @@ public class UI_Player_MoveOnOff : MonoBehaviour
                 {
                     isOnInventoryItemUseConnect = true;
                     inventoryUI.Input_Control.InventoryUI.InventoryItemUse.performed += inventoryUI.OnInventoryItemUse;
-                    equipmentUI.Input_Control.EquipmentUI.EquipmentItemUse.performed += equipmentUI.OnInventoryItemUse;
+                    equipmentUI.Input_Control.EquipmentUI.EquipmentItemUse.performed += equipmentUI.OnEquipmentItemUse;
                     Debug.Log("OnInventoryItemUseConnect");
                 }
                 break;
@@ -49,13 +49,14 @@ public class UI_Player_MoveOnOff : MonoBehaviour
             else
             {
                 count++;
-                if(count >= canvasGroups.Length)
+                if(count >= canvasGroups.Length)    //¸ðµç UI°¡ ²¨Á³À¸¸é 
                 {
                     GameManager.Instance.MainPlayer.input.Enable();
                     if(isOnInventoryItemUseConnect)
                     {
                         isOnInventoryItemUseConnect = false;
                         inventoryUI.input_Control.InventoryUI.InventoryItemUse.performed -= inventoryUI.OnInventoryItemUse;
+                        equipmentUI.Input_Control.EquipmentUI.EquipmentItemUse.performed -= equipmentUI.OnEquipmentItemUse;
                         Debug.Log("NO OnInventoryItemUseConnect");
                     }
                     

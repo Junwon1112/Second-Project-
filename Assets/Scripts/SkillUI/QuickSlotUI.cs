@@ -87,7 +87,7 @@ public class QuickSlotUI : MonoBehaviour, IBeginDragHandler, IEndDragHandler, ID
         {
             if(otherQuickSlotUI.quickSlotSkillData == null)     //이동할 슬롯이 비어있다면
             {
-                otherQuickSlotUI.QuickSlotSetData(tempSlotSkillUI.tempSkillData);   //이동할 퀵슬롯을 채우고
+                otherQuickSlotUI.QuickSlotSetData(tempSlotSkillUI.SkillData);   //이동할 퀵슬롯을 채우고
                 QuickSlotSetData();     //현재 슬롯을 비운다.
             }
             else    //이동할 슬롯이 다른 스킬로 되어있다면
@@ -96,7 +96,7 @@ public class QuickSlotUI : MonoBehaviour, IBeginDragHandler, IEndDragHandler, ID
 
                 tempSkillData = otherQuickSlotUI.quickSlotSkillData;    //임시 스킬데이터에 덮어씌울 스킬데이터 저장하고
 
-                otherQuickSlotUI.QuickSlotSetData(tempSlotSkillUI.tempSkillData);   //이동할 퀵슬롯을 현재 슬롯 데이터로 바꾸고
+                otherQuickSlotUI.QuickSlotSetData(tempSlotSkillUI.SkillData);   //이동할 퀵슬롯을 현재 슬롯 데이터로 바꾸고
                 
                 QuickSlotSetData(tempSkillData);     //현재 슬롯을 임시 데이터로 바꾼다.
             }
