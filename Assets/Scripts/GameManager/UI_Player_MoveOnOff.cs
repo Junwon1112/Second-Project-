@@ -55,7 +55,7 @@ public class UI_Player_MoveOnOff : MonoBehaviour
                     if(isOnInventoryItemUseConnect)
                     {
                         isOnInventoryItemUseConnect = false;
-                        inventoryUI.input_Control.InventoryUI.InventoryItemUse.performed -= inventoryUI.OnInventoryItemUse;
+                        inventoryUI.Input_Control.InventoryUI.InventoryItemUse.performed -= inventoryUI.OnInventoryItemUse;
                         equipmentUI.Input_Control.EquipmentUI.EquipmentItemUse.performed -= equipmentUI.OnEquipmentItemUse;
                         Debug.Log("NO OnInventoryItemUseConnect");
                     }

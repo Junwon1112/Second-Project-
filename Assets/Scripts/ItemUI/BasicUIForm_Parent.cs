@@ -19,8 +19,6 @@ public abstract class BasicUIForm_Parent : MonoBehaviour
     /// </summary>
     public abstract bool IsUIOnOff { get; set; }
     public abstract RectTransform RectTransform_UI { get; set; }
-    public abstract GraphicRaycaster UIGraphicRaycaster { get; set; }
-    public abstract PointerEventData UIPointerEventData { get; set; }
     public abstract Player Player { get; set; }
     public abstract UI_Player_MoveOnOff UI_OnOff { get; set; }
 

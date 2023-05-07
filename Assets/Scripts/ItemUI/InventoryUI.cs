@@ -14,22 +14,20 @@ public class InventoryUI : BasicUIForm_Parent
     /// <summary>
     /// i키로 껐다키기위한 인풋시스템용 변수
     /// </summary>
-    public PlayerInput input_Control;
+    PlayerInput input_Control;
     /// <summary>
     /// 껐다 키는걸 canvasGroup을 이용한 변수
     /// </summary>
-    protected CanvasGroup canvasGroupOnOff;
+    CanvasGroup canvasGroupOnOff;
     /// <summary>
     /// 인벤토리가 꺼져있는지 켜져있는지 확인하기 위한 변수
     /// </summary>
-    public bool isUIOnOff;
+    bool isUIOnOff;
 
     RectTransform rectTransform_UI;
 
-    protected GraphicRaycaster uiGraphicRaycaster;
-    protected PointerEventData uiPointerEventData;
 
-    protected Player player;
+    Player player;
     UI_Player_MoveOnOff ui_OnOff;
 
     public ItemSlotUI[] slotUIs;
@@ -37,16 +35,19 @@ public class InventoryUI : BasicUIForm_Parent
 
     private EquipmentUI equipmentUI;
 
+    GraphicRaycaster uiGraphicRaycaster;
+    PointerEventData uiPointerEventData;
+
     public override PlayerInput Input_Control { get => input_Control; set => input_Control = value; }
     public override CanvasGroup CanvasGroupOnOff { get => canvasGroupOnOff; set => canvasGroupOnOff = value; }
     public override bool IsUIOnOff { get => isUIOnOff; set => isUIOnOff = value; }
     public override RectTransform RectTransform_UI { get => rectTransform_UI; set => rectTransform_UI = value; }
-    public override GraphicRaycaster UIGraphicRaycaster { get => uiGraphicRaycaster; set => uiGraphicRaycaster = value; }
-    public override PointerEventData UIPointerEventData { get => uiPointerEventData; set => uiPointerEventData = value; }
     public override Player Player { get => player; set => player = value; }
     public override UI_Player_MoveOnOff UI_OnOff { get => ui_OnOff; set => ui_OnOff = value; }
 
 
+    public GraphicRaycaster UIGraphicRaycaster { get => uiGraphicRaycaster; set => uiGraphicRaycaster = value; }
+    public PointerEventData UIPointerEventData { get => uiPointerEventData; set => uiPointerEventData = value; }
     public Inventory PlayerInven { get => playerInven; set => playerInven = value; }
     public EquipmentUI EquipmentUI { get => equipmentUI; set => equipmentUI = value; }
     /**

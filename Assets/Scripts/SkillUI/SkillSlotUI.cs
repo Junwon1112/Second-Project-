@@ -34,6 +34,10 @@ public class SkillSlotUI : SkillSlotUI_Basic, IBeginDragHandler, IEndDragHandler
 
     public RectTransform rectTransform;
 
+    SkillToQuickSlotUI skillToQuickSlotUI;
+    AllQuickSlotUI allQuickSlotUI;
+
+
     public override Image SkillImage { get => skillImage; set => skillImage = value; }
     public override SkillData SkillData { get => skillData; set => skillData = value; }
 
@@ -44,6 +48,8 @@ public class SkillSlotUI : SkillSlotUI_Basic, IBeginDragHandler, IEndDragHandler
         skillName = transform.parent.Find("SkillName_Text").GetComponent<TextMeshProUGUI>();
         tempSlotSkillUI = GameObject.FindObjectOfType<TempSlotSkillUI>();
         upDownButton = transform.parent.GetComponentInChildren<UpDownButton>();
+        skillToQuickSlotUI = FindObjectOfType<SkillToQuickSlotUI>();
+        allQuickSlotUI = FindObjectOfType<AllQuickSlotUI>();
     }
 
 
@@ -68,7 +74,16 @@ public class SkillSlotUI : SkillSlotUI_Basic, IBeginDragHandler, IEndDragHandler
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        
+        if (SkillData.skillLevel > 0)
+        {
+            skillToQuickSlotUI.SkillData = skillData;
+            skillToQuickSlotUI.RectTransform_UI.position = eventData.position;
+
+            if(skillToQuickSlotUI.IsUIOnOff)   //다른 스킬 슬롯을 누르면 꺼지는게 아니라 위치만 바뀌어야 하므로 이미 켜져있을땐 실행시키지 않도록 한다.
+            {
+                skillToQuickSlotUI.UIOnOffSetting();
+            }
+        }
     }
 
 
@@ -97,6 +112,13 @@ public class SkillSlotUI : SkillSlotUI_Basic, IBeginDragHandler, IEndDragHandler
 
         if(quickSlotUI != null)     //퀵슬롯 안찍었으면 QuickSlotUI컴포넌트가 어차피 없을꺼니까 퀵슬롯을 찍었다면 이라는 뜻
         {
+            for(int i = 0; i < allQuickSlotUI.quickSlotUIs.Length; i++)
+            {
+                if (allQuickSlotUI.quickSlotUIs[i].quickSlotSkillData == tempSlotSkillUI.SkillData)     //다른 슬롯에 있는 같은 스킬은 지운다
+                {
+                    allQuickSlotUI.quickSlotUIs[i].QuickSlotSetData();
+                }
+            }
             quickSlotUI.QuickSlotSetData(tempSlotSkillUI.SkillData);   
         }
 
