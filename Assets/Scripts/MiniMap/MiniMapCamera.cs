@@ -4,9 +4,12 @@ using UnityEngine;
 
 public class MiniMapCamera : MonoBehaviour
 {
+    public static MiniMapCamera instance;
+
     Vector3 playerPosition;
     [SerializeField]
     float miniMapHeight = 536.0f;
+
 
     /// <summary>
     /// playerPosition의 x,z값만 받음
@@ -22,9 +25,20 @@ public class MiniMapCamera : MonoBehaviour
         }
     }
 
-    private void Start()
+    private void Awake()
     {
-
+        if (instance == null)
+        {
+            instance = this;
+            DontDestroyOnLoad(this.gameObject);
+        }
+        else
+        {
+            if (instance != this)
+            {
+                Destroy(this.gameObject);
+            }
+        }
     }
 
     private void Update()

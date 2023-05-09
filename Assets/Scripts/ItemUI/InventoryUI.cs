@@ -186,11 +186,12 @@ public class InventoryUI : BasicUIForm_Parent
 
         if(isFindItemSlot)
         {
-
             if (tempSlotUI.ItemData.itemType == ItemType.ComsumableItem)   //data가 사용형 아이템이라면
             {
-                ItemData_Potion tempPotion = new ItemData_Potion();
-                tempPotion.Use(player);
+                //tempSlotUI.ItemData
+
+                //ConsumeItemUse(tempSlotUI.ItemData);
+                //tempPotion.Use(player);
                 if (tempSlotUI.SlotUICount <= 1)
                 {
                     tempSlotUI.SetSlotWithData(tempSlotUI.ItemData, 0);
@@ -250,6 +251,11 @@ public class InventoryUI : BasicUIForm_Parent
 
             }
         }
+    }
+
+    void ConsumeItemUse(IConsumable item_Consume)
+    {
+        item_Consume.Use(player);
     }
 
     public void SetAllSlotWithData()    

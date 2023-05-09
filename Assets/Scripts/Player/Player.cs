@@ -58,7 +58,7 @@ public class Player : MonoBehaviour, IHealth
     /// <summary>
     /// 체력 관련 변수들
     /// </summary>
-    float hp;
+    float hp = 100;
     float maxHp = 100;
     Slider hpBar;
     TextMeshProUGUI hpValue_Text;
@@ -143,12 +143,24 @@ public class Player : MonoBehaviour, IHealth
         get { return hp; }
         set 
         {
-            if(!isDie)
+            hp = value;
+
+            if (!isDie)
             {
-                hp = value;
-                if (hp <= 0)
+                if(hp > MaxHP)
                 {
+                    hp = MaxHP;
+                    SetHP();
+                }
+                else if (hp <= 0)
+                {
+                    hp = 0;
+                    SetHP();
                     Die();
+                }
+                else 
+                { 
+                    SetHP();
                 }
             }
         }
@@ -239,7 +251,7 @@ public class Player : MonoBehaviour, IHealth
         }
         else
         {
-            DontDestroyOnLoad_Manager.Instance.AddDontDestroy(this.gameObject);
+            DontDestroyOnLoad(gameObject);
         }
     }
 

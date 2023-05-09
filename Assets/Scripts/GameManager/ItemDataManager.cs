@@ -7,7 +7,8 @@ using UnityEngine;
 /// </summary>
 public class ItemDataManager : MonoBehaviour
 {
-    public ItemData[] itemDatas;
+    public ItemData_Potion[] itemDatas_Potion;
+    public ItemData_Weapon[] itemDatas_Weapon;
 
     /// <summary>
     /// 인덱서, 프로퍼티를 배열처럼 사용, 프로퍼티 이름을 this로 해서 클래스이름으로 프로퍼티를 
@@ -15,22 +16,132 @@ public class ItemDataManager : MonoBehaviour
     /// </summary>
     /// <param name="i"></param>
     /// <returns></returns>
-    public ItemData this[int i] 
+    public ItemData this[int i]
     {
         get
         {
-            return itemDatas[i];
+            return itemDatas_Potion[i];
         }
     }
     //배열처럼 쓰는 프로퍼티
 
-    public ItemData this[ItemIDCode ID ]  //인덱서
+    public ItemData this[ItemIDCode ID]  //인덱서
     {
         get
         {
-            return itemDatas[(int)ID];
+            return itemDatas_Potion[(int)ID];
         }
     }
     //배열처럼 쓰는 프로퍼티
 
+
+    //----------------------------------------------------------------------
+    /// <summary>
+    /// ID로 원하는 아이템데이터 찾는 함수, 오버로딩
+    /// </summary>
+    /// <param name="_skillID"></param>
+    /// <returns></returns>
+    public ItemData_Potion FindItem_Potion(int _skillID)
+    {
+        for (int i = 0; i < itemDatas_Potion.Length; i++)
+        {
+            if (itemDatas_Potion[i].ID == _skillID)
+            {
+                return itemDatas_Potion[i];
+            }
+        }
+
+        return null;
+    }
+
+    /// <summary>
+    /// itemIDCode(열거형)로 원하는 아이템데이터 찾는 함수, 오버로딩
+    /// </summary>
+    /// <param name="_itemIDCode"></param>
+    /// <returns></returns>
+    public ItemData_Potion FindItem_Potion(ItemIDCode _itemIDCode)
+    {
+        for (int i = 0; i < itemDatas_Potion.Length; i++)
+        {
+            if (itemDatas_Potion[i].itemIDCode == _itemIDCode)
+            {
+                return itemDatas_Potion[i];
+            }
+        }
+
+        return null;
+    }
+
+    /// <summary>
+    /// 이름으로 원하는 아이템데이터 찾는 함수, 오버로딩
+    /// </summary>
+    /// <param name="_itemName"></param>
+    /// <returns></returns>
+    public ItemData_Potion FindItem_Potion(string _itemName)
+    {
+        for (int i = 0; i < itemDatas_Potion.Length; i++)
+        {
+            if (itemDatas_Potion[i].itemName == _itemName)
+            {
+                return itemDatas_Potion[i];
+            }
+        }
+
+        return null;
+    }
+    //-------------------------------------------------------무기-------------------------
+
+    /// <summary>
+    /// ID로 원하는 아이템데이터 찾는 함수, 오버로딩
+    /// </summary>
+    /// <param name="_skillID"></param>
+    /// <returns></returns>
+    public ItemData_Weapon FindItem_Weapon(int _skillID)
+    {
+        for (int i = 0; i < itemDatas_Weapon.Length; i++)
+        {
+            if (itemDatas_Weapon[i].ID == _skillID)
+            {
+                return itemDatas_Weapon[i];
+            }
+        }
+
+        return null;
+    }
+
+    /// <summary>
+    /// itemIDCode(열거형)로 원하는 아이템데이터 찾는 함수, 오버로딩
+    /// </summary>
+    /// <param name="_itemIDCode"></param>
+    /// <returns></returns>
+    public ItemData_Weapon FindItem_Weapon(ItemIDCode _itemIDCode)
+    {
+        for (int i = 0; i < itemDatas_Weapon.Length; i++)
+        {
+            if (itemDatas_Weapon[i].itemIDCode == _itemIDCode)
+            {
+                return itemDatas_Weapon[i];
+            }
+        }
+
+        return null;
+    }
+
+    /// <summary>
+    /// 이름으로 원하는 아이템데이터 찾는 함수, 오버로딩
+    /// </summary>
+    /// <param name="_itemName"></param>
+    /// <returns></returns>
+    public ItemData_Weapon FindItem_Weapon(string _itemName)
+    {
+        for (int i = 0; i < itemDatas_Weapon.Length; i++)
+        {
+            if (itemDatas_Weapon[i].itemName == _itemName)
+            {
+                return itemDatas_Weapon[i];
+            }
+        }
+
+        return null;
+    }
 }

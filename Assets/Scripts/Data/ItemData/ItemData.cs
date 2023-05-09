@@ -10,6 +10,7 @@ public class ItemData : ScriptableObject
 {
     public string itemName;        //아이템 이름
     public uint ID;                 //아이템 ID
+    public ItemIDCode itemIDCode;              //아이템 ID코드
     public GameObject itemPrefab;  //아이템 프리팹
     public Sprite itemIcon;        //아이템 아이콘
     public int itemValue;          //아이템 가치
@@ -22,8 +23,9 @@ public class ItemData : ScriptableObject
 public enum ItemIDCode
 {
     HP_Potion = 0,
-    Basic_Weapon_1,
-    Basic_Weapon_2
+    Basic_Weapon_1 = 10,
+    Basic_Weapon_2 = 11,
+    Basic_Wand1 = 12,
 }
 
 public enum ItemType
