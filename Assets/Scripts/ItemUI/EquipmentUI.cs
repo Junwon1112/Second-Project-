@@ -58,7 +58,7 @@ public class EquipmentUI : BasicUIForm_Parent
         CanvasGroupOnOff = GetComponent<CanvasGroup>();
         RectTransform_UI = GetComponent<RectTransform>();
 
-        UIGraphicRaycaster = GameObject.Find("Canvas").gameObject.GetComponent<GraphicRaycaster>();
+        UIGraphicRaycaster = GameObject.Find("Canvas_Main").gameObject.GetComponent<GraphicRaycaster>();
         
         UI_OnOff = GetComponentInParent<UI_Player_MoveOnOff>();
 

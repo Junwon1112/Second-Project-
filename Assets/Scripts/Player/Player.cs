@@ -237,6 +237,10 @@ public class Player : MonoBehaviour, IHealth
         {
             Destroy(this.gameObject);
         }
+        else
+        {
+            DontDestroyOnLoad_Manager.Instance.AddDontDestroy(this.gameObject);
+        }
     }
 
     /// <summary>

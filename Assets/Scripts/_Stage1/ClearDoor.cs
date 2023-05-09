@@ -12,7 +12,7 @@ public class ClearDoor : MonoBehaviour
     {
         if(other.CompareTag("Player"))
         {
-            SceneManager.LoadScene("Clear");
+            SceneManager.LoadScene("TestScene");
         }
     }
 }

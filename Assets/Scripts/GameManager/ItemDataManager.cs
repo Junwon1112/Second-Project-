@@ -33,5 +33,4 @@ public class ItemDataManager : MonoBehaviour
     }
     //배열처럼 쓰는 프로퍼티
 
-    
 }

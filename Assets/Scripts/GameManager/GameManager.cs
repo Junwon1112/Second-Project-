@@ -66,6 +66,8 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    GameObject[] testObjs;
+
     /// <summary>
     /// 싱글톤패턴에서 단 1개의 GameManager만 존재하게 하기위해 씬이 바뀔 때마다 1개의 인스턴스만 존재하는지 확인하는 패턴
     /// 1개 이상 존재 시 자기자신을 파괴

@@ -7,6 +7,8 @@ using UnityEngine;
 /// </summary>
 public class UI_Player_MoveOnOff : MonoBehaviour
 {
+    public static UI_Player_MoveOnOff instance;
+
     /// <summary>
     /// playerInputSystem에 있는 Inventroy에 UI전용 우클릭 입력이 있어서 전체 UI에 사용하려면 끌어와야 했다. 
     /// 다음에는 전체 UI를 관리하는 InputSystem항목을 만들고 거기서 우클릭 입력을 구현해야 함 (확장성에 대한 고려 필요)
@@ -20,8 +22,22 @@ public class UI_Player_MoveOnOff : MonoBehaviour
 
     private void Awake()
     {
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else
+        {
+            if (instance != this)
+            {
+                Destroy(this.gameObject);
+            }
+        }
+
         inventoryUI = GetComponentInChildren<InventoryUI>();
         equipmentUI = GetComponentInChildren<EquipmentUI>();
+
+
     }
 
 

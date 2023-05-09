@@ -77,7 +77,7 @@ public class InventoryUI : BasicUIForm_Parent
         CanvasGroupOnOff = GetComponent<CanvasGroup>();
         slotUIs = GetComponentsInChildren<ItemSlotUI>();
         RectTransform_UI = GetComponent<RectTransform>();
-        UIGraphicRaycaster = GameObject.Find("Canvas").gameObject.GetComponent<GraphicRaycaster>();
+        UIGraphicRaycaster = GameObject.Find("Canvas_Main").gameObject.GetComponent<GraphicRaycaster>();
         
         equipmentUI = FindObjectOfType<EquipmentUI>();
         UI_OnOff = GetComponentInParent<UI_Player_MoveOnOff>();
@@ -172,7 +172,7 @@ public class InventoryUI : BasicUIForm_Parent
         UIPointerEventData = new PointerEventData(null);                  //GraphicRaycast에서 마우스 위치를 PointerEventData에서 받으므로 정의 해줌
 
         UIPointerEventData.position = Mouse.current.position.ReadValue();
-        UIGraphicRaycaster.Raycast(uiPointerEventData, slotItemCheck);
+        UIGraphicRaycaster.Raycast(UIPointerEventData, slotItemCheck);
 
         GameObject returnObject = slotItemCheck[0].gameObject;
 
@@ -180,7 +180,7 @@ public class InventoryUI : BasicUIForm_Parent
         
         ItemSlotUI tempSlotUI;
 
-        bool isFindItemSlot = false;
+        bool isFindItemSlot;
 
         isFindItemSlot = returnObject.TryGetComponent<ItemSlotUI>(out tempSlotUI);
 
