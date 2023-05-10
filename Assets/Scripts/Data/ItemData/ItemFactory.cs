@@ -129,10 +129,4 @@ public class ItemFactory : MonoBehaviour
         MakeItem((ItemIDCode)id, itemPosition, rotation, count);
     }
 
-
-
-
-
-
-
 }
