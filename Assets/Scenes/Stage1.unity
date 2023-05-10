@@ -15123,6 +15123,30 @@ PrefabInstance:
       propertyPath: itemDatas.Array.data[0]
       value: 
       objectReference: {fileID: 11400000, guid: fe94727696a6b4a4693157b1e6af5f47, type: 2}
+    - target: {fileID: 7668844289155598184, guid: 780626226da7c424b94154975b5736e9, type: 3}
+      propertyPath: itemDatas_Potion.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7668844289155598184, guid: 780626226da7c424b94154975b5736e9, type: 3}
+      propertyPath: itemDatas_Weapon.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7668844289155598184, guid: 780626226da7c424b94154975b5736e9, type: 3}
+      propertyPath: itemDatas_Potion.Array.data[0]
+      value: 
+      objectReference: {fileID: 11400000, guid: fe94727696a6b4a4693157b1e6af5f47, type: 2}
+    - target: {fileID: 7668844289155598184, guid: 780626226da7c424b94154975b5736e9, type: 3}
+      propertyPath: itemDatas_Weapon.Array.data[0]
+      value: 
+      objectReference: {fileID: 11400000, guid: df55d59d539181f4d9fe4a19c3bf3d3b, type: 2}
+    - target: {fileID: 7668844289155598184, guid: 780626226da7c424b94154975b5736e9, type: 3}
+      propertyPath: itemDatas_Weapon.Array.data[1]
+      value: 
+      objectReference: {fileID: 11400000, guid: df12fef7a52e56c4386999cda9ce657b, type: 2}
+    - target: {fileID: 7668844289155598184, guid: 780626226da7c424b94154975b5736e9, type: 3}
+      propertyPath: itemDatas_Weapon.Array.data[2]
+      value: 
+      objectReference: {fileID: 11400000, guid: 9fb14f29ee574c04a80fa70231a3c67c, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 780626226da7c424b94154975b5736e9, type: 3}
 --- !u!1001 &7891939312513431010

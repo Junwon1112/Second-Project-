@@ -10,29 +10,60 @@ public class ItemDataManager : MonoBehaviour
     public ItemData_Potion[] itemDatas_Potion;
     public ItemData_Weapon[] itemDatas_Weapon;
 
-    /// <summary>
-    /// 인덱서, 프로퍼티를 배열처럼 사용, 프로퍼티 이름을 this로 해서 클래스이름으로 프로퍼티를 
-    /// 호출 후, 배열을 써서 해당 배열과 같은 인덱스를 쓰는 프로퍼티 값을 리턴해줌 
-    /// </summary>
-    /// <param name="i"></param>
-    /// <returns></returns>
-    public ItemData this[int i]
-    {
-        get
-        {
-            return itemDatas_Potion[i];
-        }
-    }
-    //배열처럼 쓰는 프로퍼티
 
-    public ItemData this[ItemIDCode ID]  //인덱서
+    //-----------------배열에 등록하고 인덱서로 찾는 방식은 id와 인덱스를 같게 놓아야하고(id가10번이면 10번째까지 배열을 만들어야됨) itemdata자식 형태는 받을수가 없어서 일단 보류----------- 
+
+
+    ///// <summary>
+    ///// 인덱서, 프로퍼티를 배열처럼 사용, 프로퍼티 이름을 this로 해서 클래스이름으로 프로퍼티를 
+    ///// 호출 후, 배열을 써서 해당 배열과 같은 인덱스를 쓰는 프로퍼티 값을 리턴해줌 
+    ///// </summary>
+    ///// <param name="i"></param>
+    ///// <returns></returns>
+    //public ItemData this[int i]
+    //{
+    //    get
+    //    {
+    //        return itemDatas_Potion[i];
+    //    }
+    //}
+    ////배열처럼 쓰는 프로퍼티
+
+    //public ItemData this[ItemIDCode ID]  //인덱서
+    //{
+    //    get
+    //    {
+    //        return itemDatas_Potion[(int)ID];
+    //    }
+    //}
+    ////배열처럼 쓰는 프로퍼티
+
+    public ItemData FindItem_ItemData(uint _skillID)
     {
-        get
+        if(_skillID < 10)
         {
-            return itemDatas_Potion[(int)ID];
+            for (int i = 0; i < itemDatas_Potion.Length; i++)
+            {
+                if (itemDatas_Potion[i].ID == _skillID)
+                {
+                    return itemDatas_Potion[i];
+                }
+            }
         }
+        else if(_skillID < 20)
+        {
+            for (int i = 0; i < itemDatas_Weapon.Length; i++)
+            {
+                if (itemDatas_Weapon[i].ID == _skillID)
+                {
+                    return itemDatas_Weapon[i];
+                }
+            }
+        }
+        
+
+        return null;
     }
-    //배열처럼 쓰는 프로퍼티
 
 
     //----------------------------------------------------------------------
@@ -41,7 +72,7 @@ public class ItemDataManager : MonoBehaviour
     /// </summary>
     /// <param name="_skillID"></param>
     /// <returns></returns>
-    public ItemData_Potion FindItem_Potion(int _skillID)
+    public ItemData_Potion FindItem_Potion(uint _skillID)
     {
         for (int i = 0; i < itemDatas_Potion.Length; i++)
         {
@@ -96,7 +127,7 @@ public class ItemDataManager : MonoBehaviour
     /// </summary>
     /// <param name="_skillID"></param>
     /// <returns></returns>
-    public ItemData_Weapon FindItem_Weapon(int _skillID)
+    public ItemData_Weapon FindItem_Weapon(uint _skillID)
     {
         for (int i = 0; i < itemDatas_Weapon.Length; i++)
         {

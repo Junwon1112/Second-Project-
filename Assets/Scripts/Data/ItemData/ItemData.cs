@@ -20,6 +20,10 @@ public class ItemData : ScriptableObject
     public string ItemInfo;         //아이템 설명
 }
 
+
+/// <summary>
+/// 0~ 10은 소비형, 10~는 무기
+/// </summary>
 public enum ItemIDCode
 {
     HP_Potion = 0,

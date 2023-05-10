@@ -21,9 +21,9 @@ public class ItemFactory : MonoBehaviour
     /// <returns></returns>
     public static GameObject MakeItem(ItemIDCode itemIDCode, Vector3 position, Quaternion rotation)
     {
-        GameObject obj = Instantiate(GameManager.Instance.ItemManager[itemIDCode].itemPrefab, position, rotation);
+        GameObject obj = Instantiate(GameManager.Instance.ItemManager.FindItem_ItemData((uint)itemIDCode).itemPrefab, position, rotation);
 
-        if(GameManager.Instance.ItemManager[itemIDCode].itemType == ItemType.Weapon)
+        if(GameManager.Instance.ItemManager.FindItem_ItemData((uint)itemIDCode).itemType == ItemType.Weapon)
         {
             obj.AddComponent<PlayerWeapon>();
         }
