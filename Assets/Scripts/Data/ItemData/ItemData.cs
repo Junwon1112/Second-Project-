@@ -27,9 +27,12 @@ public class ItemData : ScriptableObject
 public enum ItemIDCode
 {
     HP_Potion = 0,
+
     Basic_Weapon_1 = 10,
     Basic_Weapon_2 = 11,
     Basic_Wand1 = 12,
+
+    PurpleMushroom = 100,
 }
 
 public enum ItemType

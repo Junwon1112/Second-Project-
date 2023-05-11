@@ -9,6 +9,7 @@ public class ItemDataManager : MonoBehaviour
 {
     public ItemData_Potion[] itemDatas_Potion;
     public ItemData_Weapon[] itemDatas_Weapon;
+    public ItemData_SpecialPotion_Scale[] itemDatas_SpecialPotion;
 
 
     //-----------------배열에 등록하고 인덱서로 찾는 방식은 id와 인덱스를 같게 놓아야하고(id가10번이면 10번째까지 배열을 만들어야됨) itemdata자식 형태는 받을수가 없어서 일단 보류----------- 
@@ -120,6 +121,20 @@ public class ItemDataManager : MonoBehaviour
 
         return null;
     }
+
+    public ItemData_SpecialPotion_Scale FindItem_SpecialPotion(uint _skillID)
+    {
+        for (int i = 0; i < itemDatas_SpecialPotion.Length; i++)
+        {
+            if (itemDatas_SpecialPotion[i].ID == _skillID)
+            {
+                return itemDatas_SpecialPotion[i];
+            }
+        }
+
+        return null;
+    }
+
     //-------------------------------------------------------무기-------------------------
 
     /// <summary>

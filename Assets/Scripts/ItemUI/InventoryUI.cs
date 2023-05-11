@@ -188,7 +188,17 @@ public class InventoryUI : BasicUIForm_Parent
         {
             if (tempSlotUI.ItemData.itemType == ItemType.ComsumableItem)   //data가 사용형 아이템이라면
             {
-                GameManager.Instance.ItemManager.FindItem_Potion(tempSlotUI.ItemData.ID).Use(Player);
+                IConsumable consumable;
+                if (tempSlotUI.ItemData.ID == 100)
+                {
+                    consumable = GameManager.Instance.ItemManager.FindItem_SpecialPotion(tempSlotUI.ItemData.ID);
+                }
+                else
+                {
+                    consumable = GameManager.Instance.ItemManager.FindItem_Potion(tempSlotUI.ItemData.ID);
+                }
+                
+                consumable.Use(player);
 
                 //ConsumeItemUse(tempSlotUI.ItemData);
                 //tempPotion.Use(player);
