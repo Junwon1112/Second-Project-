@@ -101,5 +101,11 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         FadeInOut.Instance.FadeIn();
+        
+    }
+
+    private void OnLevelWasLoaded(int level)
+    {
+        CurrentScene = SceneManager.GetActiveScene();
     }
 }

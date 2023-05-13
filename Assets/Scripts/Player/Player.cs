@@ -243,7 +243,7 @@ public class Player : MonoBehaviour, IHealth
         skill_Implement = FindObjectOfType<Skill_Implement>();
         skillUI = FindObjectOfType<SkillUI>();
 
-        //-----------------테스트용-------------
+
         Job = jobData.jobType;
         if (this.gameObject.name != $"Player_{Job.ToString()}")
         {
