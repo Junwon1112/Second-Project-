@@ -10,5 +10,13 @@ public class Item : MonoBehaviour
     /// <summary>
     /// 이 아이템이 가질 아이템 데이터
     /// </summary>
-    public ItemData data;  
+    public ItemData data;
+
+    private void Start()
+    {
+        if(transform.parent == null)
+        {
+            ParticlePlayer.Instance.PlayParticle(ParticleType.ParticleSystem_ItemAura, this.transform);
+        }
+    }
 }

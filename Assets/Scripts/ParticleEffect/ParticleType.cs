@@ -10,6 +10,7 @@ public enum ParticleType
     ParticleSystem_Walk,
     ParticleSystem_Buff,
     ParticleSystem_LevelUp,
+    ParticleSystem_ItemAura,
     ParticleSystem_WheelWind,
     ParticleSystem_ElectroHit,
     ParticleSystem_IceHit,

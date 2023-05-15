@@ -120,11 +120,7 @@ public class Monster_ActiveAttack : Monster_Basic
 
             if (hp <= 0 && !isDie)
             {
-                anim.SetBool("isDie", true);
-                SetMonsterState(MonsterState.die);
-                agent.enabled = false;
-                DropItem();
-                Destroy(transform.parent.gameObject, 3.0f);
+                MonsterDie();
             }
         }
     }
@@ -338,6 +334,19 @@ public class Monster_ActiveAttack : Monster_Basic
             isAttackContinue = true;
             StartCoroutine(MonsterAttackCoroutine(attackDelay));
         }
+    }
+
+    protected override void MonsterDie()
+    {
+        anim.SetBool("isDie", true);
+        SetMonsterState(MonsterState.die);
+        agent.enabled = false;
+        DropItem();
+
+
+        SphereCollider collider = GetComponent<SphereCollider>();
+        collider.enabled = false;
+        Destroy(transform.parent.gameObject, 3.0f);
     }
 
     /// <summary>

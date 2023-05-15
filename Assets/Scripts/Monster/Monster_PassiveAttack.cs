@@ -122,11 +122,7 @@ public class Monster_PassiveAttack : Monster_Basic
 
             if (hp <= 0 && !isDie)
             {
-                anim.SetBool("isDie", true);
-                SetMonsterState(MonsterState.die);
-                agent.enabled = false;
-                DropItem();
-                Destroy(transform.parent.gameObject, 3.0f);
+                MonsterDie();
             }
         }
     }
@@ -324,6 +320,21 @@ public class Monster_PassiveAttack : Monster_Basic
             isAttackContinue = true;
             StartCoroutine(MonsterAttackCoroutine(attackDelay));
         }
+    }
+
+    /// <summary>
+    /// HP프로퍼티에서 사용
+    /// </summary>
+    protected override void MonsterDie()
+    {
+        anim.SetBool("isDie", true);
+        SetMonsterState(MonsterState.die);
+        agent.enabled = false;
+        DropItem();
+
+        SphereCollider collider = GetComponent<SphereCollider>();
+        collider.enabled = false;
+        Destroy(transform.parent.gameObject, 3.0f);
     }
 
     /// <summary>
