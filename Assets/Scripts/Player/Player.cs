@@ -61,6 +61,7 @@ public class Player : MonoBehaviour, IHealth
     float hp = 100;
     float maxHp = 100;
     Slider hpBar;
+    Image hpFillImage;
     TextMeshProUGUI hpValue_Text;
 
     /// <summary>
@@ -69,6 +70,7 @@ public class Player : MonoBehaviour, IHealth
     float exp = 0.0f;
     float maxExp = 100;
     Slider expBar;
+    Image expFillImage;
     TextMeshProUGUI expValue_Text;
 
     [SerializeField]
@@ -228,11 +230,15 @@ public class Player : MonoBehaviour, IHealth
         input = new PlayerInput();
         anim = GetComponent<Animator>();
         rigid = GetComponent<Rigidbody>();
+
         hpBar = FindObjectOfType<FindPlayerInfoUI>().transform.GetChild(0).GetComponent<Slider>();
+        hpFillImage = hpBar.transform.GetChild(2).GetComponentInChildren<Image>();
         hpValue_Text = FindObjectOfType<FindPlayerInfoUI>().transform.GetChild(0).GetComponentInChildren<TextMeshProUGUI>();
         expBar = FindObjectOfType<FindPlayerInfoUI>().transform.GetChild(1).GetComponent<Slider>();
+        expFillImage = expBar.transform.GetChild(2).GetComponentInChildren<Image>();
         expValue_Text = FindObjectOfType<FindPlayerInfoUI>().transform.GetChild(1).GetComponentInChildren<TextMeshProUGUI>();
         lvText = GameObject.Find("Level_num").GetComponent<TextMeshProUGUI>();
+
         player = GetComponent<Player>();
         playerInventory = GetComponentInChildren<Inventory>();
         playerInventoryUI = GameObject.Find("InventoryUI").GetComponent<InventoryUI>();
@@ -316,6 +322,8 @@ public class Player : MonoBehaviour, IHealth
         {
             anim.SetBool("IsMove", false);
         }
+
+        HPBlink();
     }
 
     private void OnMoveInput(InputAction.CallbackContext obj)
@@ -471,14 +479,53 @@ public class Player : MonoBehaviour, IHealth
 
     public void SetHP()
     {
-        hpBar.value = HP / MaxHP;
-        hpValue_Text.text = (hpBar.value * 100).ToString("F2") + '%';
+        StartCoroutine(CoSetHP());
+        hpValue_Text.text = (HP / MaxHP * 100).ToString("F0") + '%';
     }
 
     public void SetExp()
     {
-        expBar.value = Exp / MaxExp;
-        expValue_Text.text = (expBar.value * 100).ToString("F2") + '%';
+        //expBar.value = Exp / MaxExp;
+        StartCoroutine(CoSetEXP());
+        expValue_Text.text = (Exp / MaxExp * 100).ToString("F0") + '%';
+    }
+
+
+    IEnumerator CoSetHP()
+    {
+        while(hpBar.value != HP / MaxHP)
+        {
+            hpBar.value = Mathf.Lerp(hpBar.value, HP / MaxHP, 0.02f);
+            yield return null;
+        }
+    }
+
+    IEnumerator CoSetEXP()
+    {
+        while (expBar.value != Exp / MaxExp)
+        {
+            expBar.value = Mathf.Lerp(expBar.value, Exp / MaxExp, 0.02f);
+            yield return null;
+        }
+    }
+
+
+
+    private void HPBlink()
+    {
+        if (HP / MaxHP < 0.5f)
+        {
+            if (hpFillImage.color.a == 100)
+            {
+                hpFillImage.CrossFadeAlpha(0, 0.2f, true);
+            }
+            else if (expFillImage.color.a == 0)
+            {
+                expFillImage.CrossFadeAlpha(100, 0.2f, true);
+            }
+        }
+
+        
     }
 
     public void SetLevel()

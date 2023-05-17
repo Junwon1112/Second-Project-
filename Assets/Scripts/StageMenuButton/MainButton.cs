@@ -13,11 +13,13 @@ public class MainButton : MonoBehaviour
     Button mainButton;
 
     EventSystem eventSystem;
+    LocationReset locationReset;
 
     private void Awake()
     {
         mainButton = GetComponent<Button>();
         eventSystem = FindObjectOfType<MainEventSystem>().transform.GetComponent<EventSystem>();
+        locationReset = FindObjectOfType<LocationReset>();
     }
 
     private void Start()
@@ -48,6 +50,7 @@ public class MainButton : MonoBehaviour
         Destroy(MainCamera_PlayerPos.instance.gameObject);
         Destroy(MiniMapCamera.instance.gameObject);
         Destroy(eventSystem.gameObject);
+        Destroy(locationReset.gameObject);
 
         Destroy(GameManager.Instance.MainPlayer.gameObject);
         Destroy(GameManager.Instance.gameObject);

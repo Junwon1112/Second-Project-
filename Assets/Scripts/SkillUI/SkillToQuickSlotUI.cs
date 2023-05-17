@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class SkillToQuickSlotUI : BasicUIForm_Parent
 {
+    
     //---------------프로퍼티있는 변수 + 추상화된거 구현한 변수-------------------
     PlayerInput input_Control;
     CanvasGroup canvasGroupOnOff;
@@ -16,8 +17,10 @@ public class SkillToQuickSlotUI : BasicUIForm_Parent
     Button[] button_HotKeys;
 
     SkillData skillData;    //skillSlotUI에서 눌렀을 때 할당해줌
-    //---------------프로퍼티 없는 변수----------------------
 
+    //---------------프로퍼티 없는 변수----------------------
+    [SerializeField]
+    Sprite defaultButtonImage;
     AllQuickSlotUI allQuickSlotUI;
     
 
@@ -60,9 +63,11 @@ public class SkillToQuickSlotUI : BasicUIForm_Parent
             if(SkillData == allQuickSlotUI.quickSlotUIs[i].quickSlotSkillData)  //다른 슬롯에 같은 데이터 있으면 null값으로 초기화 해줌
             {
                 allQuickSlotUI.quickSlotUIs[i].QuickSlotSetData();
+                Button_HotKeys[i].image.sprite = defaultButtonImage;
             }
         }
         allQuickSlotUI.quickSlotUIs[_index].QuickSlotSetData(SkillData);
+        Button_HotKeys[_index].image.sprite = SkillData.skillIcon;
         UIOnOffSetting();
     }
 
