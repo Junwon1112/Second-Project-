@@ -60,6 +60,7 @@ public class Player : MonoBehaviour, IHealth
     /// </summary>
     float hp = 100;
     float maxHp = 100;
+    bool isHPImageAlpha1 = true;
     Slider hpBar;
     Image hpFillImage;
     TextMeshProUGUI hpValue_Text;
@@ -145,23 +146,31 @@ public class Player : MonoBehaviour, IHealth
         get { return hp; }
         set 
         {
-            hp = value;
+            //hp = value;
 
             if (!isDie)
             {
-                if(hp > MaxHP)
+                if(value > MaxHP)
                 {
                     hp = MaxHP;
                     SetHP();
                 }
-                else if (hp <= 0)
+                else if (value <= 0)
                 {
                     hp = 0;
                     SetHP();
                     Die();
                 }
+                else if (value / MaxHP < 0.5f)
+                {
+                    hp = value;
+                    SetHP();
+                    HPBlink();
+
+                }
                 else 
-                { 
+                {
+                    hp = value;
                     SetHP();
                 }
             }
@@ -232,10 +241,10 @@ public class Player : MonoBehaviour, IHealth
         rigid = GetComponent<Rigidbody>();
 
         hpBar = FindObjectOfType<FindPlayerInfoUI>().transform.GetChild(0).GetComponent<Slider>();
-        hpFillImage = hpBar.transform.GetChild(2).GetComponentInChildren<Image>();
+        hpFillImage = hpBar.transform.GetChild(1).GetComponentInChildren<Image>();
         hpValue_Text = FindObjectOfType<FindPlayerInfoUI>().transform.GetChild(0).GetComponentInChildren<TextMeshProUGUI>();
         expBar = FindObjectOfType<FindPlayerInfoUI>().transform.GetChild(1).GetComponent<Slider>();
-        expFillImage = expBar.transform.GetChild(2).GetComponentInChildren<Image>();
+        expFillImage = expBar.transform.GetChild(1).GetComponentInChildren<Image>();
         expValue_Text = FindObjectOfType<FindPlayerInfoUI>().transform.GetChild(1).GetComponentInChildren<TextMeshProUGUI>();
         lvText = GameObject.Find("Level_num").GetComponent<TextMeshProUGUI>();
 
@@ -322,8 +331,6 @@ public class Player : MonoBehaviour, IHealth
         {
             anim.SetBool("IsMove", false);
         }
-
-        HPBlink();
     }
 
     private void OnMoveInput(InputAction.CallbackContext obj)
@@ -480,7 +487,7 @@ public class Player : MonoBehaviour, IHealth
     public void SetHP()
     {
         StartCoroutine(CoSetHP());
-        hpValue_Text.text = (HP / MaxHP * 100).ToString("F0") + '%';
+        hpValue_Text.text = (hp / maxHp * 100).ToString("F0") + '%';
     }
 
     public void SetExp()
@@ -493,9 +500,9 @@ public class Player : MonoBehaviour, IHealth
 
     IEnumerator CoSetHP()
     {
-        while(hpBar.value != HP / MaxHP)
+        while(hpBar.value != hp / maxHp)
         {
-            hpBar.value = Mathf.Lerp(hpBar.value, HP / MaxHP, 0.02f);
+            hpBar.value = Mathf.Lerp(hpBar.value, hp / maxHp, 0.02f);
             yield return null;
         }
     }
@@ -513,19 +520,29 @@ public class Player : MonoBehaviour, IHealth
 
     private void HPBlink()
     {
-        if (HP / MaxHP < 0.5f)
+        float cycle = 0.2f;
+        StartCoroutine(CoHPBlink(cycle));
+    }
+
+    IEnumerator CoHPBlink(float cycle_seconds)
+    {
+        while(HP / MaxHP < 0.5f)
         {
-            if (hpFillImage.color.a == 100)
+            if(isHPImageAlpha1)
             {
-                hpFillImage.CrossFadeAlpha(0, 0.2f, true);
+                hpFillImage.CrossFadeAlpha(0, cycle_seconds, true);
+                yield return new WaitForSeconds(cycle_seconds);
+                isHPImageAlpha1 = false;
             }
-            else if (expFillImage.color.a == 0)
+            else 
             {
-                expFillImage.CrossFadeAlpha(100, 0.2f, true);
+                hpFillImage.CrossFadeAlpha(1, cycle_seconds, true);
+                yield return new WaitForSeconds(cycle_seconds);
+                isHPImageAlpha1 = true;
             }
         }
-
-        
+        hpFillImage.CrossFadeAlpha(1, cycle_seconds, true);
+        isHPImageAlpha1 = true;
     }
 
     public void SetLevel()

@@ -10,13 +10,8 @@ public class SelectButton : MonoBehaviour
     /// 플레이어와 매니저의 스크립터블오브젝트에 적용
     /// </summary>
     [SerializeField]
-    ScriptableObj_JobData jobData;
-
-    /// <summary>
-    /// 이 버튼을 누를시 선택되는 잡타입
-    /// </summary>
-    [SerializeField]
-    JobType jobType;
+    public ScriptableObj_JobData jobData;
+    LightSetting lightSetting;
 
     Button selectButton;
     
@@ -24,16 +19,31 @@ public class SelectButton : MonoBehaviour
     private void Awake()
     {
         selectButton = GetComponent<Button>();
+        lightSetting = FindObjectOfType<LightSetting>();
     }
 
     private void Start()
     {
         selectButton.onClick.AddListener(SelectChracter);
+        jobData.jobType = JobType.Everyone;
+        SetButton();
     }
 
     private void SelectChracter()
     {
-        jobData.jobType = jobType;
+        lightSetting.SetLight();
         SceneManager.LoadScene("Stage1");
+    }
+
+    public void SetButton()
+    {
+        if (jobData.jobType == JobType.Everyone)
+        {
+            selectButton.interactable = false;
+        }
+        else
+        {
+            selectButton.interactable = true;
+        }
     }
 }

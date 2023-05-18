@@ -471,7 +471,10 @@ public class Monster_PassiveAttack : Monster_Basic
     /// </summary>
     private void LookingCameraHPBar()
     {
-        hpSlider.transform.LookAt(Camera.main.transform.position);
+        if (Camera.main != null)
+        {
+            hpSlider.transform.LookAt(Camera.main.transform.position);
+        }
     }
 
     /// <summary>
