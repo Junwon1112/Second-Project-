@@ -3,50 +3,76 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
+using UnityEngine.EventSystems;
+using System;
 
 /// <summary>
 /// 인벤토리 UI를 상속받은 장비 클래스, 완성 후 UI클래스를 만들어서 상속을 할 걸..이라는 걸 느꼈다.
 /// </summary>
-public class EquipmentUI : InventoryUI     
+public class EquipmentUI : BasicUIForm_Parent
 {
     /// <summary>
-    /// u키로 껐다키기위한 인풋시스템용 변수
+    /// i키로 껐다키기위한 인풋시스템용 변수
     /// </summary>
-    public PlayerInput equipmentControl;   
-
+    PlayerInput input_Control;
     /// <summary>
     /// 껐다 키는걸 canvasGroup을 이용한 변수
     /// </summary>
-    protected CanvasGroup canvasGroupOnOff;   
-
-    protected Button equipCloseButton;
-
+    CanvasGroup canvasGroupOnOff;
     /// <summary>
     /// 인벤토리가 꺼져있는지 켜져있는지 확인하기 위한 변수
     /// </summary>
-    public bool isEquipCanvasGroupOff = true;   
+    bool isUIOnOff;
+
+    RectTransform rectTransform_UI;
+
+    Player player;
+    UI_Player_MoveOnOff ui_OnOff;
 
     public EquipSlotUI[] equipSlotUIs;
+    Inventory playerInven;
+    InventoryUI playerInvenUI;
 
-    UI_Player_MoveOnOff ui_OnOff_E;
+    GraphicRaycaster uiGraphicRaycaster;
+    PointerEventData uiPointerEventData;
 
-    protected override void Awake()
+    public override PlayerInput Input_Control { get => input_Control; set => input_Control = value; }
+    public override CanvasGroup CanvasGroupOnOff { get => canvasGroupOnOff; set => canvasGroupOnOff = value; }
+    public override bool IsUIOnOff { get => isUIOnOff; set => isUIOnOff = value; }
+    public override RectTransform RectTransform_UI { get => rectTransform_UI; set => rectTransform_UI = value; }
+
+
+    public override Player Player { get => player; set => player = value; }
+    public override UI_Player_MoveOnOff UI_OnOff { get => ui_OnOff; set => ui_OnOff = value; }
+
+    public Inventory PlayerInven { get => playerInven; set => playerInven = value; }
+    public InventoryUI PlayerInvenUI { get => playerInvenUI; set => playerInvenUI = value; }
+
+
+    public GraphicRaycaster UIGraphicRaycaster { get => uiGraphicRaycaster; set => uiGraphicRaycaster = value; }
+    public PointerEventData UIPointerEventData { get => uiPointerEventData; set => uiPointerEventData = value; }
+
+    protected void Awake()
     {
-        inventoryControl = new PlayerInput();   //아이템 우클릭은 inven에서 구현해서 필요할 때 가져오기 위해서
-        equipmentControl = new PlayerInput();
-        canvasGroupOnOff = GetComponent<CanvasGroup>();
-        equipCloseButton = transform.Find("CloseButton").GetComponent<Button>();
+        Input_Control = new PlayerInput();
+        CanvasGroupOnOff = GetComponent<CanvasGroup>();
+        RectTransform_UI = GetComponent<RectTransform>();
+
+        UIGraphicRaycaster = GameObject.Find("Canvas_Main").gameObject.GetComponent<GraphicRaycaster>();
+        
+        UI_OnOff = GetComponentInParent<UI_Player_MoveOnOff>();
+
         equipSlotUIs = GetComponentsInChildren<EquipSlotUI>();
 
-        graphicRaycaster = GameObject.Find("Canvas").gameObject.GetComponent<GraphicRaycaster>();
-        player = FindObjectOfType<Player>();
-        ui_OnOff_E = GetComponentInParent<UI_Player_MoveOnOff>();
+        PlayerInvenUI = FindObjectOfType<InventoryUI>();
     }
 
     private void Start()
     {
-        equipCloseButton.onClick.AddListener(EquipmentOnOffSetting);
-        isEquipCanvasGroupOff = true;
+        Player = GameManager.Instance.MainPlayer;
+        PlayerInven = GameManager.Instance.MainPlayer.transform.GetComponentInChildren<Inventory>();
+
+        IsUIOnOff = true;
         for(int i = 0; i < equipSlotUIs.Length; i++)
         {
             equipSlotUIs[i].equipSlotID = 1001 + i; //1000번대 슬롯은 장비슬롯임을 구분하기 위해 추가
@@ -55,14 +81,14 @@ public class EquipmentUI : InventoryUI
 
     private void OnEnable()
     {
-        equipmentControl.EquipmentUI.Enable();
-        equipmentControl.EquipmentUI.EquipmentOnOff.performed += OnEquipmentOnOff;
+        Input_Control.EquipmentUI.Enable();
+        Input_Control.EquipmentUI.EquipmentOnOff.performed += OnEquipmentOnOff;
     }
 
     private void OnDisable()
     {
-        equipmentControl.EquipmentUI.EquipmentOnOff.performed -= OnEquipmentOnOff;
-        equipmentControl.EquipmentUI.Disable();
+        Input_Control.EquipmentUI.EquipmentOnOff.performed -= OnEquipmentOnOff;
+        Input_Control.EquipmentUI.Disable();
     }
 
     /// <summary>
@@ -71,49 +97,69 @@ public class EquipmentUI : InventoryUI
     /// <param name="obj"></param>
     private void OnEquipmentOnOff(InputAction.CallbackContext obj)
     {
-        EquipmentOnOffSetting();
+        UIOnOffSetting();
+        RectTransform_UI.SetAsLastSibling();
     }
 
     /// <summary>
     /// 장비창 UI를 키거나 껐을 때 실행해야 될 메서드
     /// </summary>
-    private void EquipmentOnOffSetting()
+    public override void UIOnOffSetting()
     {
-        if (isEquipCanvasGroupOff)
+        if (IsUIOnOff)
         {
-            isEquipCanvasGroupOff = false;
+            IsUIOnOff = false;
 
-            canvasGroupOnOff.alpha = 1;
-            canvasGroupOnOff.interactable = true;
-            canvasGroupOnOff.blocksRaycasts = true;
+            CanvasGroupOnOff.alpha = 1;
+            CanvasGroupOnOff.interactable = true;
+            CanvasGroupOnOff.blocksRaycasts = true;
 
-            ui_OnOff_E.IsUIOnOff();  //전체 UI ONOFF상태를 확인하고 InputSystem을 Enable과 Disable해주는 함수
-
-            //if(inventoryUI.isInvenCanvasGroupOff)
-            //{
-            //    GameManager.Instance.MainPlayer.input.Disable();
-            //    inventoryUI.inventoryControl.Inventory.InventoryItemUse.performed += inventoryUI.OnInventoryItemUse;
-            //}
+            UI_OnOff.IsUIOnOff();
         }
         else
         {
-            isEquipCanvasGroupOff = true;
+            IsUIOnOff = true;
 
+            CanvasGroupOnOff.alpha = 0;
+            CanvasGroupOnOff.interactable = false;
+            CanvasGroupOnOff.blocksRaycasts = false;
 
-            canvasGroupOnOff.alpha = 0;
-            canvasGroupOnOff.interactable = false;
-            canvasGroupOnOff.blocksRaycasts = false;
-            
-            ui_OnOff_E.IsUIOnOff();
+            UI_OnOff.IsUIOnOff();
+        }
+        
+    }
+    public void OnEquipmentItemUse(InputAction.CallbackContext obj)
+    {
+        RectTransform_UI.SetAsLastSibling();
 
-            //if (inventoryUI.isInvenCanvasGroupOff)
-            //{
-            //    GameManager.Instance.MainPlayer.input.Enable();
-            //    inventoryUI.inventoryControl.Inventory.InventoryItemUse.performed -= inventoryUI.OnInventoryItemUse;
-            //}
+        List<RaycastResult> slotItemCheck = new List<RaycastResult>();  //UI인식을 위해서는 GraphicRaycast가 필요하고 이걸 사용 후 리턴할 때 (RaycastResult)를 받는 리스트에 저장함
+        UIPointerEventData = new PointerEventData(null);                  //GraphicRaycast에서 마우스 위치를 PointerEventData에서 받으므로 정의 해줌
+
+        UIPointerEventData.position = Mouse.current.position.ReadValue();
+        UIGraphicRaycaster.Raycast(uiPointerEventData, slotItemCheck);
+
+        GameObject returnObject = slotItemCheck[0].gameObject;
+
+        Debug.Log($"{returnObject.name}");
+
+        EquipSlotUI tempEquipSlotUI = new();
+
+        bool isFindEquipSlot;
+
+        isFindEquipSlot = returnObject.TryGetComponent<EquipSlotUI>(out tempEquipSlotUI);
+
+        if (isFindEquipSlot)    //장비슬롯에서 클릭을 했다면
+        {
+            ItemSlot tempItemSlot = new();
+            tempItemSlot = playerInven.FindSameItemSlotForAddItem(tempEquipSlotUI.ItemData);    //빈 슬롯 찾고
+            tempItemSlot.AssignSlotItem(tempEquipSlotUI.ItemData);                              //슬롯에 넣어준다.
+            PlayerInvenUI.slotUIs[tempItemSlot.slotID].SetSlotWithData(tempEquipSlotUI.ItemData, 1);          //슬롯UI도 마찬가지
+
+            Player.UnEquipWeaponAbility();     //무기데미지를 빼고 플레이어에 있는 myWeapon변수를 null로 만듬
+            Player.isFindWeapon = false;
+            tempEquipSlotUI.ClearTempSlot();    //장비슬롯은 비우고
+            Destroy(FindObjectOfType<PlayerWeapon>().gameObject);   //무기를 찾아 지운다.
         }
     }
-
-
 }
 

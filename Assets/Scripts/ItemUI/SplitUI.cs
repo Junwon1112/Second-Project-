@@ -41,6 +41,7 @@ public class SplitUI : MonoBehaviour
     protected Inventory inventory;
     protected InventoryUI inventoryUI;
 
+    public RectTransform rectTransform_Split;
 
     protected virtual void Awake()
     {
@@ -48,13 +49,15 @@ public class SplitUI : MonoBehaviour
         cancelButton = transform.Find("CancelButton").GetComponent<Button>();
         inputField = GetComponentInChildren<TMP_InputField>();
         splitUICanvasGroup = GetComponent<CanvasGroup>();
-        inventory = FindObjectOfType<Inventory>();
-        inventoryUI = FindObjectOfType<InventoryUI>();
         splitTempSlotSplitUI = GameObject.Find("ItemMoveSlotUI").transform.GetChild(0).GetComponent<TempSlotSplitUI>();   //활성화후 컴포넌트 찾은거 변수에 저장하고
+        rectTransform_Split = GetComponent<RectTransform>();
     }
 
     protected virtual void Start()
     {
+        inventory = GameManager.Instance.MainPlayer.transform.GetComponentInChildren<Inventory>();
+        inventoryUI = GameObject.Find("InventoryUI").GetComponent<InventoryUI>();
+
         //스트링타입 리턴받는 함수 실행  => 입력된 숫자가 슬롯의 itemCount보다 크면 itemCount를, 작으면 0을 리턴
         inputField.onEndEdit.AddListener(CheckRightCount); 
         
@@ -119,12 +122,12 @@ public class SplitUI : MonoBehaviour
         GameObject.Find("ItemMoveSlotUI").transform.GetChild(0).gameObject.SetActive(true);  //tempSlot을 비활성화 시켰다 부모오브젝트를 통해 찾아서 활성화 시킬것이다.
         
         splitTempSlotSplitUI.SetTempSlotWithData(splitItemData, (uint)splitCount);       //나눌 데이터 tempslot에 전달하고
-
+        splitTempSlotSplitUI.rectTransform_TempSlotSplit.SetAsLastSibling();
 
         isSplitting = true;
 
         inventory.itemSlots[takeID].DecreaseSlotItem((uint)splitCount);             //UI와 슬롯 데이터에서는 뺌
-        inventoryUI.slotUIs[takeID].slotUICount -= (uint)splitCount; ;
+        inventoryUI.slotUIs[takeID].SlotUICount -= (uint)splitCount; ;
 
         inventoryUI.SetAllSlotWithData();
 

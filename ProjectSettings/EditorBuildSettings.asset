@@ -9,9 +9,18 @@ EditorBuildSettings:
     path: Assets/Scenes/Main.unity
     guid: 026c0b051876df04b8098ee4b3f78d12
   - enabled: 1
+    path: Assets/Scenes/CharacterSelect.unity
+    guid: eb7777adddbd8194685b573986e9bb13
+  - enabled: 1
     path: Assets/Scenes/Stage1.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
   - enabled: 1
+    path: Assets/Scenes/StartingVillage.unity
+    guid: 962cd03af0308e641a57de220074042a
+  - enabled: 1
     path: Assets/Scenes/Clear.unity
     guid: 0c53c8dc9fd300b4ca3134e28bee836e
+  - enabled: 1
+    path: Assets/Scenes/TestScene.unity
+    guid: 45a4bcf25ffc1b9428626f33bae80b66
   m_configObjects: {}

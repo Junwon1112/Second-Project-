@@ -24,6 +24,6 @@ public class StartButton : MonoBehaviour
 
     private void StartStage()
     {
-        SceneManager.LoadScene("Stage1");
+        SceneManager.LoadScene("CharacterSelect");
     }
 }

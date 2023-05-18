@@ -122,11 +122,7 @@ public class Monster_PassiveAttack : Monster_Basic
 
             if (hp <= 0 && !isDie)
             {
-                anim.SetBool("isDie", true);
-                SetMonsterState(MonsterState.die);
-                agent.enabled = false;
-                DropItem();
-                Destroy(transform.parent.gameObject, 3.0f);
+                MonsterDie();
             }
         }
     }
@@ -159,8 +155,6 @@ public class Monster_PassiveAttack : Monster_Basic
     {
         agent = GetComponent<NavMeshAgent>();
         playerLayer = LayerMask.NameToLayer("Player");
-        playerTransform = GameObject.FindGameObjectWithTag("Player").transform.GetComponent<Transform>();
-        player = GameObject.FindGameObjectWithTag("Player").transform.GetComponent<Player>();
         hpSlider = GetComponentInChildren<Slider>();
         anim = GetComponent<Animator>();
 
@@ -179,6 +173,9 @@ public class Monster_PassiveAttack : Monster_Basic
 
     private void Start()
     {
+        playerTransform = GameManager.Instance.MainPlayer.transform;
+        player = GameManager.Instance.MainPlayer;
+
         Transform patrolPoint = transform.parent.GetChild(1);
 
         patrolPoints = new Transform[patrolPoint.childCount];
@@ -326,6 +323,21 @@ public class Monster_PassiveAttack : Monster_Basic
     }
 
     /// <summary>
+    /// HP프로퍼티에서 사용
+    /// </summary>
+    protected override void MonsterDie()
+    {
+        anim.SetBool("isDie", true);
+        SetMonsterState(MonsterState.die);
+        agent.enabled = false;
+        DropItem();
+
+        SphereCollider collider = GetComponent<SphereCollider>();
+        collider.enabled = false;
+        Destroy(transform.parent.gameObject, 3.0f);
+    }
+
+    /// <summary>
     /// 공격속도에 따라 공격주기가 바뀌고 공격 실행시 실행되는 것들에 대한 메서드
     /// </summary>
     /// <param name="attackSpeed"></param>
@@ -459,7 +471,10 @@ public class Monster_PassiveAttack : Monster_Basic
     /// </summary>
     private void LookingCameraHPBar()
     {
-        hpSlider.transform.LookAt(Camera.main.transform.position);
+        if (Camera.main != null)
+        {
+            hpSlider.transform.LookAt(Camera.main.transform.position);
+        }
     }
 
     /// <summary>

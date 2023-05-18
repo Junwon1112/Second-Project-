@@ -17,6 +17,8 @@ public class Player : MonoBehaviour, IHealth
 
     JobType job;
     public JobType Job { get; set; }
+    [SerializeField]
+    ScriptableObj_JobData jobData;
 
     /// <summary>
     /// 움직임을 위한 인풋 시스템용
@@ -56,9 +58,12 @@ public class Player : MonoBehaviour, IHealth
     /// <summary>
     /// 체력 관련 변수들
     /// </summary>
-    float hp;
+    float hp = 100;
     float maxHp = 100;
+    bool isHPImageAlpha1 = true;
     Slider hpBar;
+    Image hpFillImage;
+    TextMeshProUGUI hpValue_Text;
 
     /// <summary>
     /// 경험치 관련 변수들
@@ -66,6 +71,8 @@ public class Player : MonoBehaviour, IHealth
     float exp = 0.0f;
     float maxExp = 100;
     Slider expBar;
+    Image expFillImage;
+    TextMeshProUGUI expValue_Text;
 
     [SerializeField]
     int level = 1;
@@ -93,7 +100,7 @@ public class Player : MonoBehaviour, IHealth
     float turnToY;
     float turnToZ;
 
-    float turnSpeed = 25.0f;
+    float turnSpeed = 20.0f;
 
     /// <summary>
     /// 아이템 관련 변수
@@ -139,12 +146,32 @@ public class Player : MonoBehaviour, IHealth
         get { return hp; }
         set 
         {
-            if(!isDie)
+            //hp = value;
+
+            if (!isDie)
             {
-                hp = value;
-                if (hp <= 0)
+                if(value > MaxHP)
                 {
+                    hp = MaxHP;
+                    SetHP();
+                }
+                else if (value <= 0)
+                {
+                    hp = 0;
+                    SetHP();
                     Die();
+                }
+                else if (value / MaxHP < 0.5f)
+                {
+                    hp = value;
+                    SetHP();
+                    HPBlink();
+
+                }
+                else 
+                {
+                    hp = value;
+                    SetHP();
                 }
             }
         }
@@ -153,6 +180,7 @@ public class Player : MonoBehaviour, IHealth
     public float MaxHP
     {
         get { return maxHp; }
+        set { maxHp = value; }
     }
 
     public float Exp
@@ -161,7 +189,11 @@ public class Player : MonoBehaviour, IHealth
         set
         {
             exp = value;
-
+            SetExp();
+            if (player.Exp >= player.MaxExp)
+            {
+                player.newDel_LevelUp();    //레벨업 델리게이트
+            }
         }
     }
 
@@ -207,21 +239,35 @@ public class Player : MonoBehaviour, IHealth
         input = new PlayerInput();
         anim = GetComponent<Animator>();
         rigid = GetComponent<Rigidbody>();
-        hpBar = GameObject.Find("HpSlider").GetComponent<Slider>();
-        expBar = GameObject.Find("ExpSlider").GetComponent<Slider>();
+
+        hpBar = FindObjectOfType<FindPlayerInfoUI>().transform.GetChild(0).GetComponent<Slider>();
+        hpFillImage = hpBar.transform.GetChild(1).GetComponentInChildren<Image>();
+        hpValue_Text = FindObjectOfType<FindPlayerInfoUI>().transform.GetChild(0).GetComponentInChildren<TextMeshProUGUI>();
+        expBar = FindObjectOfType<FindPlayerInfoUI>().transform.GetChild(1).GetComponent<Slider>();
+        expFillImage = expBar.transform.GetChild(1).GetComponentInChildren<Image>();
+        expValue_Text = FindObjectOfType<FindPlayerInfoUI>().transform.GetChild(1).GetComponentInChildren<TextMeshProUGUI>();
         lvText = GameObject.Find("Level_num").GetComponent<TextMeshProUGUI>();
+
         player = GetComponent<Player>();
         playerInventory = GetComponentInChildren<Inventory>();
         playerInventoryUI = GameObject.Find("InventoryUI").GetComponent<InventoryUI>();
-        weaponHandTransform = FindObjectOfType<FindWeaponHand>().transform;
+        weaponHandTransform = transform.GetComponentInChildren<FindWeaponHand>().transform;
         mainCamera_PlayerPos = FindObjectOfType<MainCamera_PlayerPos>();
 
         skillUses = FindObjectsOfType<SkillUse>();
         skill_Implement = FindObjectOfType<Skill_Implement>();
         skillUI = FindObjectOfType<SkillUI>();
 
-        //-----------------테스트용-------------
-        Job = JobType.SwordMan;
+
+        Job = jobData.jobType;
+        if (this.gameObject.name != $"Player_{Job.ToString()}")
+        {
+            Destroy(this.gameObject);
+        }
+        else
+        {
+            DontDestroyOnLoad(gameObject);
+        }
     }
 
     /// <summary>
@@ -259,8 +305,11 @@ public class Player : MonoBehaviour, IHealth
 
     private void Start()
     {
-        hp = maxHp;
+        MaxHP = 100;
+        HP = MaxHP;
         SetHP();
+        MaxExp = 100;
+        Exp = 0;
         SetExp();
         SetLevel();
         potion = new ItemData_Potion();
@@ -366,7 +415,7 @@ public class Player : MonoBehaviour, IHealth
             turnToX = turnToX + moveY * turnSpeed * Time.deltaTime;
 
             //turnToY = Mathf.Clamp(turnToY, -80, 80);    //최대값 설정
-            turnToX = Mathf.Clamp(turnToX, 0, 20);
+            //turnToX = Mathf.Clamp(turnToX, 0, 20);
 
             transform.eulerAngles = new Vector3(0, turnToY, 0);
             //mainCamera_PlayerPos.transform.localEulerAngles = new Vector3(-turnToX, 0, 0); Y축 넣었다가 어지러워서 뺐음
@@ -391,15 +440,15 @@ public class Player : MonoBehaviour, IHealth
             {
                 tempID = playerInventory.FindSameItemSlotForUseItem(potion).slotID;
                 playerInventory.FindSameItemSlotForUseItem(potion).ClearSlotItem();
-                playerInventoryUI.slotUIs[tempID].slotUIData = null;
-                playerInventoryUI.slotUIs[tempID].slotUICount = 0;
+                playerInventoryUI.slotUIs[tempID].ItemData = null;
+                playerInventoryUI.slotUIs[tempID].SlotUICount = 0;
                 playerInventoryUI.SetAllSlotWithData();
             }
             else
             {
                 tempID = playerInventory.FindSameItemSlotForUseItem(potion).slotID;
                 playerInventory.FindSameItemSlotForUseItem(potion).ItemCount--;
-                playerInventoryUI.slotUIs[tempID].slotUICount--;
+                playerInventoryUI.slotUIs[tempID].SlotUICount--;
                 playerInventoryUI.SetAllSlotWithData();
             }
             
@@ -437,12 +486,63 @@ public class Player : MonoBehaviour, IHealth
 
     public void SetHP()
     {
-        hpBar.value = HP / MaxHP;
+        StartCoroutine(CoSetHP());
+        hpValue_Text.text = (hp / maxHp * 100).ToString("F0") + '%';
     }
 
     public void SetExp()
     {
-        expBar.value = Exp / MaxExp;
+        //expBar.value = Exp / MaxExp;
+        StartCoroutine(CoSetEXP());
+        expValue_Text.text = (Exp / MaxExp * 100).ToString("F0") + '%';
+    }
+
+
+    IEnumerator CoSetHP()
+    {
+        while(hpBar.value != hp / maxHp)
+        {
+            hpBar.value = Mathf.Lerp(hpBar.value, hp / maxHp, 0.02f);
+            yield return null;
+        }
+    }
+
+    IEnumerator CoSetEXP()
+    {
+        while (expBar.value != Exp / MaxExp)
+        {
+            expBar.value = Mathf.Lerp(expBar.value, Exp / MaxExp, 0.02f);
+            yield return null;
+        }
+    }
+
+
+
+    private void HPBlink()
+    {
+        float cycle = 0.2f;
+        StartCoroutine(CoHPBlink(cycle));
+    }
+
+    IEnumerator CoHPBlink(float cycle_seconds)
+    {
+        while(HP / MaxHP < 0.5f)
+        {
+            if(isHPImageAlpha1)
+            {
+                hpFillImage.CrossFadeAlpha(0, cycle_seconds, true);
+                yield return new WaitForSeconds(cycle_seconds);
+                isHPImageAlpha1 = false;
+            }
+            else 
+            {
+                hpFillImage.CrossFadeAlpha(1, cycle_seconds, true);
+                yield return new WaitForSeconds(cycle_seconds);
+                isHPImageAlpha1 = true;
+            }
+        }
+        hpFillImage.CrossFadeAlpha(1, cycle_seconds, true);
+        isHPImageAlpha1 = true;
     }
 
     public void SetLevel()
@@ -474,6 +574,8 @@ public class Player : MonoBehaviour, IHealth
         Exp -= MaxExp;
         MaxExp *= 1.3f;
         SetExp();
+        ParticlePlayer.Instance.PlayParticle(ParticleType.ParticleSystem_LevelUp, transform, transform.position, transform.rotation);
+        SoundPlayer.Instance.PlaySound(SoundType.Sound_LevelUp);
     }
 
     /// <summary>
@@ -481,16 +583,14 @@ public class Player : MonoBehaviour, IHealth
     /// </summary>
     public void TakeWeapon()     
     {
-        PlayerWeapon tempPlayerWeapon = FindObjectOfType<PlayerWeapon>();
-        for(int i = 0; i < skillUses.Length; i++)   //무기 장착시 SkillUse클래스에서도 무기를 받아오도록 함(무기가 시작할 땐 장착되어있지 않아 SkillUse Awake에서 안한다)
-        {
-            skillUses[i].TakeWeapon();
-            skill_Implement.TakeWeapon();
-        }
+        PlayerWeapon tempPlayerWeapon = GetComponentInChildren<PlayerWeapon>();
+         //무기 장착시 SkillUse클래스에서도 무기를 받아오도록 함(무기가 시작할 땐 장착되어있지 않아 SkillUse Awake에서 안한다)
+
+        skill_Implement.TakeWeapon();
         if (tempPlayerWeapon != null)
         {
             weaponPrefab = tempPlayerWeapon.gameObject;
-            weaponCollider = this.weaponPrefab.GetComponent<CapsuleCollider>();
+            weaponCollider = weaponPrefab.GetComponent<CapsuleCollider>();
             weaponCollider.enabled = false;
             isFindWeapon = true;
             Debug.Log("무기찾음");

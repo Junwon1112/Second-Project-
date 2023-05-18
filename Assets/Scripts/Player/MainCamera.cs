@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class MainCamera : MonoBehaviour
 {
-    float position_X = 0;
-    float position_Y = 3;
-    float position_Z = -5;
+    float position_X;
+    float position_Y;
+    float position_Z;
 
     Vector3 defaultCameraPos;
     Vector3 cameraDistance;

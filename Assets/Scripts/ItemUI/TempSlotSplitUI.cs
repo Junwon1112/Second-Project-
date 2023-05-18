@@ -8,16 +8,26 @@ using UnityEngine.UI;
 /// <summary>
 /// 아이템 슬롯에서 아이템을 나눌 시 임시로 보여질 슬롯
 /// </summary>
-public class TempSlotSplitUI : TempSlotInfoUI
+public class TempSlotSplitUI : ItemSlotUI_Basic
 {
     //public bool isSpliting = false;     //SplitUI에서 OK버튼 누르면 true로 바꿔줌
     private TextMeshProUGUI tempSlotItemCountText;
     int takeID = -1;
+    public RectTransform rectTransform_TempSlotSplit;
+
+    Image itemImage;
+    ItemData itemData;
+    uint slotUICount;
+
+    public override Image ItemImage { get => itemImage; set => itemImage = value; }
+    public override ItemData ItemData { get => itemData; set => itemData = value; }
+    public override uint SlotUICount { get => slotUICount; set => slotUICount = value; }
 
     void Awake()
     {
-        this.itemImage = GetComponentInChildren<Image>();
+        ItemImage = GetComponentInChildren<Image>();
         tempSlotItemCountText = transform.GetChild(0).GetComponent<TextMeshProUGUI>();
+        rectTransform_TempSlotSplit = transform.parent.GetComponent<RectTransform>();
     }
 
     private void Start()
@@ -32,7 +42,6 @@ public class TempSlotSplitUI : TempSlotInfoUI
     {
         //분할 중이라면 실행하기
         transform.position = (Vector3)Mouse.current.position.ReadValue();
-
     }
 
     /// <summary>
@@ -40,10 +49,10 @@ public class TempSlotSplitUI : TempSlotInfoUI
     /// </summary>
     public void ClearTempSlot()
     {
-        itemImage.sprite = null;
+        ItemImage.sprite = null;
         //isSpliting = false;   //splitUI에서 처리
-        takeSlotItemData = null;
-        takeSlotItemCount = 0;
+        ItemData = null;
+        SlotUICount = 0;
     }
 
     /// <summary>
@@ -53,31 +62,9 @@ public class TempSlotSplitUI : TempSlotInfoUI
     /// <param name="count"></param>
     public void SetTempSlotWithData(ItemData itemData, uint count)
     {
-        itemImage.sprite = itemData.itemIcon;   //여기서 두번쨰 스플릿할때 에러남(아마 상속받아서 split쪽에서 ok누른뒤 에러나는거 같음)
-        takeSlotItemData = itemData;
-        takeSlotItemCount = count;
-        tempSlotItemCountText.text = takeSlotItemCount.ToString();
+        ItemImage.sprite = itemData.itemIcon;   //여기서 두번쨰 스플릿할때 에러남(아마 상속받아서 split쪽에서 ok누른뒤 에러나는거 같음)
+        ItemData = itemData;
+        SlotUICount = count;
+        tempSlotItemCountText.text = SlotUICount.ToString();
     }
-
-    //--------상속받은 TempSlotInfoUI의 내용--------------------------------
-
-    //==================================================================================================================
-    //public Image itemImage;                //Image에 프로퍼티로 스프라이트가 존재한다. 
-
-    //// 아이템 움직일 떄 사용
-    //public ItemData tempSlotItemData;   //tempSlot을 발생시킨곳에서 받아온다.
-    //public uint tempSlotItemCount;      //tempSlot을 발생시킨곳에서 받아온다.
-
-    //private void Awake()
-    //{
-    //    itemImage = GetComponentInChildren<Image>();
-    //}
-
-    //public void SetTempSlotWithData(ItemData itemData, uint count)
-    //{
-    //    itemImage.sprite = itemData.itemIcon;
-    //    tempSlotItemData = itemData;
-    //    tempSlotItemCount = count;
-    //}
-    //==================================================================================================================
 }

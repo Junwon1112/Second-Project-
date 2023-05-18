@@ -120,11 +120,7 @@ public class Monster_ActiveAttack : Monster_Basic
 
             if (hp <= 0 && !isDie)
             {
-                anim.SetBool("isDie", true);
-                SetMonsterState(MonsterState.die);
-                agent.enabled = false;
-                DropItem();
-                Destroy(transform.parent.gameObject, 3.0f);
+                MonsterDie();
             }
         }
     }
@@ -162,8 +158,6 @@ public class Monster_ActiveAttack : Monster_Basic
     {
         agent = GetComponent<NavMeshAgent>();
         playerLayer = LayerMask.NameToLayer("Player");
-        playerTransform = GameObject.FindGameObjectWithTag("Player").transform.GetComponent<Transform>();
-        player = GameObject.FindGameObjectWithTag("Player").transform.GetComponent<Player>();
         hpSlider = GetComponentInChildren<Slider>();
         anim = GetComponent<Animator>();
 
@@ -182,6 +176,10 @@ public class Monster_ActiveAttack : Monster_Basic
 
     private void Start()
     {
+        playerTransform = GameManager.Instance.MainPlayer.transform;
+        player = GameManager.Instance.MainPlayer;
+
+
         Transform patrolPoint = transform.parent.GetChild(1);
 
         patrolPoints = new Transform[patrolPoint.childCount];
@@ -338,6 +336,19 @@ public class Monster_ActiveAttack : Monster_Basic
         }
     }
 
+    protected override void MonsterDie()
+    {
+        anim.SetBool("isDie", true);
+        SetMonsterState(MonsterState.die);
+        agent.enabled = false;
+        DropItem();
+
+
+        SphereCollider collider = GetComponent<SphereCollider>();
+        collider.enabled = false;
+        Destroy(transform.parent.gameObject, 3.0f);
+    }
+
     /// <summary>
     /// 공격속도에 따라 공격주기가 바뀌고 공격 실행시 실행되는 것들에 대한 메서드
     /// </summary>
@@ -346,7 +357,7 @@ public class Monster_ActiveAttack : Monster_Basic
     IEnumerator MonsterAttackCoroutine(float attackSpeed)
     {
         yield return new WaitForSeconds(attackSpeed);
-        //monsterCollider.isTrigger = true; => 애니메이션으로 세팅
+        //monsterCollider.isTrigger = true; => 애니메이션에서 녹화 기능으로 구현
         anim.SetTrigger("OnAttack");
         isCriticalAttack(criticalRate);
         isAttackContinue = false;
@@ -471,7 +482,10 @@ public class Monster_ActiveAttack : Monster_Basic
     /// </summary>
     private void LookingCameraHPBar()
     {
-        hpSlider.transform.LookAt(Camera.main.transform.position);
+        if(Camera.main != null)
+        {
+            hpSlider.transform.LookAt(Camera.main.transform.position);
+        }
     }
 
     /// <summary>

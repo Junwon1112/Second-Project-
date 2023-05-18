@@ -19,11 +19,20 @@ public class ReStartButton : MonoBehaviour
 
     private void Start()
     {
-        restartButton.onClick.AddListener(StartStage);
+        restartButton.onClick.AddListener(ReStartStage);
     }
 
-    private void StartStage()
+    private void ReStartStage()
     {
-        SceneManager.LoadScene(GameManager.Instance.CurrentScene.name);
+        if(GameManager.Instance.CurrentScene.name == ("StartVillage"))
+        {
+            SceneManager.LoadScene(GameManager.Instance.CurrentScene.name);
+        }
+        else
+        {
+            GameManager.Instance.ResetDontDestroy();
+            SceneManager.LoadScene(GameManager.Instance.CurrentScene.name);
+        }
+        Time.timeScale = 1.0f;
     }
 }

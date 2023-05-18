@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 6814855352527456211}
   - component: {fileID: 9050717128976484404}
   - component: {fileID: 7794906378227498820}
-  m_Layer: 10
+  m_Layer: 14
   m_Name: MiniMapMarker_Monster
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -120,7 +120,7 @@ GameObject:
   - component: {fileID: 4796644948316558577}
   - component: {fileID: 3016521878384468530}
   - component: {fileID: 4669933859539474414}
-  m_Layer: 10
+  m_Layer: 14
   m_Name: MonsterCanvas_Minimap
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -393,7 +393,7 @@ Rigidbody:
   m_Drag: 0
   m_AngularDrag: 0.05
   m_UseGravity: 1
-  m_IsKinematic: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0

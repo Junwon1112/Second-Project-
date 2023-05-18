@@ -28,7 +28,10 @@ public class ParticleObject : MonoBehaviour
     public void Play()
     {
         particleSystemSource.Play();
-        StartCoroutine(DestroyAfterPlay());
+        if(!particleSystemSource.main.loop)
+        {
+            StartCoroutine(DestroyAfterPlay());
+        }
     }
 
     public void Play(float playTime)
@@ -37,7 +40,6 @@ public class ParticleObject : MonoBehaviour
         StartCoroutine(DestroyAfterPlay(playTime));
         
     }
-
 
     IEnumerator DestroyAfterPlay()
     {

@@ -233,6 +233,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "EquipmentItemUse",
+                    "type": "Button",
+                    "id": "a6c252da-fad2-4e39-837d-6472b52dafeb",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -244,6 +253,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "EquipmentOnOff",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "c910ba6a-7769-45c7-bbe0-8f1bb097094a",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "EquipmentItemUse",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

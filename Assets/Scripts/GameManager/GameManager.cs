@@ -13,6 +13,8 @@ public class GameManager : MonoBehaviour
 
     Scene currentScene;
 
+    [SerializeField]
+    ScriptableObj_JobData jobData;
 
     /// <summary>
     /// player에 대한 프로퍼티
@@ -64,6 +66,8 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    GameObject[] testObjs;
+
     /// <summary>
     /// 싱글톤패턴에서 단 1개의 GameManager만 존재하게 하기위해 씬이 바뀔 때마다 1개의 인스턴스만 존재하는지 확인하는 패턴
     /// 1개 이상 존재 시 자기자신을 파괴
@@ -73,6 +77,7 @@ public class GameManager : MonoBehaviour
         if(Instance == null)
         {
             Instance = this;
+            DontDestroyOnLoad(this.gameObject);
         }
         else
         {
@@ -82,12 +87,13 @@ public class GameManager : MonoBehaviour
             }
         }
         Initialize();
+        
     }
 
 
     private void Initialize()   //시작하면 오브젝트 가져오기
     {
-        player = FindObjectOfType<Player>();
+        player = GameObject.Find($"Player_{jobData.jobType.ToString()}").GetComponent<Player>();
         itemDataManager = FindObjectOfType<ItemDataManager>();
         CurrentScene = SceneManager.GetActiveScene();
     }
@@ -95,5 +101,37 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         FadeInOut.Instance.FadeIn();
+        
+    }
+
+    private void OnLevelWasLoaded(int level)
+    {
+        CurrentScene = SceneManager.GetActiveScene();
+    }
+
+    public void ResetDontDestroy()
+    {
+        for (int i = 0; i < DontDestroyOnLoad_Manager.Instance.objs_DontDestroy.Count; i++)
+        {
+            Destroy(DontDestroyOnLoad_Manager.Instance.objs_DontDestroy[i]);
+        }
+
+        Destroy(UI_Player_MoveOnOff.instance.gameObject);
+        Destroy(Skill_Implement.Instance.gameObject);
+        Destroy(SkillDataManager.Instance.gameObject);
+        Destroy(SoundPlayer.Instance.gameObject);
+        Destroy(ParticlePlayer.Instance.gameObject);
+        Destroy(DMGTextPlayer.Instance.gameObject);
+        Destroy(CursorManager.Instance.gameObject);
+        Destroy(MainCamera_PlayerPos.instance.gameObject);
+        Destroy(MiniMapCamera.instance.gameObject);
+        foreach(GameObject DontDestroyObj in DontDestroyOnLoad_Manager.Instance.objs_DontDestroy)
+        {
+            Destroy(DontDestroyObj);
+        }
+
+        Destroy(GameManager.Instance.MainPlayer.gameObject);
+        Destroy(GameManager.Instance.gameObject);
+
     }
 }

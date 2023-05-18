@@ -14,6 +14,7 @@ public class DMGTextPlayer : MonoBehaviour
         if(Instance == null)
         {
             Instance = this;
+            DontDestroyOnLoad(this.gameObject);
         }
         else
         {

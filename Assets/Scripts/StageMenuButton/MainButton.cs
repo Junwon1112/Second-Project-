@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 /// <summary>
 /// 메인메뉴 씬으로 이동시키는 클래스
@@ -11,9 +12,14 @@ public class MainButton : MonoBehaviour
 {
     Button mainButton;
 
+    EventSystem eventSystem;
+    LocationReset locationReset;
+
     private void Awake()
     {
         mainButton = GetComponent<Button>();
+        eventSystem = FindObjectOfType<MainEventSystem>().transform.GetComponent<EventSystem>();
+        locationReset = FindObjectOfType<LocationReset>();
     }
 
     private void Start()
@@ -24,5 +30,9 @@ public class MainButton : MonoBehaviour
     private void BackToMainStage()
     {
         SceneManager.LoadScene("Main");
+        GameManager.Instance.ResetDontDestroy();
+        Time.timeScale = 1.0f;
     }
+
+    
 }

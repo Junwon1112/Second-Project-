@@ -43,7 +43,7 @@ public class UpDownButton : MonoBehaviour
         if(GameManager.Instance.MainPlayer.SkillPoint > 0)
         {
             GameManager.Instance.MainPlayer.SetSkillPointDown();
-            skillSlotUI.skillData.SkillLevel++;
+            skillSlotUI.SkillData.SkillLevel++;
             SkillLevelToText();
 
             StartCoroutine(ClickImage(upClickImage));
@@ -56,18 +56,18 @@ public class UpDownButton : MonoBehaviour
     /// </summary>
     private void CurrentSkillPointDown()
     {
-        if (skillSlotUI.skillData.SkillLevel > 0)
+        if (skillSlotUI.SkillData.SkillLevel > 0)
         {
             GameManager.Instance.MainPlayer.SetSkillPointUp();
-            skillSlotUI.skillData.SkillLevel--;
+            skillSlotUI.SkillData.SkillLevel--;
             SkillLevelToText();
 
             //스킬레벨이 0이 되면 퀵슬롯으로 자동으로 빠지게 함
-            if (skillSlotUI.skillData.SkillLevel == 0)
+            if (skillSlotUI.SkillData.SkillLevel == 0)
             {
                 for (int i = 0; i < allQuickSlotUI.quickSlotUIs.Length; i++)
                 {
-                    if(allQuickSlotUI.quickSlotUIs[i].quickSlotSkillData == skillSlotUI.skillData)
+                    if(allQuickSlotUI.quickSlotUIs[i].quickSlotSkillData == skillSlotUI.SkillData)
                     {
                         allQuickSlotUI.quickSlotUIs[i].QuickSlotSetData();
 
@@ -91,6 +91,6 @@ public class UpDownButton : MonoBehaviour
 
     public void SkillLevelToText()
     {
-        currentSkillLevel_Text.text = skillSlotUI.skillData.SkillLevel.ToString();
+        currentSkillLevel_Text.text = skillSlotUI.SkillData.SkillLevel.ToString();
     }
 }

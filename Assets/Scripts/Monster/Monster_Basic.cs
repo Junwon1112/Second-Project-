@@ -15,4 +15,5 @@ public abstract class Monster_Basic : MonoBehaviour, IHealth
     public abstract void SetMonsterState(MonsterState mon);
     public abstract void SetHP();
     public abstract void MoveSlow(float slowRate, float time);
+    protected abstract void MonsterDie();
 }

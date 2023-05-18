@@ -3,34 +3,42 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 using TMPro;
 
 /// <summary>
 /// 스킬창 UI에 대한 클래스
 /// </summary>
-public class SkillUI : MonoBehaviour
+public class SkillUI : BasicUIForm_Parent
 {
-    PlayerInput skillWindowControl;
+    PlayerInput input_Control;
+    CanvasGroup canvasGroupOnOff;
+    bool isUIOnOff = true;
+    UI_Player_MoveOnOff ui_OnOff;
+    RectTransform rectTransform_UI;
+    Player player;
 
+
+    TextMeshProUGUI skillPoint_Num;
     public List<SkillData> skillDatas;
     SkillSlotUI[] skillSlotUIs;
-    CanvasGroup skillCanvasGroup;
-    public bool isSkillWindowOff = true;
-    UI_Player_MoveOnOff ui_OnOff;
 
-    Button skillCloseButton;
+    public override PlayerInput Input_Control { get => input_Control; set => input_Control = value; }
+    public override CanvasGroup CanvasGroupOnOff { get => canvasGroupOnOff; set => canvasGroupOnOff = value; }
+    public override bool IsUIOnOff { get => isUIOnOff; set => isUIOnOff = value; }
+    public override RectTransform RectTransform_UI { get => rectTransform_UI; set => rectTransform_UI = value; }
+    public override Player Player { get => player; set => player = value; }
+    public override UI_Player_MoveOnOff UI_OnOff { get => ui_OnOff; set => ui_OnOff = value; }
 
-    
-    TextMeshProUGUI skillPoint_Num;
 
     private void Awake()
     {
         skillSlotUIs = GetComponentsInChildren<SkillSlotUI>();
-        skillWindowControl = new PlayerInput();
-        skillCanvasGroup = GetComponent<CanvasGroup>();
+        input_Control = new PlayerInput();
+        canvasGroupOnOff = GetComponent<CanvasGroup>();
         ui_OnOff = GetComponentInParent<UI_Player_MoveOnOff>();
-        skillCloseButton = transform.Find("CloseButton").GetComponent<Button>();
         skillPoint_Num = transform.Find("SkillPointUI").GetChild(1).GetComponent<TextMeshProUGUI>();
+        rectTransform_UI = GetComponent<RectTransform>();
 
         for(int i = 0; i < skillDatas.Count; i++)
         {
@@ -42,27 +50,26 @@ public class SkillUI : MonoBehaviour
 
     private void OnEnable()
     {
-        skillWindowControl.Enable();
-        skillWindowControl.SkillUI.SkillWindowOnOff.performed += OnSkillWindowOnOff;
+        input_Control.Enable();
+        input_Control.SkillUI.SkillWindowOnOff.performed += OnSkillWindowOnOff;
     }
 
 
     private void OnDisable()
     {
-        skillWindowControl.SkillUI.SkillWindowOnOff.performed -= OnSkillWindowOnOff;
-        skillWindowControl.Disable();
+        input_Control.SkillUI.SkillWindowOnOff.performed -= OnSkillWindowOnOff;
+        input_Control.Disable();
     }
 
     private void Start()
     {
-        skillCloseButton.onClick.AddListener(OnSkillOnOffSetting);
         int slotIndex = 0;
 
         for(int i = 0; i < skillDatas.Count; i++)
         {
             if(GameManager.Instance.MainPlayer.Job == skillDatas[i].job)
             {
-                skillSlotUIs[slotIndex].skillData = skillDatas[i];
+                skillSlotUIs[slotIndex].SkillData = skillDatas[i];
                 skillSlotUIs[slotIndex].upDownButton.SkillLevelToText();
                 skillSlotUIs[slotIndex].SetSkillUIInfo();
                 slotIndex++;
@@ -86,30 +93,34 @@ public class SkillUI : MonoBehaviour
 
     private void OnSkillWindowOnOff(UnityEngine.InputSystem.InputAction.CallbackContext obj)
     {
-        OnSkillOnOffSetting();
+        UIOnOffSetting();
+        rectTransform_UI.SetAsLastSibling();
     }
 
-    private void OnSkillOnOffSetting()
+    /// <summary>
+    /// 인벤토리 onoff시 실행할 메서드
+    /// </summary>
+    public override void UIOnOffSetting()
     {
-        if (isSkillWindowOff)
+        if (IsUIOnOff)
         {
-            isSkillWindowOff = false;
+            IsUIOnOff = false;
 
-            skillCanvasGroup.alpha = 1;
-            skillCanvasGroup.interactable = true;
-            skillCanvasGroup.blocksRaycasts = true;
+            CanvasGroupOnOff.alpha = 1;
+            CanvasGroupOnOff.interactable = true;
+            CanvasGroupOnOff.blocksRaycasts = true;
 
-            ui_OnOff.IsUIOnOff();
+            UI_OnOff.IsUIOnOff();
         }
         else
         {
-            isSkillWindowOff = true;
+            isUIOnOff = true;
 
-            skillCanvasGroup.alpha = 0;
-            skillCanvasGroup.interactable = false;
-            skillCanvasGroup.blocksRaycasts = false;
+            CanvasGroupOnOff.alpha = 0;
+            CanvasGroupOnOff.interactable = false;
+            CanvasGroupOnOff.blocksRaycasts = false;
 
-            ui_OnOff.IsUIOnOff();
+            UI_OnOff.IsUIOnOff();
         }
     }
 

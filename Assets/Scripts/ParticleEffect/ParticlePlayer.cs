@@ -33,6 +33,7 @@ public class ParticlePlayer : MonoBehaviour
         if(Instance == null)
         {
             Instance = this;
+            DontDestroyOnLoad(this.gameObject);
         }
         else
         {
@@ -101,7 +102,7 @@ public class ParticlePlayer : MonoBehaviour
     {
         _particlesDict.TryGetValue(particleType, out GameObject gameObj);   //프리팹에 직접 접근함
 
-        GameObject newParticleObj = Instantiate(gameObj, transform, false);
+        GameObject newParticleObj = Instantiate(gameObj, parentTransform, false);
         ParticleObject particleObj = newParticleObj.AddComponent<ParticleObject>();
 
         return particleObj;

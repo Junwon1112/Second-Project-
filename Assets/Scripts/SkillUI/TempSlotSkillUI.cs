@@ -7,14 +7,19 @@ using UnityEngine.InputSystem;
 /// <summary>
 /// 드래그 시 사용될 임시 스킬슬롯
 /// </summary>
-public class TempSlotSkillUI : MonoBehaviour
+public class TempSlotSkillUI : SkillSlotUI_Basic
 {
     Image skillImage;
-    public SkillData tempSkillData;
+    SkillData skillData;
+    public RectTransform rectTransform;
+
+    public override Image SkillImage { get => skillImage; set => skillImage = value; }
+    public override SkillData SkillData { get => skillData; set => skillData = value; }
 
     private void Awake()
     {
-        skillImage = GetComponent<Image>();
+        SkillImage = GetComponent<Image>();
+        rectTransform = transform.parent.GetComponent<RectTransform>();
     }
 
     private void Start()
@@ -31,13 +36,13 @@ public class TempSlotSkillUI : MonoBehaviour
     {
         if(skillData != null)
         {
-            tempSkillData = skillData;
-            skillImage.sprite = tempSkillData.skillIcon;
+            SkillData = skillData;
+            SkillImage.sprite = this.skillData.skillIcon;
         }
         else
         {
-            tempSkillData = null;
-            skillImage.sprite = null;
+            SkillData = null;
+            SkillImage.sprite = null;
         }
     }
 }
