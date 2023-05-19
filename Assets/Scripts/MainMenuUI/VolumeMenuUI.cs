@@ -3,29 +3,29 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class VolumeMenuUI : MonoBehaviour
+public class VolumeMenuUI : SideMenuUI
 {
     Slider bgmVolumeSlider;
     Slider effectVolumeSlider;
 
-    CanvasGroup canvasGroup;
+    protected override CanvasGroup SideCanvasGroup { get; set; }
 
-    bool isVolumeChangeComplete;
+    bool isSideUIChangeComplete;
 
-    public bool IsVolumeChangeComplete { get; set; }
+    public override bool IsSideUIChangeComplete { get; set; }
 
     private void Awake()
     {
         bgmVolumeSlider = transform.GetChild(1).GetComponentInChildren<Slider>();
         effectVolumeSlider = transform.GetChild(2).GetComponentInChildren<Slider>();
-        canvasGroup = GetComponent<CanvasGroup>();
+        SideCanvasGroup = GetComponent<CanvasGroup>();
     }
 
     private void Start()
     {
         bgmVolumeSlider.value = SoundPlayer.Instance.BGMCurrentVolume;
         effectVolumeSlider.value = SoundPlayer.Instance.EffectCurrentVolume;
-        IsVolumeChangeComplete = true;
+        IsSideUIChangeComplete = true;
     }
 
     /// <summary>
@@ -34,7 +34,7 @@ public class VolumeMenuUI : MonoBehaviour
     /// <returns></returns>
     public IEnumerator CoVolumeChangeUpdate()
     {
-        while (!IsVolumeChangeComplete)
+        while (!IsSideUIChangeComplete)
         {
             BGMVolumeControl();
             EffectVolumeControl();
@@ -53,26 +53,29 @@ public class VolumeMenuUI : MonoBehaviour
         SoundPlayer.Instance.EffectVolumeChange(effectVolumeSlider.value);
     }
 
-    public void OpenVolumeMenu()
+    public override void SetWindow()
     {
-        Time.timeScale = 0;
+        if (SideCanvasGroup.interactable == true)
+        {
+            SideCanvasGroup.alpha = 0;
+            SideCanvasGroup.blocksRaycasts = false;
+            SideCanvasGroup.interactable = false;
 
-        IsVolumeChangeComplete = false;
-        StartCoroutine(CoVolumeChangeUpdate());     //IsVolumeChangeComplete가 반드시 false가 되고 난 후 실행되어야함
+            IsSideUIChangeComplete = true;
 
-        canvasGroup.alpha = 1;
-        canvasGroup.blocksRaycasts = true;
-        canvasGroup.interactable = true;
+            Time.timeScale = 1;
+        }
+        else
+        {
+            Time.timeScale = 0;
+
+            IsSideUIChangeComplete = false;
+            StartCoroutine(CoVolumeChangeUpdate());     //IsVolumeChangeComplete가 반드시 false가 되고 난 후 실행되어야함
+
+            SideCanvasGroup.alpha = 1;
+            SideCanvasGroup.blocksRaycasts = true;
+            SideCanvasGroup.interactable = true;
+        }
     }
 
-    public void CloseVolumeMenu()
-    {
-        canvasGroup.alpha = 0;
-        canvasGroup.blocksRaycasts = false;
-        canvasGroup.interactable = false;
-
-        IsVolumeChangeComplete = true;
-
-        Time.timeScale = 1;
-    }
 }

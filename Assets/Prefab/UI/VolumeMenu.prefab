@@ -710,7 +710,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7563055521777862446}
   m_Layer: 5
-  m_Name: VolumeImage
+  m_Name: SideUIImage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1000,7 +1000,7 @@ GameObject:
   - component: {fileID: 7563055522527020877}
   - component: {fileID: 7563055522527020878}
   m_Layer: 5
-  m_Name: VolumeTextureImage
+  m_Name: SideUITextureImage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

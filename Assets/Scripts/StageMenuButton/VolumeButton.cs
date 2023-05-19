@@ -26,6 +26,6 @@ public class VolumeButton : MonoBehaviour
     {
         mainMenuUI.CloseMainMenu();
 
-        volumeMenuUI.OpenVolumeMenu();
+        volumeMenuUI.SetWindow();
     }
 }

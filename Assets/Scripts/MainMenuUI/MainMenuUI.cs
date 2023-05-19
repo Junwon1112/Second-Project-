@@ -11,13 +11,13 @@ public class MainMenuUI : MonoBehaviour
     CanvasGroup canvasGroup;
     bool isOpen = false;
 
-    VolumeMenuUI volumeMenuUI;
+    SideMenuUI[] sideMenuUIs;
 
     private void Awake()
     {
         inputActions = new PlayerInput();
         canvasGroup = GetComponent<CanvasGroup>();
-        volumeMenuUI = FindObjectOfType<VolumeMenuUI>();
+        sideMenuUIs = FindObjectsOfType<SideMenuUI>();
     }
 
     private void OnEnable()
@@ -47,7 +47,7 @@ public class MainMenuUI : MonoBehaviour
 
     public void OpenMainMenu()
     {
-        if(!isChildMenuOpen())
+        if(!IsChildMenuOpen())
         {
             Time.timeScale = 0;
 
@@ -70,14 +70,18 @@ public class MainMenuUI : MonoBehaviour
         Time.timeScale = 1;
     }
 
-    private bool isChildMenuOpen()
+    private bool IsChildMenuOpen()
     {
         bool isChildOpen = false;
-        if(!volumeMenuUI.IsVolumeChangeComplete) //하위 UI를 추가할 때마다 추가
-        {
-            isChildOpen = true;
-        }
 
+        for(int i = 0; i < sideMenuUIs.Length; i++)
+        {
+            if (!sideMenuUIs[i].IsSideUIChangeComplete) //하위 UI를 추가할 때마다 추가
+            {
+                isChildOpen = true;
+                return isChildOpen;
+            }
+        }
         return isChildOpen;
     }
 }
