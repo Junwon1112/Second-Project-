@@ -23,14 +23,21 @@ public class Inventory : MonoBehaviour
 
     //아이템 슬롯 돌면서 빈자리 찾는 함수랑 아이템을 추가하는 함수 구현해야 됨
 
-
+    private uint money = 0;
     public ItemSlot[] itemSlots;
     private uint slotCount = 6; //슬롯 갯수 6개
+    
 
     //아이템 드랍시 사용할 아이템 생성용 팩토리
     //ItemFactory itemFactory = new ItemFactory();
     //-----------------
-    ItemData potion;
+    //ItemData potion; 테스트용 코드
+
+    public uint Money
+    {
+        get { return money; }
+        set { money = value; }
+    }
 
     public ItemSlot this[uint count]    //인덱서를 이용한 프로퍼티
     {
@@ -254,7 +261,6 @@ public class Inventory : MonoBehaviour
         //}
     }
 
-   
 
     // try catch문을 이용한 에러잡는 함수 연습
     //public void aaa()

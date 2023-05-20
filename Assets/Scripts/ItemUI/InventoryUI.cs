@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using TMPro;
 
 /// <summary>
 /// 인벤토리 UI에 나타낼 데이터 및 UI의 작동을 관리
@@ -38,6 +39,9 @@ public class InventoryUI : BasicUIForm_Parent
     GraphicRaycaster uiGraphicRaycaster;
     PointerEventData uiPointerEventData;
 
+    private uint money;
+    public TextMeshProUGUI moneyText_Num;
+
     public override PlayerInput Input_Control { get => input_Control; set => input_Control = value; }
     public override CanvasGroup CanvasGroupOnOff { get => canvasGroupOnOff; set => canvasGroupOnOff = value; }
     public override bool IsUIOnOff { get => isUIOnOff; set => isUIOnOff = value; }
@@ -50,6 +54,7 @@ public class InventoryUI : BasicUIForm_Parent
     public PointerEventData UIPointerEventData { get => uiPointerEventData; set => uiPointerEventData = value; }
     public Inventory PlayerInven { get => playerInven; set => playerInven = value; }
     public EquipmentUI EquipmentUI { get => equipmentUI; set => equipmentUI = value; }
+    public uint Money { get; set; }
     /**
      *@brief
      * 인벤 관련 구현
@@ -81,6 +86,7 @@ public class InventoryUI : BasicUIForm_Parent
         
         equipmentUI = FindObjectOfType<EquipmentUI>();
         UI_OnOff = GetComponentInParent<UI_Player_MoveOnOff>();
+        moneyText_Num = transform.GetChild(1).GetChild(1).GetComponent<TextMeshProUGUI>();
     }
 
     private void Start()
@@ -91,7 +97,8 @@ public class InventoryUI : BasicUIForm_Parent
         /**
          *@details 게임 시작할 때 슬롯UI들 전부 초기화
         */
-
+        Money = PlayerInven.Money;
+        moneyText_Num.text = Money.ToString();
         SetAllSlotWithData();   
 
         IsUIOnOff = true;

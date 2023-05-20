@@ -32,9 +32,14 @@ public class MainMenuUI : MonoBehaviour
         inputActions.MainMenuUI.Disable();
     }
 
-    private void OnMainMenu(InputAction.CallbackContext obj)
+    public void OnMainMenu(InputAction.CallbackContext obj)
     {
-        if(!isOpen)
+        OnOffMainMenu();
+    }
+
+    public void OnOffMainMenu()
+    {
+        if (!isOpen)
         {
             OpenMainMenu();
         }
@@ -42,7 +47,6 @@ public class MainMenuUI : MonoBehaviour
         {
             CloseMainMenu();
         }
- 
     }
 
     public void OpenMainMenu()

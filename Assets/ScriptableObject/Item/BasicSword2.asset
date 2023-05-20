@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c51a6db17d9da844092d789d3554ca00, type: 3}
   m_Name: BasicSword2
   m_EditorClassIdentifier: 
-  itemName: Basic2
+  itemName: BasicSword2
   ID: 11
   itemIDCode: 11
   itemPrefab: {fileID: 3832907126045494399, guid: 358d2f1b6006e9744a61d4908b02415e, type: 3}

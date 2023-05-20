@@ -30,6 +30,6 @@ public class LocationReset : MonoBehaviour
 
     private void OnLevelWasLoaded(int level)
     {
-        rePosLocation_Player = GameObject.Find("StartingPoint").transform.position;
+            rePosLocation_Player = GameObject.Find("StartingPoint").transform.position;
     }
 }
