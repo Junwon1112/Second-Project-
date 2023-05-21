@@ -222,6 +222,34 @@
             ]
         },
         {
+            "name": "StoreUI",
+            "id": "92bd2df5-bd75-4932-91e0-c5007a57a749",
+            "actions": [
+                {
+                    "name": "StoreUIOnOff",
+                    "type": "Button",
+                    "id": "7a3a8894-95a6-4758-b9b3-6901ea593871",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "a409d15d-5f93-4633-94bb-c905b8d57ec3",
+                    "path": "<Keyboard>/g",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "StoreUIOnOff",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
             "name": "EquipmentUI",
             "id": "8f3042f4-179a-485c-ab60-517739098c4f",
             "actions": [

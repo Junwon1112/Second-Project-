@@ -244,6 +244,34 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
             ]
         },
         {
+            ""name"": ""StoreUI"",
+            ""id"": ""92bd2df5-bd75-4932-91e0-c5007a57a749"",
+            ""actions"": [
+                {
+                    ""name"": ""StoreUIOnOff"",
+                    ""type"": ""Button"",
+                    ""id"": ""7a3a8894-95a6-4758-b9b3-6901ea593871"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""a409d15d-5f93-4633-94bb-c905b8d57ec3"",
+                    ""path"": ""<Keyboard>/g"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""StoreUIOnOff"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
+        },
+        {
             ""name"": ""EquipmentUI"",
             ""id"": ""8f3042f4-179a-485c-ab60-517739098c4f"",
             ""actions"": [
@@ -555,6 +583,9 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         m_InventoryUI = asset.FindActionMap("InventoryUI", throwIfNotFound: true);
         m_InventoryUI_InventoryOnOff = m_InventoryUI.FindAction("InventoryOnOff", throwIfNotFound: true);
         m_InventoryUI_InventoryItemUse = m_InventoryUI.FindAction("InventoryItemUse", throwIfNotFound: true);
+        // StoreUI
+        m_StoreUI = asset.FindActionMap("StoreUI", throwIfNotFound: true);
+        m_StoreUI_StoreUIOnOff = m_StoreUI.FindAction("StoreUIOnOff", throwIfNotFound: true);
         // EquipmentUI
         m_EquipmentUI = asset.FindActionMap("EquipmentUI", throwIfNotFound: true);
         m_EquipmentUI_EquipmentOnOff = m_EquipmentUI.FindAction("EquipmentOnOff", throwIfNotFound: true);
@@ -746,6 +777,39 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         }
     }
     public InventoryUIActions @InventoryUI => new InventoryUIActions(this);
+
+    // StoreUI
+    private readonly InputActionMap m_StoreUI;
+    private IStoreUIActions m_StoreUIActionsCallbackInterface;
+    private readonly InputAction m_StoreUI_StoreUIOnOff;
+    public struct StoreUIActions
+    {
+        private @PlayerInput m_Wrapper;
+        public StoreUIActions(@PlayerInput wrapper) { m_Wrapper = wrapper; }
+        public InputAction @StoreUIOnOff => m_Wrapper.m_StoreUI_StoreUIOnOff;
+        public InputActionMap Get() { return m_Wrapper.m_StoreUI; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(StoreUIActions set) { return set.Get(); }
+        public void SetCallbacks(IStoreUIActions instance)
+        {
+            if (m_Wrapper.m_StoreUIActionsCallbackInterface != null)
+            {
+                @StoreUIOnOff.started -= m_Wrapper.m_StoreUIActionsCallbackInterface.OnStoreUIOnOff;
+                @StoreUIOnOff.performed -= m_Wrapper.m_StoreUIActionsCallbackInterface.OnStoreUIOnOff;
+                @StoreUIOnOff.canceled -= m_Wrapper.m_StoreUIActionsCallbackInterface.OnStoreUIOnOff;
+            }
+            m_Wrapper.m_StoreUIActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @StoreUIOnOff.started += instance.OnStoreUIOnOff;
+                @StoreUIOnOff.performed += instance.OnStoreUIOnOff;
+                @StoreUIOnOff.canceled += instance.OnStoreUIOnOff;
+            }
+        }
+    }
+    public StoreUIActions @StoreUI => new StoreUIActions(this);
 
     // EquipmentUI
     private readonly InputActionMap m_EquipmentUI;
@@ -989,6 +1053,10 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
     {
         void OnInventoryOnOff(InputAction.CallbackContext context);
         void OnInventoryItemUse(InputAction.CallbackContext context);
+    }
+    public interface IStoreUIActions
+    {
+        void OnStoreUIOnOff(InputAction.CallbackContext context);
     }
     public interface IEquipmentUIActions
     {

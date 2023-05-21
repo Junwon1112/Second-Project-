@@ -146,7 +146,7 @@ public class InventoryUI : BasicUIForm_Parent
         }
         else
         {
-            isUIOnOff = true;
+            IsUIOnOff = true;
 
             CanvasGroupOnOff.alpha = 0;
             CanvasGroupOnOff.interactable = false;
