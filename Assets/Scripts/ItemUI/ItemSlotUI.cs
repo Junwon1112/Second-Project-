@@ -202,11 +202,11 @@ public class ItemSlotUI : ItemSlotUI_Basic, IPointerClickHandler, IDragHandler, 
         {
             if (SlotUICount < ItemData.itemMaxCount +1 && SlotUICount > 1)    //데이터를 나눌만한지 확인
             {
-                splitUI.splitItemData = ItemData;
+                splitUI.ItemData = ItemData;
                 splitUI.splitPossibleCount = SlotUICount;   //현재 슬롯이 가지고있는 갯수를 전해줌, splitPossibleCount는 splitUI내에서 실제 적용할 splitCount로 변환
-                splitUI.takeID = slotUIID;                  //현재 해당 슬롯의 ID를 전달해 어떤 슬롯인지 구분
-                splitUI.SplitUIOpen();
-                splitUI.rectTransform_Split.SetAsLastSibling();
+                splitUI.TakeID = slotUIID;                  //현재 해당 슬롯의 ID를 전달해 어떤 슬롯인지 구분
+                splitUI.NumUIOpen();
+                splitUI.RectTransform.SetAsLastSibling();
                 //여기부터
 
             }
@@ -249,8 +249,8 @@ public class ItemSlotUI : ItemSlotUI_Basic, IPointerClickHandler, IDragHandler, 
                     playerInven.itemSlots[this.slotUIID].IncreaseSlotItem(remainCount); //아이템 슬롯도 최대값만큼 저장
 
                     //최대갯수를 주고 원래 있던 슬롯에 남은 갯수 돌려주는 작업
-                    playerInvenUI.slotUIs[splitUI.takeID].SlotUICount += newTempSlotCount;      //원래있던 슬롯UI에 남은 갯수 돌려줌
-                    playerInven.itemSlots[splitUI.takeID].IncreaseSlotItem(newTempSlotCount);   //원래있던 슬롯에 남은 갯수 돌려줌
+                    playerInvenUI.slotUIs[splitUI.TakeID].SlotUICount += newTempSlotCount;      //원래있던 슬롯UI에 남은 갯수 돌려줌
+                    playerInven.itemSlots[splitUI.TakeID].IncreaseSlotItem(newTempSlotCount);   //원래있던 슬롯에 남은 갯수 돌려줌
                     splitUI.splitTempSlotSplitUI.ClearTempSlot();                   //tempSlot은 역할은 다했으니 초기화
                     splitUI.isSplitting = false;
                     splitUI.splitTempSlotSplitUI.gameObject.SetActive(false);       //처리 다했으면 tempslotUI끄기
@@ -410,14 +410,14 @@ public class ItemSlotUI : ItemSlotUI_Basic, IPointerClickHandler, IDragHandler, 
         else //raycast받는 게임 오브젝트가 아예없을 때 => Inventory밖에 버렸을 때 = 아이템 드롭
         {
 
-            dropUI.splitItemData = tempSlotSplitUI.ItemData;
+            dropUI.ItemData = tempSlotSplitUI.ItemData;
             dropUI.splitPossibleCount = tempSlotSplitUI.SlotUICount;   //현재 슬롯이 가지고있는 갯수를 전해줌, splitPossibleCount는 splitUI내에서 실제 적용할 splitCount로 변환
-            dropUI.takeID = slotUIID;                                      //현재 해당 슬롯의 ID를 전달해 어떤 슬롯인지 구분
+            dropUI.TakeID = slotUIID;                                      //현재 해당 슬롯의 ID를 전달해 어떤 슬롯인지 구분
             splitUI.splitTempSlotSplitUI.ClearTempSlot();                   //tempSlot은 역할은 다했으니 초기화
             splitUI.splitTempSlotSplitUI.gameObject.SetActive(false);       //처리 다했으면 tempslotUI끄기
             
-            dropUI.SplitUIOpen();
-            dropUI.rectTransform_Drop.SetAsLastSibling();
+            dropUI.NumUIOpen();
+            dropUI.RectTransform.SetAsLastSibling();
             //여기부터
 
             

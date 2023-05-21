@@ -7,35 +7,92 @@ using TMPro;
 /// <summary>
 /// SplitUI를 상속받은 DropUI, 아이템을 밖에 버릴때 사용되는 클래스
 /// </summary>
-public class DropUI : SplitUI
+public class DropUI : Num_UI_Basic
 {
-    private Transform playerTransform;
-    public RectTransform rectTransform_Drop;
+    protected Button okButton;
+    protected Button cancelButton;
+    protected TMP_InputField inputField;
+    protected CanvasGroup numUI_CanvasGroup;
+    protected Inventory inventory;
+    protected InventoryUI inventoryUI;
+    public RectTransform rectTransform;
+    public int takeID;
 
-    protected override void Awake()
+    private Transform playerTransform;
+
+    /// <summary>
+    /// ItemSlotUI에서 받아옴
+    /// </summary>
+    public ItemData itemData;
+
+    /// <summary>
+    /// 스플릿 하기 직전에 아이템슬롯UI에서 데이터값을 그대로 할당해 줌
+    /// </summary>
+    public uint splitPossibleCount = 1;
+
+    /// <summary>
+    /// checkRightcount에서 최종적으로 할당해줌
+    /// </summary>
+    protected int splitCount = 0;
+
+    public bool isSplitting = false;
+
+    protected override Button OkButton { get; set; }
+    protected override Button CancelButton { get; set; }
+    protected override TMP_InputField InputField { get; set; }
+    protected override CanvasGroup NumUI_CanvasGroup { get; set; }
+    public override ItemData ItemData { get; set; }
+    public override int TakeID { get; set; }
+    protected override Inventory Inventory { get; set; }
+    protected override InventoryUI InventoryUI { get; set; }
+    public override RectTransform RectTransform { get; set; }
+    public Transform PlayerTransform { get; set; }
+
+    protected void Awake()
     {
-        okButton = transform.Find("OKButton").GetComponent<Button>();
-        cancelButton = transform.Find("CancelButton").GetComponent<Button>();
-        inputField = GetComponentInChildren<TMP_InputField>();
-        splitUICanvasGroup = GetComponent<CanvasGroup>();
-        
-        splitTempSlotSplitUI = GameObject.Find("ItemMoveSlotUI").transform.GetChild(0).GetComponent<TempSlotSplitUI>();   //활성화후 컴포넌트 찾은거 변수에 저장하고
-        rectTransform_Drop = GetComponent<RectTransform>();
+        OkButton = transform.Find("OKButton").GetComponent<Button>();
+        CancelButton = transform.Find("CancelButton").GetComponent<Button>();
+        InputField = GetComponentInChildren<TMP_InputField>();
+        NumUI_CanvasGroup = GetComponent<CanvasGroup>();
+        RectTransform = GetComponent<RectTransform>();
     }
 
-    protected override void Start()
+    protected void Start()
     {
-        playerTransform = GameManager.Instance.MainPlayer.transform;
-        inventory = GameManager.Instance.MainPlayer.transform.GetComponentInChildren<Inventory>();
-        inventoryUI = GameObject.Find("InventoryUI").GetComponent<InventoryUI>();
+        PlayerTransform = GameManager.Instance.MainPlayer.transform;
+        Inventory = GameManager.Instance.MainPlayer.transform.GetComponentInChildren<Inventory>();
+        InventoryUI = GameObject.Find("InventoryUI").GetComponent<InventoryUI>();
 
 
         //inputField.
-        inputField.onEndEdit.AddListener(this.CheckRightCount); //스트링타입 리턴받는 함수 실행  => 입력된 숫자가 슬롯의 itemCount보다 크면 itemCount를, 작으면 0을 리턴
+        InputField.onEndEdit.AddListener(this.CheckRightCount); //스트링타입 리턴받는 함수 실행  => 입력된 숫자가 슬롯의 itemCount보다 크면 itemCount를, 작으면 0을 리턴
 
-        okButton.onClick.AddListener(this.ClickOKButton);
-        cancelButton.onClick.AddListener(ClickCancelButton);
+        OkButton.onClick.AddListener(this.ClickOKButton);
+        CancelButton.onClick.AddListener(ClickCancelButton);
 
+    }
+
+    /// <summary>
+    /// UI를 열었을 때 보이게 만드는 메서드
+    /// </summary>
+    public override void NumUIOpen()
+    {
+        NumUI_CanvasGroup.alpha = 1.0f;
+        NumUI_CanvasGroup.interactable = true;
+        NumUI_CanvasGroup.blocksRaycasts = true;
+
+        //시작하면 나오는 초기값을 제대로 설정해주는 과정 
+        CheckRightCount(inputField.text);
+    }
+
+    /// <summary>
+    /// UI를 열었을 때 보이게 만드는 메서드
+    /// </summary>
+    public override void NumUIClose()
+    {
+        NumUI_CanvasGroup.alpha = 0.0f;
+        NumUI_CanvasGroup.interactable = false;
+        NumUI_CanvasGroup.blocksRaycasts = false;
     }
 
     protected override void ClickOKButton()
@@ -44,16 +101,16 @@ public class DropUI : SplitUI
 
         for(int i = 0; i < splitCount; i++)
         {
-            ItemFactory.MakeItem(splitItemData.ID, playerTransform.position, playerTransform.rotation);
+            ItemFactory.MakeItem(itemData.ID, playerTransform.position, playerTransform.rotation);
         }
 
         if(splitPossibleCount > 0)  //현재 버리고 남은 총 갯수가 1개 이상이면 원래 슬롯에 아이템을 다시 만들어 준다.
         {
-            inventory.itemSlots[takeID].AssignSlotItem(splitItemData, splitPossibleCount);             //UI와 슬롯 데이터에서는 뺌
-            inventoryUI.slotUIs[takeID].SetSlotWithData(splitItemData, splitPossibleCount);
+            inventory.itemSlots[takeID].AssignSlotItem(itemData, splitPossibleCount);             //UI와 슬롯 데이터에서는 뺌
+            inventoryUI.slotUIs[takeID].SetSlotWithData(itemData, splitPossibleCount);
         }
 
-        SplitUIClose();
+        NumUIClose();
     }
 
     /// <summary>
@@ -83,8 +140,8 @@ public class DropUI : SplitUI
 
     public override void ClickCancelButton()
     {
-        inventory.itemSlots[takeID].AssignSlotItem(splitItemData, splitPossibleCount);
-        inventoryUI.slotUIs[takeID].SetSlotWithData(splitItemData, splitPossibleCount);
-        SplitUIClose();
+        inventory.itemSlots[takeID].AssignSlotItem(itemData, splitPossibleCount);
+        inventoryUI.slotUIs[takeID].SetSlotWithData(itemData, splitPossibleCount);
+        NumUIClose();
     }
 }
