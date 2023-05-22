@@ -23,10 +23,12 @@ public class Inventory : MonoBehaviour
 
     //아이템 슬롯 돌면서 빈자리 찾는 함수랑 아이템을 추가하는 함수 구현해야 됨
 
-    private uint money = 0;
+    private uint money;
+    public uint startingMoney = 1100;
     public ItemSlot[] itemSlots;
     private uint slotCount = 6; //슬롯 갯수 6개
     
+    private InventoryUI invenUI;
 
     //아이템 드랍시 사용할 아이템 생성용 팩토리
     //ItemFactory itemFactory = new ItemFactory();
@@ -53,6 +55,7 @@ public class Inventory : MonoBehaviour
 
     private void Awake()
     {
+        invenUI = FindObjectOfType<InventoryUI>();
         itemSlots = new ItemSlot[slotCount]; //아이템 슬롯 갯수만큼 할당, start에서 실행했다가 inventoryUI에서 실행하는 start함수에서 slot을 불러와야해서 awake로 옮김
 
         for (int i = 0; i < itemSlots.Length; i++)
@@ -60,6 +63,12 @@ public class Inventory : MonoBehaviour
             itemSlots[i] = new ItemSlot();
             itemSlots[i].slotID = i;
         }
+    }
+
+    private void Start()
+    {
+        Money = startingMoney;
+        invenUI.SetAllSlotWithData();
     }
 
     /// <summary>
@@ -240,25 +249,68 @@ public class Inventory : MonoBehaviour
     /// </summary>
     /// <param name="takeItemData">들어올 아이템데이터</param>
     /// <param name="count">들어온 갯수</param>
-    public void TakeItem(ItemData takeItemData, uint count)
+    public bool TakeItem(ItemData takeItemData, uint count)
     {
+        ItemSlot sameItemSlot = FindSameItemSlotForAddItem(takeItemData);
+        bool isFindSlot = false;
         //아이템이 꽉차면 NULL reference가 뜨는데 findsameitemslot함수에서 null값을 리턴해서 거기서는 slotItemData를 받을수 없어 에러가 나는듯, 하지만 일단 작동은 잘돼서 나중에 수정할 것
-        if(FindSameItemSlotForAddItem(takeItemData).SlotItemData != null) //데이터가 null이 아니라면 => 데이터가 비어있지 않음.
+        
+        if(sameItemSlot != null)
         {
-            FindSameItemSlotForAddItem(takeItemData).IncreaseSlotItem(count);
+            if (sameItemSlot.SlotItemData != null) //데이터가 null이 아니라면 => 데이터가 비어있지 않음.
+            {
+                uint remainCount = (uint)takeItemData.itemMaxCount - sameItemSlot.ItemCount;
+                if ( remainCount >= count)
+                {
+                    sameItemSlot.IncreaseSlotItem(count);
+                    isFindSlot = true;
+                    return isFindSlot;
+                }
+                else
+                {
+                    sameItemSlot.IncreaseSlotItem(remainCount);
+                    uint countNew = count - remainCount;
+                    isFindSlot = TakeItem(takeItemData, countNew);
+                    if(!isFindSlot)     //재귀중에 불가능이 생기면 다시 원상복구
+                    {
+                        sameItemSlot.DecreaseSlotItem(remainCount);
+                    }
+                    return isFindSlot;
+                }
+            }
+            else if(sameItemSlot.SlotItemData == null)  //데이터가 null일때
+            {
+                uint remainCount = (uint)takeItemData.itemMaxCount;
+                if (remainCount >= count)
+                {
+                    sameItemSlot.AssignSlotItem(takeItemData, count);
+                    isFindSlot = true;
+                    return isFindSlot;
+                }
+                else
+                {
+                    sameItemSlot.AssignSlotItem(takeItemData, remainCount);
+                    uint countNew = count - remainCount;
+                    isFindSlot = TakeItem(takeItemData, countNew);
+                    if(!isFindSlot)
+                    {
+                        sameItemSlot.ClearSlotItem();
+                    }
+                    return isFindSlot;
+                }
+            }
         }
-        else if(FindSameItemSlotForAddItem(takeItemData).SlotItemData == null)  //데이터가 null일때
-        {
-            FindSameItemSlotForAddItem(takeItemData).AssignSlotItem(takeItemData, count);
-        }
-        else //비어있는 슬롯을 찾지못했다면 찾지못함을 표시
-        {
-            Debug.Log("인벤토리에 할당할수없다");
-        }
+        //else //비어있는 슬롯을 찾지못했다면 찾지못함을 표시
+        //{
+        //    Debug.Log("인벤토리에 할당할수없다");
+        //    return false;
+        //}
         //else if(FindSameItemSlot(takeItemData) == null)  //비어있는 슬롯을 찾지못했다면 찾지못함을 표시
         //{
         //    Debug.Log("인벤토리가 꽉 차있다");
         //}
+        Debug.Log("인벤토리에 할당할수없다");
+        return isFindSlot;
     }
 
 

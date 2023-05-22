@@ -23,7 +23,7 @@ public class AllQuickSlotUI : MonoBehaviour
 
     private void Awake()
     {
-        input = new PlayerInput();
+        input = GameManager.Instance.MainPlayer.input;
         quickSlotUIs = GetComponentsInChildren<QuickSlotUI>();
         //anim = FindObjectOfType<Player>().transform.GetComponent<Animator>();
     }
@@ -33,7 +33,7 @@ public class AllQuickSlotUI : MonoBehaviour
     /// </summary>
     private void OnEnable()
     {
-        input.Enable();
+        input.QuickSlotUI.Enable();
         input.QuickSlotUI.QuickSlot1.performed += OnQuickSlot1;
         input.QuickSlotUI.QuickSlot2.performed += OnQuickSlot2;
         input.QuickSlotUI.QuickSlot3.performed += OnQuickSlot3;
@@ -51,7 +51,7 @@ public class AllQuickSlotUI : MonoBehaviour
         input.QuickSlotUI.QuickSlot4.performed -= OnQuickSlot4;
         input.QuickSlotUI.QuickSlot5.performed -= OnQuickSlot5;
         input.QuickSlotUI.QuickSlot6.performed -= OnQuickSlot6;
-        input.Disable();
+        input.QuickSlotUI.Disable();
     }
 
     private void Start()

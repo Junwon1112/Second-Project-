@@ -44,20 +44,4 @@ public class StoreSlotUI_Buy : StoreSlotUI_Basic
         ItemName.text = _itemName;
         ItemPrice_Text.text = _itemPrice_text;
     }
-
-    /// <summary>
-    /// BuyButton 클래스의 버튼에서 실행할 예정
-    /// </summary>
-    public void Buy()
-    {
-        if(inven.Money > ItemData.itemValue && inven.FindSameItemSlotForAddItem(ItemData) != null) // 돈과 빈 인벤이 있어 살 수 있을 때
-        {
-            //inven.TakeItem(ItemData,)
-        }
-        else //살 수 없을 때
-        {
-
-        }
-
-    }
 }

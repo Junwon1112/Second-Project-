@@ -468,9 +468,11 @@ public class Player : MonoBehaviour, IHealth
             GameObject tempObj = findItem[0].gameObject;
             Item tempItem = tempObj.GetComponent<Item>();
 
-            playerInventory.TakeItem(tempItem.data, 1);
-            playerInventoryUI.SetAllSlotWithData();
-            Destroy(tempObj);
+            if(playerInventory.TakeItem(tempItem.data, 1))
+            {
+                playerInventoryUI.SetAllSlotWithData();
+                Destroy(tempObj);
+            }
 
         }
     }

@@ -18,10 +18,8 @@ public class DropUI : Num_UI_Basic
     public RectTransform rectTransform;
     public int takeID;
 
-    private Transform playerTransform;
-
     /// <summary>
-    /// ItemSlotUI에서 받아옴
+    // ItemSlotUI에서 받아옴
     /// </summary>
     public ItemData itemData;
 
@@ -82,7 +80,7 @@ public class DropUI : Num_UI_Basic
         NumUI_CanvasGroup.blocksRaycasts = true;
 
         //시작하면 나오는 초기값을 제대로 설정해주는 과정 
-        CheckRightCount(inputField.text);
+        CheckRightCount(InputField.text);
     }
 
     /// <summary>
@@ -101,13 +99,13 @@ public class DropUI : Num_UI_Basic
 
         for(int i = 0; i < splitCount; i++)
         {
-            ItemFactory.MakeItem(itemData.ID, playerTransform.position, playerTransform.rotation);
+            ItemFactory.MakeItem(ItemData.ID, PlayerTransform.position, PlayerTransform.rotation);
         }
 
         if(splitPossibleCount > 0)  //현재 버리고 남은 총 갯수가 1개 이상이면 원래 슬롯에 아이템을 다시 만들어 준다.
         {
-            inventory.itemSlots[takeID].AssignSlotItem(itemData, splitPossibleCount);             //UI와 슬롯 데이터에서는 뺌
-            inventoryUI.slotUIs[takeID].SetSlotWithData(itemData, splitPossibleCount);
+            inventory.itemSlots[TakeID].AssignSlotItem(ItemData, splitPossibleCount);             //UI와 슬롯 데이터에서는 뺌
+            inventoryUI.slotUIs[TakeID].SetSlotWithData(ItemData, splitPossibleCount);
         }
 
         NumUIClose();
@@ -132,7 +130,7 @@ public class DropUI : Num_UI_Basic
             splitCount = 1;
         }
 
-        inputField.text = splitCount.ToString();
+        InputField.text = splitCount.ToString();
         //inputText = splitCount.ToString();
         //textCount = splitCount.ToString();
         //return textCount;
@@ -140,8 +138,8 @@ public class DropUI : Num_UI_Basic
 
     public override void ClickCancelButton()
     {
-        inventory.itemSlots[takeID].AssignSlotItem(itemData, splitPossibleCount);
-        inventoryUI.slotUIs[takeID].SetSlotWithData(itemData, splitPossibleCount);
+        inventory.itemSlots[TakeID].AssignSlotItem(ItemData, splitPossibleCount);
+        inventoryUI.slotUIs[TakeID].SetSlotWithData(ItemData, splitPossibleCount);
         NumUIClose();
     }
 }

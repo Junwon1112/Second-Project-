@@ -86,7 +86,7 @@ public class SplitUI : Num_UI_Basic
         NumUI_CanvasGroup.blocksRaycasts = true;
 
         //시작하면 나오는 초기값을 제대로 설정해주는 과정 
-        CheckRightCount(inputField.text);
+        CheckRightCount(InputField.text);
     }
 
     /// <summary>
@@ -131,13 +131,13 @@ public class SplitUI : Num_UI_Basic
     {
         GameObject.Find("ItemMoveSlotUI").transform.GetChild(0).gameObject.SetActive(true);  //tempSlot을 비활성화 시켰다 부모오브젝트를 통해 찾아서 활성화 시킬것이다.
         
-        splitTempSlotSplitUI.SetTempSlotWithData(itemData, (uint)splitCount);       //나눌 데이터 tempslot에 전달하고
+        splitTempSlotSplitUI.SetTempSlotWithData(ItemData, (uint)splitCount);       //나눌 데이터 tempslot에 전달하고
         splitTempSlotSplitUI.rectTransform_TempSlotSplit.SetAsLastSibling();
 
         isSplitting = true;
 
-        Inventory.itemSlots[takeID].DecreaseSlotItem((uint)splitCount);             //UI와 슬롯 데이터에서는 뺌
-        InventoryUI.slotUIs[takeID].SlotUICount -= (uint)splitCount; ;
+        Inventory.itemSlots[TakeID].DecreaseSlotItem((uint)splitCount);             //UI와 슬롯 데이터에서는 뺌
+        InventoryUI.slotUIs[TakeID].SlotUICount -= (uint)splitCount; ;
 
         InventoryUI.SetAllSlotWithData();
 

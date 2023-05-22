@@ -52,8 +52,9 @@ public class UI_Player_MoveOnOff : MonoBehaviour
             
             if (canvasGroups[i].interactable)
             {
-                GameManager.Instance.MainPlayer.input.Disable();
-                if(!isOnInventoryItemUseConnect)
+                GameManager.Instance.MainPlayer.input.Player.Disable();
+                GameManager.Instance.MainPlayer.input.QuickSlotUI.Disable();
+                if (!isOnInventoryItemUseConnect)
                 {
                     isOnInventoryItemUseConnect = true;
                     inventoryUI.Input_Control.InventoryUI.InventoryItemUse.performed += inventoryUI.OnInventoryItemUse;
@@ -67,8 +68,9 @@ public class UI_Player_MoveOnOff : MonoBehaviour
                 count++;
                 if(count >= canvasGroups.Length)    //모든 UI가 꺼졌으면 
                 {
-                    GameManager.Instance.MainPlayer.input.Enable();
-                    if(isOnInventoryItemUseConnect)
+                    GameManager.Instance.MainPlayer.input.Player.Enable();
+                    GameManager.Instance.MainPlayer.input.QuickSlotUI.Enable();
+                    if (isOnInventoryItemUseConnect)
                     {
                         isOnInventoryItemUseConnect = false;
                         inventoryUI.Input_Control.InventoryUI.InventoryItemUse.performed -= inventoryUI.OnInventoryItemUse;

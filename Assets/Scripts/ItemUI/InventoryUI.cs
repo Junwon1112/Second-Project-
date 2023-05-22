@@ -97,8 +97,6 @@ public class InventoryUI : BasicUIForm_Parent
         /**
          *@details 게임 시작할 때 슬롯UI들 전부 초기화
         */
-        Money = PlayerInven.Money;
-        moneyText_Num.text = Money.ToString();
         SetAllSlotWithData();   
 
         IsUIOnOff = true;
@@ -282,6 +280,8 @@ public class InventoryUI : BasicUIForm_Parent
             slotUIs[i].SetSlotWithData(PlayerInven.itemSlots[i].SlotItemData, PlayerInven.itemSlots[i].ItemCount);
             slotUIs[i].slotUIID = i;
         }
+        Money = PlayerInven.Money;
+        moneyText_Num.text = Money.ToString();
     }
 
 }

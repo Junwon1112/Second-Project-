@@ -25,14 +25,17 @@ public class BuyUI : Num_UI_Basic
     /// <summary>
     /// 스플릿 하기 직전에 아이템슬롯UI에서 데이터값을 그대로 할당해 줌
     /// </summary>
-    public uint splitPossibleCount = 1;
+    public uint buyPossibleCount = 1;
 
     /// <summary>
     /// checkRightcount에서 최종적으로 할당해줌
     /// </summary>
-    protected int splitCount = 0;
+    protected int buyCount = 0;
 
     public bool isSplitting = false;
+
+    Inventory inven;
+    InventoryUI invenUI;
 
     protected override Button OkButton { get; set; }
     protected override Button CancelButton { get; set; }
@@ -45,6 +48,7 @@ public class BuyUI : Num_UI_Basic
     public override RectTransform RectTransform { get; set; }
     public Transform PlayerTransform { get; set; }
 
+
     protected void Awake()
     {
         OkButton = transform.Find("OKButton").GetComponent<Button>();
@@ -52,6 +56,9 @@ public class BuyUI : Num_UI_Basic
         InputField = GetComponentInChildren<TMP_InputField>();
         NumUI_CanvasGroup = GetComponent<CanvasGroup>();
         RectTransform = GetComponent<RectTransform>();
+
+        inven = FindObjectOfType<Inventory>();
+        invenUI = FindObjectOfType<InventoryUI>();
     }
 
     protected void Start()
@@ -78,7 +85,7 @@ public class BuyUI : Num_UI_Basic
         NumUI_CanvasGroup.blocksRaycasts = true;
 
         //시작하면 나오는 초기값을 제대로 설정해주는 과정 
-        CheckRightCount(inputField.text);
+        CheckRightCount(InputField.text);
     }
 
     /// <summary>
@@ -93,39 +100,41 @@ public class BuyUI : Num_UI_Basic
 
     protected override void ClickOKButton()
     {
-        //splitPossibleCount -= (uint)splitCount;
+        bool isSuccessBuy;
+        isSuccessBuy = inven.TakeItem(ItemData, (uint)buyCount);
+        invenUI.SetAllSlotWithData();
 
-        //for (int i = 0; i < splitCount; i++)
-        //{
-        //    ItemFactory.MakeItem(itemData.ID, playerTransform.position, playerTransform.rotation);
-        //}
-
-        //if (splitPossibleCount > 0)  //현재 버리고 남은 총 갯수가 1개 이상이면 원래 슬롯에 아이템을 다시 만들어 준다.
-        //{
-        //    inventory.itemSlots[takeID].AssignSlotItem(itemData, splitPossibleCount);             //UI와 슬롯 데이터에서는 뺌
-        //    inventoryUI.slotUIs[takeID].SetSlotWithData(itemData, splitPossibleCount);
-        //}
-
+        if(!isSuccessBuy)   //할당에 실패했다면
+        {
+            //경고창
+        }
+        else    //할당에 성공했다면
+        {
+            inven.Money -= (uint)ItemData.itemValue * (uint)buyCount;
+            invenUI.SetAllSlotWithData();
+        }
         NumUIClose();
     }
 
     /// <summary>
-    /// 텍스트에 버릴 갯수 입력시 맞는 숫자를 버리는지 확인하는 함수 
+    /// 텍스트에 구매 갯수 입력시 맞는 숫자를 구매하는지 확인하는 함수 
     /// </summary>
     /// <param name="inputText"></param>
-    protected override void CheckRightCount(string inputText) //텍스트에 버릴 갯수 입력 시 실행
+    protected override void CheckRightCount(string inputText) //텍스트에 구매 갯수 입력 시 실행
     {
-        //bool isParsing = int.TryParse(inputText, out splitCount);
-        //if (splitCount > (int)splitPossibleCount)
-        //{
-        //    splitCount = (int)splitPossibleCount;
-        //}
-        //else if (splitCount < 1)
-        //{
-        //    splitCount = 1;
-        //}
+        buyPossibleCount = inven.Money / (uint)ItemData.itemValue;
 
-        //inputField.text = splitCount.ToString();
+        bool isParsing = int.TryParse(inputText, out buyCount);
+        if (buyCount > (int)buyPossibleCount)
+        {
+            buyCount = (int)buyPossibleCount;
+        }
+        else if (buyCount < 1)
+        {
+            buyCount = 1;
+        }
+
+        InputField.text = buyCount.ToString();
     }
 
     public override void ClickCancelButton()
