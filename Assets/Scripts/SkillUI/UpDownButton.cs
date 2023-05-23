@@ -40,9 +40,9 @@ public class UpDownButton : MonoBehaviour
     /// </summary>
     private void CurrentSkillPointUp()
     {
-        if(GameManager.Instance.MainPlayer.SkillPoint > 0)
+        if(InGameManager.Instance.MainPlayer.SkillPoint > 0)
         {
-            GameManager.Instance.MainPlayer.SetSkillPointDown();
+            InGameManager.Instance.MainPlayer.SetSkillPointDown();
             skillSlotUI.SkillData.SkillLevel++;
             SkillLevelToText();
 
@@ -58,7 +58,7 @@ public class UpDownButton : MonoBehaviour
     {
         if (skillSlotUI.SkillData.SkillLevel > 0)
         {
-            GameManager.Instance.MainPlayer.SetSkillPointUp();
+            InGameManager.Instance.MainPlayer.SetSkillPointUp();
             skillSlotUI.SkillData.SkillLevel--;
             SkillLevelToText();
 

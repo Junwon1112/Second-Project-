@@ -6,12 +6,12 @@ using UnityEngine.UI;
 public class OptionButton : MonoBehaviour
 {
     Button optionButton;
-    MainMenuUI mainMenuUI;
+    MenuUI_Basic mainMenuUI;
 
     private void Awake()
     {
         optionButton = GetComponent<Button>();
-        mainMenuUI = FindObjectOfType<MainMenuUI>();
+        mainMenuUI = FindObjectOfType<MenuUI_Basic>();
     }
 
     private void Start()

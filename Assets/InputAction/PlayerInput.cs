@@ -550,6 +550,34 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""LoadingUI"",
+            ""id"": ""e0cff282-5258-4d1a-bbc4-34b4d7e9ca81"",
+            ""actions"": [
+                {
+                    ""name"": ""GoToNextScene"",
+                    ""type"": ""Button"",
+                    ""id"": ""ff951f02-f7c3-4dc3-b7d9-3552cee1b795"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""9419bc7e-1244-42f8-8b1c-c57af5aa9b42"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""GoToNextScene"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": [
@@ -608,6 +636,9 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         m_Skill_Implement = asset.FindActionMap("Skill_Implement", throwIfNotFound: true);
         m_Skill_Implement_FindingTarget = m_Skill_Implement.FindAction("FindingTarget", throwIfNotFound: true);
         m_Skill_Implement_ClickTarget = m_Skill_Implement.FindAction("ClickTarget", throwIfNotFound: true);
+        // LoadingUI
+        m_LoadingUI = asset.FindActionMap("LoadingUI", throwIfNotFound: true);
+        m_LoadingUI_GoToNextScene = m_LoadingUI.FindAction("GoToNextScene", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -1031,6 +1062,39 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         }
     }
     public Skill_ImplementActions @Skill_Implement => new Skill_ImplementActions(this);
+
+    // LoadingUI
+    private readonly InputActionMap m_LoadingUI;
+    private ILoadingUIActions m_LoadingUIActionsCallbackInterface;
+    private readonly InputAction m_LoadingUI_GoToNextScene;
+    public struct LoadingUIActions
+    {
+        private @PlayerInput m_Wrapper;
+        public LoadingUIActions(@PlayerInput wrapper) { m_Wrapper = wrapper; }
+        public InputAction @GoToNextScene => m_Wrapper.m_LoadingUI_GoToNextScene;
+        public InputActionMap Get() { return m_Wrapper.m_LoadingUI; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(LoadingUIActions set) { return set.Get(); }
+        public void SetCallbacks(ILoadingUIActions instance)
+        {
+            if (m_Wrapper.m_LoadingUIActionsCallbackInterface != null)
+            {
+                @GoToNextScene.started -= m_Wrapper.m_LoadingUIActionsCallbackInterface.OnGoToNextScene;
+                @GoToNextScene.performed -= m_Wrapper.m_LoadingUIActionsCallbackInterface.OnGoToNextScene;
+                @GoToNextScene.canceled -= m_Wrapper.m_LoadingUIActionsCallbackInterface.OnGoToNextScene;
+            }
+            m_Wrapper.m_LoadingUIActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @GoToNextScene.started += instance.OnGoToNextScene;
+                @GoToNextScene.performed += instance.OnGoToNextScene;
+                @GoToNextScene.canceled += instance.OnGoToNextScene;
+            }
+        }
+    }
+    public LoadingUIActions @LoadingUI => new LoadingUIActions(this);
     private int m_PlayerSchemeIndex = -1;
     public InputControlScheme PlayerScheme
     {
@@ -1084,5 +1148,9 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
     {
         void OnFindingTarget(InputAction.CallbackContext context);
         void OnClickTarget(InputAction.CallbackContext context);
+    }
+    public interface ILoadingUIActions
+    {
+        void OnGoToNextScene(InputAction.CallbackContext context);
     }
 }

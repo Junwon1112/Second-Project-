@@ -173,8 +173,8 @@ public class Monster_PassiveAttack : Monster_Basic
 
     private void Start()
     {
-        playerTransform = GameManager.Instance.MainPlayer.transform;
-        player = GameManager.Instance.MainPlayer;
+        playerTransform = InGameManager.Instance.MainPlayer.transform;
+        player = InGameManager.Instance.MainPlayer;
 
         Transform patrolPoint = transform.parent.GetChild(1);
 

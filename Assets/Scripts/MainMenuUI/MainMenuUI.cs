@@ -4,7 +4,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class MainMenuUI : MonoBehaviour
+/// <summary>
+/// 첫번째 시작씬에서 같은일은 OptionMenuUI가 수행한다. 
+/// </summary>
+public class MainMenuUI : MenuUI_Basic
 {
     PlayerInput inputActions;
 
@@ -12,12 +15,18 @@ public class MainMenuUI : MonoBehaviour
     bool isOpen = false;
 
     SideMenuUI[] sideMenuUIs;
+    protected override CanvasGroup CanvasGroup { get; set; }
+    protected override bool IsOpen { get; set; }
+    protected override SideMenuUI[] SideMenuUIs { get; set; }
+
 
     private void Awake()
     {
         inputActions = new PlayerInput();
-        canvasGroup = GetComponent<CanvasGroup>();
-        sideMenuUIs = FindObjectsOfType<SideMenuUI>();
+
+        CanvasGroup = GetComponent<CanvasGroup>();
+        SideMenuUIs = FindObjectsOfType<SideMenuUI>();
+        IsOpen = false;
     }
 
     private void OnEnable()
@@ -37,9 +46,9 @@ public class MainMenuUI : MonoBehaviour
         OnOffMainMenu();
     }
 
-    public void OnOffMainMenu()
+    public override void OnOffMainMenu()
     {
-        if (!isOpen)
+        if (!IsOpen)
         {
             OpenMainMenu();
         }
@@ -49,38 +58,38 @@ public class MainMenuUI : MonoBehaviour
         }
     }
 
-    public void OpenMainMenu()
+    public override void OpenMainMenu()
     {
         if(!IsChildMenuOpen())
         {
             Time.timeScale = 0;
 
-            isOpen = true;
+            IsOpen = true;
 
-            canvasGroup.alpha = 1;
-            canvasGroup.blocksRaycasts = true;
-            canvasGroup.interactable = true;
+            CanvasGroup.alpha = 1;
+            CanvasGroup.blocksRaycasts = true;
+            CanvasGroup.interactable = true;
         }  
     }
 
-    public void CloseMainMenu()
+    public override void CloseMainMenu()
     {
-        canvasGroup.alpha = 0;
-        canvasGroup.blocksRaycasts = false;
-        canvasGroup.interactable = false;
+        CanvasGroup.alpha = 0;
+        CanvasGroup.blocksRaycasts = false;
+        CanvasGroup.interactable = false;
 
-        isOpen = false;
+        IsOpen = false;
 
         Time.timeScale = 1;
     }
 
-    private bool IsChildMenuOpen()
+    protected override bool IsChildMenuOpen()
     {
         bool isChildOpen = false;
 
-        for(int i = 0; i < sideMenuUIs.Length; i++)
+        for(int i = 0; i < SideMenuUIs.Length; i++)
         {
-            if (!sideMenuUIs[i].IsSideUIChangeComplete) //하위 UI를 추가할 때마다 추가
+            if (!SideMenuUIs[i].IsSideUIChangeComplete) //하위 UI를 추가할 때마다 추가
             {
                 isChildOpen = true;
                 return isChildOpen;

@@ -49,7 +49,7 @@ public class ClearDoor_NextStage : ClearDoor
 
     private void NextStage()
     {
-        SceneManager.LoadScene(GameManager.Instance.CurrentScene.buildIndex + 1);
+        SceneManager.LoadScene(TotalGameManager.Instance.CurrentScene.buildIndex + 1);
     }
 
 

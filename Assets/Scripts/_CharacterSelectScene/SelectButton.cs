@@ -32,7 +32,7 @@ public class SelectButton : MonoBehaviour
     private void SelectChracter()
     {
         lightSetting.SetLight();
-        SceneManager.LoadScene("Stage1");
+        SceneManager.LoadScene(TotalGameManager.Instance.CurrentScene.buildIndex +1);
     }
 
     public void SetButton()

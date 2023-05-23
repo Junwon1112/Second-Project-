@@ -28,7 +28,6 @@ public class BuyButton : MonoBehaviour
 
     private void BuyItem()
     {
-
         buyUI.ItemData = parentSlot.ItemData;
         buyUI.NumUIOpen();
     }

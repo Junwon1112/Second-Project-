@@ -65,7 +65,7 @@ public class SplitUI : Num_UI_Basic
 
     protected virtual void Start()
     {
-        Inventory = GameManager.Instance.MainPlayer.transform.GetComponentInChildren<Inventory>();
+        Inventory = InGameManager.Instance.MainPlayer.transform.GetComponentInChildren<Inventory>();
         InventoryUI = GameObject.Find("InventoryUI").GetComponent<InventoryUI>();
 
         //스트링타입 리턴받는 함수 실행  => 입력된 숫자가 슬롯의 itemCount보다 크면 itemCount를, 작으면 0을 리턴

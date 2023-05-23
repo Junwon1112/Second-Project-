@@ -78,7 +78,7 @@ public class InventoryUI : BasicUIForm_Parent
 
     protected void Awake()
     {
-        Input_Control = new PlayerInput();
+        Input_Control = TotalGameManager.Instance.Input;
         CanvasGroupOnOff = GetComponent<CanvasGroup>();
         slotUIs = GetComponentsInChildren<ItemSlotUI>();
         RectTransform_UI = GetComponent<RectTransform>();
@@ -91,9 +91,11 @@ public class InventoryUI : BasicUIForm_Parent
 
     private void Start()
     {
-        Player = GameManager.Instance.MainPlayer;
-        PlayerInven = GameManager.Instance.MainPlayer.transform.GetComponentInChildren<Inventory>();
+        Player = InGameManager.Instance.MainPlayer;
+        PlayerInven = InGameManager.Instance.MainPlayer.transform.GetComponentInChildren<Inventory>();
 
+        //Invnen에서 직접하면 순서가 꼬여서 여기서 초기 금액을 지원
+        playerInven.Money = playerInven.startingMoney;
         /**
          *@details 게임 시작할 때 슬롯UI들 전부 초기화
         */
@@ -196,11 +198,11 @@ public class InventoryUI : BasicUIForm_Parent
                 IConsumable consumable;
                 if (tempSlotUI.ItemData.ID == 100)
                 {
-                    consumable = GameManager.Instance.ItemManager.FindItem_SpecialPotion(tempSlotUI.ItemData.ID);
+                    consumable = InGameManager.Instance.ItemManager.FindItem_SpecialPotion(tempSlotUI.ItemData.ID);
                 }
                 else
                 {
-                    consumable = GameManager.Instance.ItemManager.FindItem_Potion(tempSlotUI.ItemData.ID);
+                    consumable = InGameManager.Instance.ItemManager.FindItem_Potion(tempSlotUI.ItemData.ID);
                 }
                 
                 consumable.Use(player);

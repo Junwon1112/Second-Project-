@@ -12,6 +12,7 @@ public class ReStartButton : MonoBehaviour
     SceneManager sceneManager;
     Button restartButton;
 
+
     private void Awake()
     {
         restartButton = GetComponent<Button>();
@@ -24,14 +25,14 @@ public class ReStartButton : MonoBehaviour
 
     private void ReStartStage()
     {
-        if(GameManager.Instance.CurrentScene.name == ("StartVillage"))
+        if(TotalGameManager.Instance.CurrentScene.name != ("Stage1"))
         {
-            SceneManager.LoadScene(GameManager.Instance.CurrentScene.name);
+            SceneManager.LoadScene(TotalGameManager.Instance.CurrentScene.name);
         }
         else
         {
-            GameManager.Instance.ResetDontDestroy();
-            SceneManager.LoadScene(GameManager.Instance.CurrentScene.name);
+            TotalGameManager.Instance.ResetDontDestroy();
+            SceneManager.LoadScene(TotalGameManager.Instance.CurrentScene.name);
         }
         Time.timeScale = 1.0f;
     }

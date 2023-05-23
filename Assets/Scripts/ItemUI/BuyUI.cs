@@ -37,6 +37,8 @@ public class BuyUI : Num_UI_Basic
     Inventory inven;
     InventoryUI invenUI;
 
+    StoreUI storeUI;
+
     protected override Button OkButton { get; set; }
     protected override Button CancelButton { get; set; }
     protected override TMP_InputField InputField { get; set; }
@@ -59,12 +61,13 @@ public class BuyUI : Num_UI_Basic
 
         inven = FindObjectOfType<Inventory>();
         invenUI = FindObjectOfType<InventoryUI>();
+        storeUI = FindObjectOfType<StoreUI>();
     }
 
     protected void Start()
     {
-        PlayerTransform = GameManager.Instance.MainPlayer.transform;
-        Inventory = GameManager.Instance.MainPlayer.transform.GetComponentInChildren<Inventory>();
+        PlayerTransform = InGameManager.Instance.MainPlayer.transform;
+        Inventory = InGameManager.Instance.MainPlayer.transform.GetComponentInChildren<Inventory>();
         InventoryUI = GameObject.Find("InventoryUI").GetComponent<InventoryUI>();
 
 
@@ -112,6 +115,9 @@ public class BuyUI : Num_UI_Basic
         {
             inven.Money -= (uint)ItemData.itemValue * (uint)buyCount;
             invenUI.SetAllSlotWithData();
+
+            storeUI.ClearSlotUIs();
+            storeUI.SetStoreSlotUIs();
         }
         NumUIClose();
     }

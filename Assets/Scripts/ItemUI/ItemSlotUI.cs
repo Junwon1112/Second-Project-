@@ -70,7 +70,7 @@ public class ItemSlotUI : ItemSlotUI_Basic, IPointerClickHandler, IDragHandler, 
 
     private void Start()
     {
-        playerInven = GameManager.Instance.MainPlayer.transform.GetComponentInChildren<Inventory>();
+        playerInven = InGameManager.Instance.MainPlayer.transform.GetComponentInChildren<Inventory>();
         playerInvenUI = GameObject.Find("InventoryUI").GetComponent<InventoryUI>();
     }
 

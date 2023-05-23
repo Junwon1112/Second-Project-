@@ -6,14 +6,14 @@ using UnityEngine.UI;
 public class WindowButton : MonoBehaviour
 {
     Button windowButton;
-    MainMenuUI mainMenuUI;
+    MenuUI_Basic menuUI;
 
     WindowMenuUI windowMenuUI;
 
     private void Awake()
     {
         windowButton = GetComponent<Button>();
-        mainMenuUI = FindObjectOfType<MainMenuUI>();
+        menuUI = FindObjectOfType<MenuUI_Basic>();
         windowMenuUI = FindObjectOfType<WindowMenuUI>();
     }
 
@@ -24,7 +24,7 @@ public class WindowButton : MonoBehaviour
 
     private void StartWindowUI()
     {
-        mainMenuUI.CloseMainMenu();
+        menuUI.CloseMainMenu();
 
         windowMenuUI.SetWindow();
     }

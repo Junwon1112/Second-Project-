@@ -6,14 +6,14 @@ using UnityEngine.UI;
 public class VolumeButton : MonoBehaviour
 {
     Button volumeButton;
-    MainMenuUI mainMenuUI;
+    MenuUI_Basic menuUI;
 
     VolumeMenuUI volumeMenuUI;
 
     private void Awake()
     {
         volumeButton = GetComponent<Button>();
-        mainMenuUI = FindObjectOfType<MainMenuUI>();
+        menuUI = FindObjectOfType<MenuUI_Basic>();
         volumeMenuUI = FindObjectOfType<VolumeMenuUI>();
     }
 
@@ -24,7 +24,7 @@ public class VolumeButton : MonoBehaviour
 
     private void StartVolumeUI()
     {
-        mainMenuUI.CloseMainMenu();
+        menuUI.CloseMainMenu();
 
         volumeMenuUI.SetWindow();
     }

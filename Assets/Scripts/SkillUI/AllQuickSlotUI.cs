@@ -23,7 +23,7 @@ public class AllQuickSlotUI : MonoBehaviour
 
     private void Awake()
     {
-        input = GameManager.Instance.MainPlayer.input;
+        input = TotalGameManager.Instance.Input;
         quickSlotUIs = GetComponentsInChildren<QuickSlotUI>();
         //anim = FindObjectOfType<Player>().transform.GetComponent<Animator>();
     }

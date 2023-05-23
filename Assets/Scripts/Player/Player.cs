@@ -236,7 +236,7 @@ public class Player : MonoBehaviour, IHealth
 
     private void Awake()
     {
-        input = new PlayerInput();
+        input = TotalGameManager.Instance.Input;
         anim = GetComponent<Animator>();
         rigid = GetComponent<Rigidbody>();
 
@@ -292,13 +292,16 @@ public class Player : MonoBehaviour, IHealth
     private void OnDisable()
     {
         //input.Player.TestMakeItem.performed -= OnTestMakeItem;
-        input.Player.TempItemUse.performed -= OnTempItemUse;
-        input.Player.Attack.performed -= OnAttackInput;
-        input.Player.Move.canceled -= OnMoveInput;
-        input.Player.Move.performed -= OnMoveInput;
-        input.Player.Look.performed -= OnLookInput;
-        input.Player.Disable();
-        input.Player.TakeItem.performed -= OnTakeItem;
+        if(this.gameObject.name == $"Player_{Job.ToString()}")
+        {
+            input.Player.TempItemUse.performed -= OnTempItemUse;
+            input.Player.Attack.performed -= OnAttackInput;
+            input.Player.Move.canceled -= OnMoveInput;
+            input.Player.Move.performed -= OnMoveInput;
+            input.Player.Look.performed -= OnLookInput;
+            input.Player.TakeItem.performed -= OnTakeItem;
+            input.Player.Disable();
+        }
     }
 
     

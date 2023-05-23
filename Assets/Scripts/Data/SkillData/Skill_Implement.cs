@@ -46,14 +46,14 @@ public class Skill_Implement : MonoBehaviour
 
     private void Start()
     {
-        player = GameManager.Instance.MainPlayer;
+        player = InGameManager.Instance.MainPlayer;
         camera = FindObjectOfType<MainCamera>().transform.GetComponent<Camera>();
         anim = player.transform.GetComponent<Animator>();
     }
 
     public void TakeWeapon()
     {
-        weapon = GameManager.Instance.MainPlayer.GetComponentInChildren<PlayerWeapon>();
+        weapon = InGameManager.Instance.MainPlayer.GetComponentInChildren<PlayerWeapon>();
         capsuleCollider = weapon.transform.GetComponent<CapsuleCollider>();
     }
 

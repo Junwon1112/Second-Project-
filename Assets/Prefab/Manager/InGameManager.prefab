@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7668844289155598183}
-  - component: {fileID: 7668844289155598182}
+  - component: {fileID: 8411649781764982350}
   - component: {fileID: 7668844289155598184}
   m_Layer: 0
   m_Name: InGameManager
@@ -33,7 +33,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7668844289155598182
+--- !u!114 &8411649781764982350
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -42,9 +42,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 7668844289155598181}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9a2e92ff10d2f3a46bc3b7e158e9be69, type: 3}
+  m_Script: {fileID: 11500000, guid: b73d4a250b8073048851973a031c4977, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  jobData: {fileID: 11400000, guid: c4d41165a87799948897bc07d6b8d8af, type: 2}
 --- !u!114 &7668844289155598184
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -57,8 +58,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a64e22e2b10ed5044abf83e564e25338, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemDatas:
-  - {fileID: 11400000, guid: c97bcf0ac86f1e9478fa93c97c51137d, type: 2}
-  - {fileID: 11400000, guid: df55d59d539181f4d9fe4a19c3bf3d3b, type: 2}
-  - {fileID: 11400000, guid: df12fef7a52e56c4386999cda9ce657b, type: 2}
-  - {fileID: 11400000, guid: 9fb14f29ee574c04a80fa70231a3c67c, type: 2}
+  itemDatas_Potion: []
+  itemDatas_Weapon: []
+  itemDatas_SpecialPotion: []

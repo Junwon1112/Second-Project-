@@ -48,7 +48,7 @@ public class MiniMapCamera : MonoBehaviour
 
     private void MiniMapMove()
     {
-        PlayerPosition = GameManager.Instance.MainPlayer.transform.position;
+        PlayerPosition = InGameManager.Instance.MainPlayer.transform.position;
         transform.position = PlayerPosition;
     }
 }

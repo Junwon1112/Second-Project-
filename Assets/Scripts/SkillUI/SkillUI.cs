@@ -34,7 +34,7 @@ public class SkillUI : BasicUIForm_Parent
     private void Awake()
     {
         skillSlotUIs = GetComponentsInChildren<SkillSlotUI>();
-        input_Control = new PlayerInput();
+        input_Control = TotalGameManager.Instance.Input;
         canvasGroupOnOff = GetComponent<CanvasGroup>();
         ui_OnOff = GetComponentInParent<UI_Player_MoveOnOff>();
         skillPoint_Num = transform.Find("SkillPointUI").GetChild(1).GetComponent<TextMeshProUGUI>();
@@ -67,7 +67,7 @@ public class SkillUI : BasicUIForm_Parent
 
         for(int i = 0; i < skillDatas.Count; i++)
         {
-            if(GameManager.Instance.MainPlayer.Job == skillDatas[i].job)
+            if(InGameManager.Instance.MainPlayer.Job == skillDatas[i].job)
             {
                 skillSlotUIs[slotIndex].SkillData = skillDatas[i];
                 skillSlotUIs[slotIndex].upDownButton.SkillLevelToText();
@@ -87,7 +87,7 @@ public class SkillUI : BasicUIForm_Parent
 
         SynchronizeSkillPoint();
 
-        GameManager.Instance.MainPlayer.newDel_LevelUp += SynchronizeSkillPoint;
+        InGameManager.Instance.MainPlayer.newDel_LevelUp += SynchronizeSkillPoint;
         
     }
 
@@ -129,6 +129,6 @@ public class SkillUI : BasicUIForm_Parent
     /// </summary>
     public void SynchronizeSkillPoint()
     {
-        skillPoint_Num.text = GameManager.Instance.MainPlayer.SkillPoint.ToString();
+        skillPoint_Num.text = InGameManager.Instance.MainPlayer.SkillPoint.ToString();
     }
 }

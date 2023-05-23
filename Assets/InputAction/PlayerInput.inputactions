@@ -528,6 +528,34 @@
                     "isPartOfComposite": false
                 }
             ]
+        },
+        {
+            "name": "LoadingUI",
+            "id": "e0cff282-5258-4d1a-bbc4-34b4d7e9ca81",
+            "actions": [
+                {
+                    "name": "GoToNextScene",
+                    "type": "Button",
+                    "id": "ff951f02-f7c3-4dc3-b7d9-3552cee1b795",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "9419bc7e-1244-42f8-8b1c-c57af5aa9b42",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "GoToNextScene",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         }
     ],
     "controlSchemes": [

@@ -57,8 +57,8 @@ public class DropUI : Num_UI_Basic
 
     protected void Start()
     {
-        PlayerTransform = GameManager.Instance.MainPlayer.transform;
-        Inventory = GameManager.Instance.MainPlayer.transform.GetComponentInChildren<Inventory>();
+        PlayerTransform = InGameManager.Instance.MainPlayer.transform;
+        Inventory = InGameManager.Instance.MainPlayer.transform.GetComponentInChildren<Inventory>();
         InventoryUI = GameObject.Find("InventoryUI").GetComponent<InventoryUI>();
 
 

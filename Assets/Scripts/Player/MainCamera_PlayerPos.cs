@@ -44,8 +44,8 @@ public class MainCamera_PlayerPos : MonoBehaviour
 
     public void CameraMoving()
     {
-        playerPos = GameManager.Instance.MainPlayer.transform.position;
+        playerPos = InGameManager.Instance.MainPlayer.transform.position;
         transform.position = Vector3.Lerp(transform.position, playerPos, lerpRate * Time.deltaTime);
-        transform.rotation = GameManager.Instance.MainPlayer.transform.rotation;
+        transform.rotation = InGameManager.Instance.MainPlayer.transform.rotation;
     }
 }

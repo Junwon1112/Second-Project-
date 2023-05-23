@@ -6,12 +6,10 @@ using UnityEngine.SceneManagement;
 /// <summary>
 /// 싱글톤 패턴을 이용해 플레이어, 아이템, 스킬 관련 데이터를 가져올 수 있는 GameManager 클래스
 /// </summary>
-public class GameManager : MonoBehaviour
+public class InGameManager : MonoBehaviour
 {
     Player player;
     ItemDataManager itemDataManager;
-
-    Scene currentScene;
 
     [SerializeField]
     ScriptableObj_JobData jobData;
@@ -41,12 +39,12 @@ public class GameManager : MonoBehaviour
     /// <summary>
     /// static을 사용해 외부에서도 새로운 클래스를 만들지 않고 바로 가져올 수 있음, 하나의 인스턴스만 존재
     /// </summary>
-    public static GameManager Instance;
+    public static InGameManager Instance;
 
     /// <summary>
     /// Instance에 대한 프로퍼티
     /// </summary>
-    public GameManager Inst
+    public InGameManager Inst
     {
         get
         {
@@ -54,17 +52,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public Scene CurrentScene
-    {
-        get
-        {
-            return currentScene;
-        }
-        private set
-        {
-            currentScene = value;
-        }
-    }
+
 
     GameObject[] testObjs;
 
@@ -95,7 +83,7 @@ public class GameManager : MonoBehaviour
     {
         player = GameObject.Find($"Player_{jobData.jobType.ToString()}").GetComponent<Player>();
         itemDataManager = FindObjectOfType<ItemDataManager>();
-        CurrentScene = SceneManager.GetActiveScene();
+        
     }
 
     private void Start()
@@ -104,34 +92,6 @@ public class GameManager : MonoBehaviour
         
     }
 
-    private void OnLevelWasLoaded(int level)
-    {
-        CurrentScene = SceneManager.GetActiveScene();
-    }
 
-    public void ResetDontDestroy()
-    {
-        for (int i = 0; i < DontDestroyOnLoad_Manager.Instance.objs_DontDestroy.Count; i++)
-        {
-            Destroy(DontDestroyOnLoad_Manager.Instance.objs_DontDestroy[i]);
-        }
-
-        Destroy(UI_Player_MoveOnOff.instance.gameObject);
-        Destroy(Skill_Implement.Instance.gameObject);
-        Destroy(SkillDataManager.Instance.gameObject);
-        Destroy(SoundPlayer.Instance.gameObject);
-        Destroy(ParticlePlayer.Instance.gameObject);
-        Destroy(DMGTextPlayer.Instance.gameObject);
-        Destroy(CursorManager.Instance.gameObject);
-        Destroy(MainCamera_PlayerPos.instance.gameObject);
-        Destroy(MiniMapCamera.instance.gameObject);
-        foreach(GameObject DontDestroyObj in DontDestroyOnLoad_Manager.Instance.objs_DontDestroy)
-        {
-            Destroy(DontDestroyObj);
-        }
-
-        Destroy(GameManager.Instance.MainPlayer.gameObject);
-        Destroy(GameManager.Instance.gameObject);
-
-    }
+    
 }

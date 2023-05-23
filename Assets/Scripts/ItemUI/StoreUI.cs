@@ -6,12 +6,14 @@ using UnityEngine.UI;
 
 public class StoreUI : BasicUIForm_Parent
 {
-    public static StoreUI instance;
+    //public static StoreUI instance;
     private Merchant merchant;
     private Merchant_Trigger merchant_Trigger;
 
     [SerializeField]
-    GameObject storeSlotUIObjects;
+    GameObject storeSlotUIObjects_Buy;
+    [SerializeField]
+    GameObject storeSlotUIObjects_Sell;
 
     /// <summary>
     /// i키로 껐다키기위한 인풋시스템용 변수
@@ -31,7 +33,21 @@ public class StoreUI : BasicUIForm_Parent
     Player player;
     UI_Player_MoveOnOff ui_OnOff;
 
-    private RectTransform storeSlotUIs_Rect;    //슬롯 UI들의 부모의 렉트 트랜스폼
+    private RectTransform storeBuySlotUIs_Rect;    //슬롯 UI들의 부모의 렉트 트랜스폼
+    private RectTransform storeSellSlotUIs_Rect;    //슬롯 UI들의 부모의 렉트 트랜스폼
+
+    Inventory inven;
+
+    ItemData[] itemDatas_Buy;
+    ItemData[] itemDatas_Sell;
+    uint[] itemCounts_Sell = new uint[6];
+    int[] targetItemSlotIDs = new int[6];
+
+    Button sellTab;
+    Button buyTab;
+
+    RectTransform sellScrollView;
+    RectTransform buyScrollView;
 
     public override PlayerInput Input_Control { get => input_Control; set => input_Control = value; }
     public override CanvasGroup CanvasGroupOnOff { get => canvasGroupOnOff; set => canvasGroupOnOff = value; }
@@ -55,38 +71,61 @@ public class StoreUI : BasicUIForm_Parent
 
     private void Awake()
     {
-        Initialize();
+        //Initialize();
 
-        Input_Control = new PlayerInput();
+        Input_Control = TotalGameManager.Instance.Input;
         CanvasGroupOnOff = GetComponent<CanvasGroup>();
         RectTransform_UI = GetComponent<RectTransform>();
         UI_OnOff = GetComponentInParent<UI_Player_MoveOnOff>();
 
         merchant = FindObjectOfType<Merchant>();
         merchant_Trigger = FindObjectOfType<Merchant_Trigger>();
-        storeSlotUIs_Rect = transform.GetChild(0).GetChild(0).GetChild(0).GetComponent<RectTransform>();
+
+        inven = FindObjectOfType<Inventory>();
+
+        sellTab = transform.GetChild(0).GetComponent<Button>();
+        buyTab = transform.GetChild(1).GetComponent<Button>();
+
+        storeSellSlotUIs_Rect = transform.GetChild(2).GetChild(0).GetChild(0).GetComponent<RectTransform>();
+        storeBuySlotUIs_Rect = transform.GetChild(3).GetChild(0).GetChild(0).GetComponent<RectTransform>();
+
+        buyScrollView = transform.Find("ScrollView_Buy").GetComponent<RectTransform>();
+        sellScrollView = transform.Find("ScrollView_Sell").GetComponent<RectTransform>();
     }
 
 
     private void Start()
     {
-        Player = GameManager.Instance.MainPlayer;
-        SetStoreSlotUIs();
+        Player = InGameManager.Instance.MainPlayer;
+        sellTab.onClick.AddListener(SetSellScroll);
+        buyTab.onClick.AddListener(SetBuyScroll);
+
+        itemDatas_Buy = new ItemData[merchant.sellingItems.Length];
+        itemDatas_Sell = new ItemData[6];
     }
 
-    private void Initialize()
+    public void SetItemDatas()
     {
-        if (instance == null)
+        for(int i = 0; i < merchant.sellingItems.Length; i++)
         {
-            instance = this;
-            DontDestroyOnLoad(this.gameObject);
+            itemDatas_Buy[i] = merchant.sellingItems[i];
         }
-        else
+
+        
+
+        int slotIndex = 0;
+
+        for(int i = 0; i < inven.itemSlots.Length; i++)
         {
-            if (instance != this)
+            itemDatas_Sell[slotIndex] = null; //(할당 전 데이터 내용 초기화)
+            if (inven.itemSlots[i].SlotItemData != null)
             {
-                Destroy(this.gameObject);
+                itemDatas_Sell[slotIndex] = inven.itemSlots[i].SlotItemData;
+                itemCounts_Sell[slotIndex] = inven.itemSlots[i].ItemCount;
+                targetItemSlotIDs[slotIndex] = inven.itemSlots[i].slotID;
+                slotIndex++;
             }
+            
         }
     }
 
@@ -103,29 +142,70 @@ public class StoreUI : BasicUIForm_Parent
         }
     }
 
-    private void SetStoreSlotUIs()
+    public void SetStoreSlotUIs()
     {
+        ClearSlotUIs();
         SetStoreSlotUIsHeight();
 
-        for(int i = 0; i < merchant.sellingItems.Length; i++)
+        //구매슬롯 갱신
+        for(int i = 0; i < itemDatas_Buy.Length; i++)
         {
-            GameObject slotUIObj = Instantiate(storeSlotUIObjects, storeSlotUIs_Rect);
-            StoreSlotUI_Buy storeSlotUI = slotUIObj.GetComponentInChildren<StoreSlotUI_Buy>();
-            storeSlotUI.ItemData = merchant.sellingItems[i];
-            storeSlotUI.SetItem(storeSlotUI.ItemData.itemIcon, storeSlotUI.ItemData.itemName, storeSlotUI.ItemData.itemValue);
+            GameObject slotUIObj = Instantiate(storeSlotUIObjects_Buy, storeBuySlotUIs_Rect);
+            StoreSlotUI_Buy storeSlotUI_Buy = slotUIObj.GetComponentInChildren<StoreSlotUI_Buy>();
+            storeSlotUI_Buy.ItemData = itemDatas_Buy[i];
+            storeSlotUI_Buy.SetItem(storeSlotUI_Buy.ItemData.itemIcon, storeSlotUI_Buy.ItemData.itemName, storeSlotUI_Buy.ItemData.itemValue);
+        }
+
+        //판매슬롯 갱신
+        for (int i = 0; i < itemDatas_Sell.Length; i++)
+        {
+            if(itemDatas_Sell[i] != null)
+            {
+                GameObject slotUIObj = Instantiate(storeSlotUIObjects_Sell, storeSellSlotUIs_Rect);
+                StoreSlotUI_Sell storeSlotUI_Sell = slotUIObj.GetComponentInChildren<StoreSlotUI_Sell>();
+                storeSlotUI_Sell.ItemData = itemDatas_Sell[i];
+                storeSlotUI_Sell.Count = itemCounts_Sell[i];
+                storeSlotUI_Sell.ItemCount_Text.text = storeSlotUI_Sell.Count.ToString();
+                storeSlotUI_Sell.targetItemSlotID = targetItemSlotIDs[i];
+                storeSlotUI_Sell.SetItem(storeSlotUI_Sell.ItemData.itemIcon, storeSlotUI_Sell.ItemData.itemName, storeSlotUI_Sell.ItemData.itemValue);
+            }
         }
     }
 
     private void SetStoreSlotUIsHeight()
     {
-        float height = merchant.sellingItems.Length * 200.0f + 150;
-        storeSlotUIs_Rect.sizeDelta = new Vector2(storeSlotUIs_Rect.rect.width, height); 
+        float height_Buy = itemDatas_Buy.Length * 200.0f + 150;
+        storeBuySlotUIs_Rect.sizeDelta = new Vector2(storeBuySlotUIs_Rect.rect.width, height_Buy);
+
+        float height_Sell = itemDatas_Sell.Length * 200.0f + 150;
+        storeBuySlotUIs_Rect.sizeDelta = new Vector2(storeBuySlotUIs_Rect.rect.width, height_Sell);
+    }
+
+    public void ClearSlotUIs()
+    {
+        if (storeBuySlotUIs_Rect.childCount > 0)
+        {
+            FindBuySlot[] buySlots = storeBuySlotUIs_Rect.GetComponentsInChildren<FindBuySlot>();
+            for (int i = 0; i < buySlots.Length; i++)
+            {
+                Destroy(buySlots[i].gameObject);
+            }
+        }
+
+        if (storeSellSlotUIs_Rect.childCount >0)
+        {
+            FindSellSlot[] sellSlots= storeSellSlotUIs_Rect.GetComponentsInChildren<FindSellSlot>();
+            for(int i = 0; i < sellSlots.Length; i++)
+            {
+                Destroy(sellSlots[i].gameObject);
+            }
+        }
     }
 
     private void OnLevelWasLoaded(int level)
     {
         merchant = FindObjectOfType<Merchant>();
-        SetStoreSlotUIs();
+        //SetStoreSlotUIs();
     }
 
     public override void UIOnOffSetting()
@@ -133,6 +213,9 @@ public class StoreUI : BasicUIForm_Parent
         if (IsUIOnOff)
         {
             IsUIOnOff = false;
+
+            SetItemDatas();
+            SetStoreSlotUIs();
 
             CanvasGroupOnOff.alpha = 1;
             CanvasGroupOnOff.interactable = true;
@@ -150,5 +233,15 @@ public class StoreUI : BasicUIForm_Parent
 
             UI_OnOff.IsUIOnOff();
         }
+    }
+
+    public void SetSellScroll()
+    {
+        sellScrollView.SetAsLastSibling();
+    }
+
+    public void SetBuyScroll()
+    {
+        buyScrollView.SetAsLastSibling();
     }
 }

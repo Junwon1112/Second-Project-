@@ -54,7 +54,7 @@ public class EquipmentUI : BasicUIForm_Parent
 
     protected void Awake()
     {
-        Input_Control = new PlayerInput();
+        Input_Control = TotalGameManager.Instance.Input;
         CanvasGroupOnOff = GetComponent<CanvasGroup>();
         RectTransform_UI = GetComponent<RectTransform>();
 
@@ -69,8 +69,8 @@ public class EquipmentUI : BasicUIForm_Parent
 
     private void Start()
     {
-        Player = GameManager.Instance.MainPlayer;
-        PlayerInven = GameManager.Instance.MainPlayer.transform.GetComponentInChildren<Inventory>();
+        Player = InGameManager.Instance.MainPlayer;
+        PlayerInven = InGameManager.Instance.MainPlayer.transform.GetComponentInChildren<Inventory>();
 
         IsUIOnOff = true;
         for(int i = 0; i < equipSlotUIs.Length; i++)

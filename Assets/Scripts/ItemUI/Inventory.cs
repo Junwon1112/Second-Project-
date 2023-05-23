@@ -65,11 +65,6 @@ public class Inventory : MonoBehaviour
         }
     }
 
-    private void Start()
-    {
-        Money = startingMoney;
-        invenUI.SetAllSlotWithData();
-    }
 
     /// <summary>
     /// 아이템의 위치를 이동시키는 함수

@@ -9,13 +9,13 @@ public class SideMenuOKButton : MonoBehaviour
 
     SideMenuUI sideMenuUI;
 
-    MainMenuUI mainMenuUI;
+    MenuUI_Basic mainMenuUI;
 
     private void Awake()
     {
         volumeOKButton = GetComponent<Button>();
         sideMenuUI = transform.parent.GetComponent<SideMenuUI>();
-        mainMenuUI = FindObjectOfType<MainMenuUI>();
+        mainMenuUI = FindObjectOfType<MenuUI_Basic>();
     }
 
     private void Start()

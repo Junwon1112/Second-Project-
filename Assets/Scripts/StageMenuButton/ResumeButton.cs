@@ -10,12 +10,12 @@ using UnityEngine.UI;
 public class ResumeButton : MonoBehaviour
 {
     Button resumeButton;
-    MainMenuUI mainMenuUI;
+    MenuUI_Basic mainMenuUI;
 
     private void Awake()
     {
         resumeButton = GetComponent<Button>();
-        mainMenuUI = FindObjectOfType<MainMenuUI>();
+        mainMenuUI = FindObjectOfType<MenuUI_Basic>();
     }
 
     private void Start()

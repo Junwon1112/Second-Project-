@@ -30,7 +30,7 @@ public class MainButton : MonoBehaviour
     private void BackToMainStage()
     {
         SceneManager.LoadScene("Main");
-        GameManager.Instance.ResetDontDestroy();
+        TotalGameManager.Instance.ResetDontDestroy();
         Time.timeScale = 1.0f;
     }
 
