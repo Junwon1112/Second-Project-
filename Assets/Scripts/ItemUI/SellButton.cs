@@ -30,6 +30,7 @@ public class SellButton : MonoBehaviour
     {
         sellUI.ItemData = parentSlot.ItemData;
         sellUI.ItemCount = parentSlot.Count;
+        sellUI.TakeID = parentSlot.targetItemSlotID;
         sellUI.NumUIOpen();
     }
 }

@@ -34,10 +34,9 @@ public class BuyUI : Num_UI_Basic
 
     public bool isSplitting = false;
 
-    Inventory inven;
-    InventoryUI invenUI;
-
     StoreUI storeUI;
+
+    WarningUI warningUI;
 
     protected override Button OkButton { get; set; }
     protected override Button CancelButton { get; set; }
@@ -59,16 +58,15 @@ public class BuyUI : Num_UI_Basic
         NumUI_CanvasGroup = GetComponent<CanvasGroup>();
         RectTransform = GetComponent<RectTransform>();
 
-        inven = FindObjectOfType<Inventory>();
-        invenUI = FindObjectOfType<InventoryUI>();
         storeUI = FindObjectOfType<StoreUI>();
+        warningUI = FindObjectOfType<WarningUI>();
     }
 
     protected void Start()
     {
         PlayerTransform = InGameManager.Instance.MainPlayer.transform;
-        Inventory = InGameManager.Instance.MainPlayer.transform.GetComponentInChildren<Inventory>();
-        InventoryUI = GameObject.Find("InventoryUI").GetComponent<InventoryUI>();
+        Inventory = FindObjectOfType<Inventory>();
+        InventoryUI = FindObjectOfType<InventoryUI>();
 
 
         //inputField.
@@ -87,6 +85,8 @@ public class BuyUI : Num_UI_Basic
         NumUI_CanvasGroup.interactable = true;
         NumUI_CanvasGroup.blocksRaycasts = true;
 
+        RectTransform.SetAsLastSibling();
+
         //시작하면 나오는 초기값을 제대로 설정해주는 과정 
         CheckRightCount(InputField.text);
     }
@@ -104,19 +104,21 @@ public class BuyUI : Num_UI_Basic
     protected override void ClickOKButton()
     {
         bool isSuccessBuy;
-        isSuccessBuy = inven.TakeItem(ItemData, (uint)buyCount);
-        invenUI.SetAllSlotWithData();
+        isSuccessBuy = Inventory.TakeItem(ItemData, (uint)buyCount);
+        InventoryUI.SetAllSlotWithData();
 
         if(!isSuccessBuy)   //할당에 실패했다면
         {
+            warningUI.UIOnOffSetting();
+            warningUI.SetTextWarningInfo(WarningTextName.WarningText_BuyError);
             //경고창
         }
         else    //할당에 성공했다면
         {
-            inven.Money -= (uint)ItemData.itemValue * (uint)buyCount;
-            invenUI.SetAllSlotWithData();
+            Inventory.Money -= (uint)ItemData.itemValue * (uint)buyCount;
+            InventoryUI.SetAllSlotWithData();
 
-            storeUI.ClearSlotUIs();
+            storeUI.SetItemDatas();
             storeUI.SetStoreSlotUIs();
         }
         NumUIClose();
@@ -128,7 +130,7 @@ public class BuyUI : Num_UI_Basic
     /// <param name="inputText"></param>
     protected override void CheckRightCount(string inputText) //텍스트에 구매 갯수 입력 시 실행
     {
-        buyPossibleCount = inven.Money / (uint)ItemData.itemValue;
+        buyPossibleCount = Inventory.Money / (uint)ItemData.itemValue;
 
         bool isParsing = int.TryParse(inputText, out buyCount);
         if (buyCount > (int)buyPossibleCount)

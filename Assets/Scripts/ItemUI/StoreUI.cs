@@ -81,7 +81,7 @@ public class StoreUI : BasicUIForm_Parent
         merchant = FindObjectOfType<Merchant>();
         merchant_Trigger = FindObjectOfType<Merchant_Trigger>();
 
-        inven = FindObjectOfType<Inventory>();
+        
 
         sellTab = transform.GetChild(0).GetComponent<Button>();
         buyTab = transform.GetChild(1).GetComponent<Button>();
@@ -96,6 +96,7 @@ public class StoreUI : BasicUIForm_Parent
 
     private void Start()
     {
+        inven = FindObjectOfType<Inventory>();
         Player = InGameManager.Instance.MainPlayer;
         sellTab.onClick.AddListener(SetSellScroll);
         buyTab.onClick.AddListener(SetBuyScroll);
@@ -106,18 +107,22 @@ public class StoreUI : BasicUIForm_Parent
 
     public void SetItemDatas()
     {
+        //구매할 수 있는 아이템 목록 세팅
         for(int i = 0; i < merchant.sellingItems.Length; i++)
         {
             itemDatas_Buy[i] = merchant.sellingItems[i];
         }
 
-        
-
+        //판매할 수 있는 아이템 목록 세팅
         int slotIndex = 0;
 
         for(int i = 0; i < inven.itemSlots.Length; i++)
         {
-            itemDatas_Sell[slotIndex] = null; //(할당 전 데이터 내용 초기화)
+            //(할당 전 데이터 내용 초기화)
+            itemDatas_Sell[i] = null; 
+            itemCounts_Sell[i] = 0;
+            targetItemSlotIDs[i] = -1;
+
             if (inven.itemSlots[i].SlotItemData != null)
             {
                 itemDatas_Sell[slotIndex] = inven.itemSlots[i].SlotItemData;

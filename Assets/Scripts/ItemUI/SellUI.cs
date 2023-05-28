@@ -35,9 +35,6 @@ public class SellUI : Num_UI_Basic
 
     public bool isSplitting = false;
 
-    Inventory inven;
-    InventoryUI invenUI;
-
     StoreUI storeUI;
 
     protected override Button OkButton { get; set; }
@@ -61,16 +58,14 @@ public class SellUI : Num_UI_Basic
         NumUI_CanvasGroup = GetComponent<CanvasGroup>();
         RectTransform = GetComponent<RectTransform>();
 
-        inven = FindObjectOfType<Inventory>();
-        invenUI = FindObjectOfType<InventoryUI>();
         storeUI = FindObjectOfType<StoreUI>();
     }
 
     protected void Start()
     {
         PlayerTransform = InGameManager.Instance.MainPlayer.transform;
-        Inventory = InGameManager.Instance.MainPlayer.transform.GetComponentInChildren<Inventory>();
-        InventoryUI = GameObject.Find("InventoryUI").GetComponent<InventoryUI>();
+        Inventory = FindObjectOfType<Inventory>();
+        InventoryUI = FindObjectOfType<InventoryUI>();
 
 
         //inputField.
@@ -105,10 +100,10 @@ public class SellUI : Num_UI_Basic
 
     protected override void ClickOKButton()
     {
-        inven.itemSlots[takeID].DecreaseSlotItem((uint)sellCount);
+        Inventory.itemSlots[TakeID].DecreaseSlotItem((uint)sellCount);
+        Inventory.Money += (uint)ItemData.itemValue * (uint)sellCount;
 
-        inven.Money += (uint)ItemData.itemValue * (uint)sellCount;
-        invenUI.SetAllSlotWithData();
+        InventoryUI.SetAllSlotWithData();
 
         storeUI.SetItemDatas();
         storeUI.SetStoreSlotUIs();

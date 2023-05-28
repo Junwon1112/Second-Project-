@@ -33,13 +33,20 @@ public class LoadingUI : MonoBehaviour
     {
         loadingText = transform.GetChild(1).GetComponent<TextMeshProUGUI>();
         loadingBar = GetComponentInChildren<Slider>();
-        input = TotalGameManager.Instance.Input;
+        
     }
 
-    private void OnEnable()
+
+    private void Start()
     {
+        input = TotalGameManager.Instance.Input;
         input.LoadingUI.Enable();
         input.LoadingUI.GoToNextScene.performed += OnGoToNextStage;
+
+        PrintLoadingText = PrintLoading();
+        StartCoroutine(PrintLoadingText);
+
+        StartCoroutine(LoadScene());
     }
 
     private void OnDisable()
@@ -48,13 +55,6 @@ public class LoadingUI : MonoBehaviour
         input.LoadingUI.Disable();
     }
 
-    private void Start()
-    {
-        PrintLoadingText = PrintLoading();
-        StartCoroutine(PrintLoadingText);
-
-        StartCoroutine(LoadScene());
-    }
 
     /// <summary>
     /// 클릭하면 다음 스테이지로 넘어가지는 함수
