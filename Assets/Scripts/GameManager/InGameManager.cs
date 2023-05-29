@@ -23,6 +23,10 @@ public class InGameManager : MonoBehaviour
         {
             return player;
         }
+        set
+        {
+            player = value;
+        }
     }
 
     /// <summary>
@@ -81,7 +85,8 @@ public class InGameManager : MonoBehaviour
 
     private void Initialize()   //시작하면 오브젝트 가져오기
     {
-        player = GameObject.Find($"Player_{jobData.jobType.ToString()}").GetComponent<Player>();
+        //player = GameObject.Find($"Player_{jobData.jobType.ToString()}").GetComponent<Player>();
+        //player는 Player클래스에서 직접 가져옴
         itemDataManager = FindObjectOfType<ItemDataManager>();
         
     }

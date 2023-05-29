@@ -131,7 +131,7 @@ public class BuyUI : Num_UI_Basic
     protected override void CheckRightCount(string inputText) //텍스트에 구매 갯수 입력 시 실행
     {
         buyPossibleCount = Inventory.Money / (uint)ItemData.itemValue;
-
+        Debug.Log("체크카운트 실행");
         bool isParsing = int.TryParse(inputText, out buyCount);
         if (buyCount > (int)buyPossibleCount)
         {

@@ -150,11 +150,13 @@ public class StoreUI : BasicUIForm_Parent
     public void SetStoreSlotUIs()
     {
         ClearSlotUIs();
+        SetItemDatas();
         SetStoreSlotUIsHeight();
 
         //구매슬롯 갱신
         for(int i = 0; i < itemDatas_Buy.Length; i++)
         {
+            Debug.Log("구매슬롯 갱신");
             GameObject slotUIObj = Instantiate(storeSlotUIObjects_Buy, storeBuySlotUIs_Rect);
             StoreSlotUI_Buy storeSlotUI_Buy = slotUIObj.GetComponentInChildren<StoreSlotUI_Buy>();
             storeSlotUI_Buy.ItemData = itemDatas_Buy[i];
@@ -219,7 +221,6 @@ public class StoreUI : BasicUIForm_Parent
         {
             IsUIOnOff = false;
 
-            SetItemDatas();
             SetStoreSlotUIs();
 
             CanvasGroupOnOff.alpha = 1;

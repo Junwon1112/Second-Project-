@@ -262,12 +262,14 @@ public class Player : MonoBehaviour, IHealth
         Job = jobData.jobType;
         if (this.gameObject.name != $"Player_{Job.ToString()}")
         {
+            Debug.Log("선택받지 못한 직업은 지워짐");
             Destroy(this.gameObject);
         }
         else
         {
             DontDestroyOnLoad(gameObject);
         }
+        InGameManager.Instance.MainPlayer = GetComponent<Player>();
     }
 
     /// <summary>

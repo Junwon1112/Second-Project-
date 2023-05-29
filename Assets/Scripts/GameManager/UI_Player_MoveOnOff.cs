@@ -34,10 +34,13 @@ public class UI_Player_MoveOnOff : MonoBehaviour
             }
         }
 
+    }
+
+    private void Start()
+    {
         inventoryUI = GetComponentInChildren<InventoryUI>();
         equipmentUI = GetComponentInChildren<EquipmentUI>();
-
-
+        
     }
 
 
