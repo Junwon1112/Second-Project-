@@ -11,9 +11,12 @@ public class SelectButton : MonoBehaviour
     /// </summary>
     [SerializeField]
     public ScriptableObj_JobData jobData;
+    
+
     LightSetting lightSetting;
 
     Button selectButton;
+
     
 
     private void Awake()
@@ -32,6 +35,7 @@ public class SelectButton : MonoBehaviour
     private void SelectChracter()
     {
         lightSetting.SetLight();
+        
         SceneManager.LoadScene(TotalGameManager.Instance.CurrentScene.buildIndex +1);
     }
 

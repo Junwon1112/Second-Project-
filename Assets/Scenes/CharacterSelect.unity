@@ -710,6 +710,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   jobData: {fileID: 11400000, guid: c4d41165a87799948897bc07d6b8d8af, type: 2}
+  selectedPlayer:
+  - {fileID: 1361341139531386701, guid: d6856ab86d218a24d91c0ae7180c64ec, type: 3}
+  - {fileID: 6525061111232902015, guid: 6e04bb2bdd3c856409eca04611cfe301, type: 3}
 --- !u!114 &461790091
 MonoBehaviour:
   m_ObjectHideFlags: 0

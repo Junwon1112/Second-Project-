@@ -86,15 +86,15 @@ public class InGameManager : MonoBehaviour
     private void Initialize()   //시작하면 오브젝트 가져오기
     {
         //player = GameObject.Find($"Player_{jobData.jobType.ToString()}").GetComponent<Player>();
+        //player = FindObjectOfType<Player>();
         //player는 Player클래스에서 직접 가져옴
         itemDataManager = FindObjectOfType<ItemDataManager>();
-        
+        player = FindObjectOfType<Player>();  
     }
 
     private void Start()
     {
         FadeInOut.Instance.FadeIn();
-        
     }
 
 

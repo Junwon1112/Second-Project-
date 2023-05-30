@@ -173,6 +173,7 @@ public class InventoryUI : BasicUIForm_Parent
     /// <param name="obj"></param>
     public void OnInventoryItemUse(InputAction.CallbackContext obj)
     {
+        Debug.Log("우클릭");
         RectTransform_UI.SetAsLastSibling();
 
         List<RaycastResult> slotItemCheck = new List<RaycastResult>();  //UI인식을 위해서는 GraphicRaycast가 필요하고 이걸 사용 후 리턴할 때 (RaycastResult)를 받는 리스트에 저장함
@@ -193,6 +194,7 @@ public class InventoryUI : BasicUIForm_Parent
 
         if(isFindItemSlot)
         {
+            Debug.Log("아이템 슬롯 찾음");
             if (tempSlotUI.ItemData.itemType == ItemType.ComsumableItem)   //data가 사용형 아이템이라면
             {
                 IConsumable consumable;
@@ -222,12 +224,14 @@ public class InventoryUI : BasicUIForm_Parent
             }
             else if(tempSlotUI.ItemData.itemType == ItemType.Weapon && tempSlotUI.ItemData.job == player.Job)  //data가 무기고 플레이어와 직업이 같다면
             {
+                Debug.Log("무기 확인");
                 for (int i = 0; i < EquipmentUI.equipSlotUIs.Length; i++)    //무기 슬롯을 찾아라
                 {
                     if(EquipmentUI.equipSlotUIs[i].equipSlotID == 1001)     //무기 슬롯 ID는 1001이다.
                     {
                         if (EquipmentUI.equipSlotUIs[i].ItemData == null)   //현재 장착한 무기가 없을 떄
                         {
+                            Debug.Log("장착 코드실행");
                             EquipmentUI.equipSlotUIs[i].SetTempSlotWithData(tempSlotUI.ItemData, 1);  //장비슬롯 설정
                             GameObject tempWeaponObject;    //장착한 아이템을 무기위치에 만들고 잘 작동되도록 player에서 TakeWeapon을 통해 컴포넌트를 가져온다.
                             tempWeaponObject = ItemFactory.MakeItem(tempSlotUI.ItemData.ID, Vector3.zero, Quaternion.identity); // player.weaponHandTransform.rotation

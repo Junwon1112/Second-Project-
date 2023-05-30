@@ -136,6 +136,8 @@ public class Player : MonoBehaviour, IHealth
     bool isMove = false;
     bool isKeepMoving = false;
 
+    int firstSceneIndex = 4;
+    int currentSceneIndex;
     public Transform CharacterTransform
     {
         get { return this.transform; }
@@ -236,7 +238,13 @@ public class Player : MonoBehaviour, IHealth
 
     private void Awake()
     {
-        input = TotalGameManager.Instance.Input;
+        anim = GetComponent<Animator>();
+        DontDestroyOnLoad(gameObject);
+    }
+
+    private void OnLevelWasLoaded(int level)
+    {
+        
         anim = GetComponent<Animator>();
         rigid = GetComponent<Rigidbody>();
 
@@ -258,18 +266,30 @@ public class Player : MonoBehaviour, IHealth
         skill_Implement = FindObjectOfType<Skill_Implement>();
         skillUI = FindObjectOfType<SkillUI>();
 
+        currentSceneIndex = TotalGameManager.Instance.CurrentScene.buildIndex;
 
-        Job = jobData.jobType;
-        if (this.gameObject.name != $"Player_{Job.ToString()}")
-        {
-            Debug.Log("선택받지 못한 직업은 지워짐");
-            Destroy(this.gameObject);
-        }
-        else
-        {
-            DontDestroyOnLoad(gameObject);
-        }
-        InGameManager.Instance.MainPlayer = GetComponent<Player>();
+        //Job = jobData.jobType;
+        //if (this.gameObject.name != $"Player_{Job.ToString()}")
+        //{
+        //    Debug.Log("선택받지 못한 직업은 지워짐");
+        //    Destroy(this.gameObject);
+        //}
+        //else
+        //InGameManager.Instance.MainPlayer = GetComponent<Player>();
+
+
+        MaxHP = 100;
+        HP = MaxHP;
+        SetHP();
+        MaxExp = 100;
+        Exp = 0;
+        SetExp();
+        SetLevel();
+        potion = new ItemData_Potion();
+        myWeapon = new ItemData_Weapon();
+
+        newDel_LevelUp = LevelUp;
+
     }
 
     /// <summary>
@@ -277,6 +297,7 @@ public class Player : MonoBehaviour, IHealth
     /// </summary>
     private void OnEnable()
     {
+        input = TotalGameManager.Instance.Input;
         input.Player.Enable();
         input.Player.Move.performed += OnMoveInput;
         input.Player.Move.canceled += OnMoveInput;
@@ -310,32 +331,22 @@ public class Player : MonoBehaviour, IHealth
 
     private void Start()
     {
-        MaxHP = 100;
-        HP = MaxHP;
-        SetHP();
-        MaxExp = 100;
-        Exp = 0;
-        SetExp();
-        SetLevel();
-        potion = new ItemData_Potion();
-        myWeapon = new ItemData_Weapon();
-
-        newDel_LevelUp = LevelUp;
-
-
         if (!isDie)
         {
             Time.timeScale = 1.0f;
         }
+
     }
 
     private void Update()
     {
+
         transform.Translate(dir * Time.deltaTime * 10, Space.Self);   
         if (dir == Vector3.zero)
         {
             anim.SetBool("IsMove", false);
         }
+        
     }
 
     private void OnMoveInput(InputAction.CallbackContext obj)
