@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class StoreUI : BasicUIForm_Parent
 {
@@ -58,15 +59,16 @@ public class StoreUI : BasicUIForm_Parent
 
     private void OnEnable()
     {
-        input_Control.StoreUI.Enable();
-        input_Control.StoreUI.StoreUIOnOff.performed += OnStoreUIOnoff;
+        Input_Control.StoreUI.Enable();
+        Input_Control.StoreUI.StoreUIOnOff.performed += OnStoreUIOnoff;
     }
 
 
     private void OnDisable()
     {
-        input_Control.StoreUI.StoreUIOnOff.performed -= OnStoreUIOnoff;
-        input_Control.StoreUI.Disable();
+        SceneManager.sceneLoaded -= SceneManager_SceneLoaded;   //Start에서 등록
+        Input_Control.StoreUI.StoreUIOnOff.performed -= OnStoreUIOnoff;
+        Input_Control.StoreUI.Disable();
     }
 
     private void Awake()
@@ -79,9 +81,6 @@ public class StoreUI : BasicUIForm_Parent
         UI_OnOff = GetComponentInParent<UI_Player_MoveOnOff>();
 
         merchant = FindObjectOfType<Merchant>();
-        merchant_Trigger = FindObjectOfType<Merchant_Trigger>();
-
-        
 
         sellTab = transform.GetChild(0).GetComponent<Button>();
         buyTab = transform.GetChild(1).GetComponent<Button>();
@@ -101,6 +100,22 @@ public class StoreUI : BasicUIForm_Parent
         sellTab.onClick.AddListener(SetSellScroll);
         buyTab.onClick.AddListener(SetBuyScroll);
 
+        SceneManager.sceneLoaded += SceneManager_SceneLoaded;
+    }
+
+    /// <summary>
+    /// OnlevelWasLoaded 대체제로 사용
+    /// </summary>
+    /// <param name="arg0"></param>
+    /// <param name="arg1"></param>
+    private void SceneManager_SceneLoaded(Scene arg0, LoadSceneMode arg1)
+    {
+        AssignItemData();
+    }
+
+    private void AssignItemData()
+    {
+        merchant_Trigger = FindObjectOfType<Merchant_Trigger>();
         itemDatas_Buy = new ItemData[merchant.sellingItems.Length];
         itemDatas_Sell = new ItemData[6];
     }

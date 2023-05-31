@@ -17,12 +17,13 @@ public class SelectButton : MonoBehaviour
 
     Button selectButton;
 
-    
+    MakePlayer makePlayer;
 
     private void Awake()
     {
         selectButton = GetComponent<Button>();
         lightSetting = FindObjectOfType<LightSetting>();
+        makePlayer = FindObjectOfType<MakePlayer>();
     }
 
     private void Start()
@@ -35,8 +36,8 @@ public class SelectButton : MonoBehaviour
     private void SelectChracter()
     {
         lightSetting.SetLight();
-        
-        SceneManager.LoadScene(TotalGameManager.Instance.CurrentScene.buildIndex +1);
+        makePlayer.PlayerMaking();
+        StartCoroutine(CoLoadNextScene());
     }
 
     public void SetButton()
@@ -49,5 +50,18 @@ public class SelectButton : MonoBehaviour
         {
             selectButton.interactable = true;
         }
+    }
+
+    IEnumerator CoLoadNextScene()
+    {
+        Player player = FindObjectOfType<Player>();
+
+        while(player == null)
+        {
+            FindObjectOfType<Player>();
+            yield return new WaitForSeconds(0.05f);
+        }
+        SceneManager.LoadScene(TotalGameManager.Instance.CurrentScene.buildIndex + 1);
+
     }
 }

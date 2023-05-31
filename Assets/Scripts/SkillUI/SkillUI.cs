@@ -33,12 +33,12 @@ public class SkillUI : BasicUIForm_Parent
 
     private void Awake()
     {
+        Input_Control = TotalGameManager.Instance.Input;
         skillSlotUIs = GetComponentsInChildren<SkillSlotUI>();
-        input_Control = TotalGameManager.Instance.Input;
-        canvasGroupOnOff = GetComponent<CanvasGroup>();
-        ui_OnOff = GetComponentInParent<UI_Player_MoveOnOff>();
+        CanvasGroupOnOff = GetComponent<CanvasGroup>();
+        UI_OnOff = GetComponentInParent<UI_Player_MoveOnOff>();
         skillPoint_Num = transform.Find("SkillPointUI").GetChild(1).GetComponent<TextMeshProUGUI>();
-        rectTransform_UI = GetComponent<RectTransform>();
+        RectTransform_UI = GetComponent<RectTransform>();
 
         for(int i = 0; i < skillDatas.Count; i++)
         {
@@ -50,16 +50,20 @@ public class SkillUI : BasicUIForm_Parent
 
     private void OnEnable()
     {
-        input_Control.Enable();
-        input_Control.SkillUI.SkillWindowOnOff.performed += OnSkillWindowOnOff;
+        GetKey();
     }
 
 
     private void OnDisable()
     {
-        input_Control.SkillUI.SkillWindowOnOff.performed -= OnSkillWindowOnOff;
-        input_Control.Disable();
+        Input_Control.SkillUI.SkillWindowOnOff.performed -= OnSkillWindowOnOff;
+        Input_Control.Disable();
     }
+
+    //private void OnLevelWasLoaded(int level)
+    //{
+    //    GetKey();
+    //}
 
     private void Start()
     {
@@ -89,6 +93,12 @@ public class SkillUI : BasicUIForm_Parent
 
         InGameManager.Instance.MainPlayer.newDel_LevelUp += SynchronizeSkillPoint;
         
+    }
+
+    private void GetKey()
+    {
+        Input_Control.Enable();
+        Input_Control.SkillUI.SkillWindowOnOff.performed += OnSkillWindowOnOff;
     }
 
     private void OnSkillWindowOnOff(UnityEngine.InputSystem.InputAction.CallbackContext obj)

@@ -107,17 +107,21 @@ public class InventoryUI : BasicUIForm_Parent
 
     private void OnEnable()
     {
-        Input_Control.InventoryUI.Enable();
-        Input_Control.InventoryUI.InventoryOnOff.performed += OnInventoryOnOff;
+        GetKey();
     }
-
-    
 
     private void OnDisable()
     {
         Input_Control.InventoryUI.InventoryOnOff.performed -= OnInventoryOnOff;
         Input_Control.InventoryUI.Disable();
     }
+
+    private void GetKey()
+    {
+        Input_Control.InventoryUI.Enable();
+        Input_Control.InventoryUI.InventoryOnOff.performed += OnInventoryOnOff;
+    }
+
 
     /// <summary>
     /// i키를 눌렀을 때 인벤토리 onoff

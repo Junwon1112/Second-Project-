@@ -243,8 +243,7 @@ public class Player : MonoBehaviour, IHealth
     }
 
     private void OnLevelWasLoaded(int level)
-    {
-        
+    { 
         anim = GetComponent<Animator>();
         rigid = GetComponent<Rigidbody>();
 
@@ -289,13 +288,34 @@ public class Player : MonoBehaviour, IHealth
         myWeapon = new ItemData_Weapon();
 
         newDel_LevelUp = LevelUp;
+        transform.position = GameObject.Find("StartingPoint").transform.position;
+    }
 
+    private void OnEnable()
+    {
+        GetKey();
+    }
+
+    /// <summary>
+    /// InputSystem에 등록한 단축키들에 해당하는 함수 해제
+    /// </summary>
+    private void OnDisable()
+    {
+        //input.Player.TestMakeItem.performed -= OnTestMakeItem;
+
+        input.Player.TempItemUse.performed -= OnTempItemUse;
+        input.Player.Attack.performed -= OnAttackInput;
+        input.Player.Move.canceled -= OnMoveInput;
+        input.Player.Move.performed -= OnMoveInput;
+        input.Player.Look.performed -= OnLookInput;
+        input.Player.TakeItem.performed -= OnTakeItem;
+        input.Player.Disable();
     }
 
     /// <summary>
     /// InputSystem에 등록한 단축키들에 해당하는 함수 등록
     /// </summary>
-    private void OnEnable()
+    private void GetKey()
     {
         input = TotalGameManager.Instance.Input;
         input.Player.Enable();
@@ -307,27 +327,6 @@ public class Player : MonoBehaviour, IHealth
         input.Player.TakeItem.performed += OnTakeItem;
         //input.Player.TestMakeItem.performed += OnTestMakeItem;
     }
-
-
-    /// <summary>
-    /// InputSystem에 등록한 단축키들에 해당하는 함수 해제
-    /// </summary>
-    private void OnDisable()
-    {
-        //input.Player.TestMakeItem.performed -= OnTestMakeItem;
-        if(this.gameObject.name == $"Player_{Job.ToString()}")
-        {
-            input.Player.TempItemUse.performed -= OnTempItemUse;
-            input.Player.Attack.performed -= OnAttackInput;
-            input.Player.Move.canceled -= OnMoveInput;
-            input.Player.Move.performed -= OnMoveInput;
-            input.Player.Look.performed -= OnLookInput;
-            input.Player.TakeItem.performed -= OnTakeItem;
-            input.Player.Disable();
-        }
-    }
-
-    
 
     private void Start()
     {

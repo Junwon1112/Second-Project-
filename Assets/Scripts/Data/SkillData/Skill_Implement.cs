@@ -39,9 +39,6 @@ public class Skill_Implement : MonoBehaviour
                 Destroy(this.gameObject);
             }
         }
-
-        
-        
     }
 
     private void Start()

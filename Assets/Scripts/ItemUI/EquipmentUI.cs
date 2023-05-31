@@ -59,7 +59,7 @@ public class EquipmentUI : BasicUIForm_Parent
         RectTransform_UI = GetComponent<RectTransform>();
 
         UIGraphicRaycaster = GameObject.Find("Canvas_Main").gameObject.GetComponent<GraphicRaycaster>();
-        
+
         UI_OnOff = GetComponentInParent<UI_Player_MoveOnOff>();
 
         equipSlotUIs = GetComponentsInChildren<EquipSlotUI>();
@@ -73,22 +73,28 @@ public class EquipmentUI : BasicUIForm_Parent
         PlayerInven = InGameManager.Instance.MainPlayer.transform.GetComponentInChildren<Inventory>();
 
         IsUIOnOff = true;
-        for(int i = 0; i < equipSlotUIs.Length; i++)
+        for (int i = 0; i < equipSlotUIs.Length; i++)
         {
             equipSlotUIs[i].equipSlotID = 1001 + i; //1000번대 슬롯은 장비슬롯임을 구분하기 위해 추가
         }
     }
 
+
     private void OnEnable()
     {
-        Input_Control.EquipmentUI.Enable();
-        Input_Control.EquipmentUI.EquipmentOnOff.performed += OnEquipmentOnOff;
+        GetKey();
     }
 
     private void OnDisable()
     {
         Input_Control.EquipmentUI.EquipmentOnOff.performed -= OnEquipmentOnOff;
         Input_Control.EquipmentUI.Disable();
+    }
+
+    private void GetKey()
+    {
+        Input_Control.EquipmentUI.Enable();
+        Input_Control.EquipmentUI.EquipmentOnOff.performed += OnEquipmentOnOff;
     }
 
     /// <summary>

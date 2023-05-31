@@ -6,10 +6,9 @@ using UnityEngine.SceneManagement;
 public class TotalGameManager : MonoBehaviour
 {
     public static TotalGameManager Instance;
+    public PlayerInput Input { get; set; }
 
     Scene currentScene;
-
-    PlayerInput input;
 
     public Scene CurrentScene
     {
@@ -23,7 +22,6 @@ public class TotalGameManager : MonoBehaviour
         }
     }
 
-    public PlayerInput Input { get; set; }
 
     private void Awake()
     {

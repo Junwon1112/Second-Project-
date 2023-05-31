@@ -20,12 +20,13 @@ public class MakePlayer : MonoBehaviour
         dic_Player.Add(JobType.Witch, selectedPlayer[1]);
     }
 
-    void Start()
+    /// <summary>
+    /// Select버튼에서 사용
+    /// </summary>
+    public void PlayerMaking()
     {
-        GameObject playerObj = Instantiate(dic_Player[jobData.jobType]);
+        GameObject playerObj = Instantiate(dic_Player[jobData.jobType], new Vector3(0, 0, 20), new Quaternion(0, 0, 0, 0));
         Player tempPlayer = playerObj.transform.GetComponent<Player>();
         tempPlayer.Job = jobData.jobType;
     }
-
-
 }

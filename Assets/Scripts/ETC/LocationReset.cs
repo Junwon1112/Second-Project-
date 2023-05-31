@@ -5,8 +5,26 @@ using UnityEngine.SceneManagement;
 
 public class LocationReset : MonoBehaviour
 {
+    public static LocationReset instance;
+
     Vector3 rePosLocation_Player;
     //Vector3 rePosLocation_Monster;
+
+    private void Awake()
+    {
+        if (instance == null)
+        {
+            instance = this;
+            DontDestroyOnLoad(this.gameObject);
+        }
+        else
+        {
+            if (instance != this)
+            {
+                Destroy(this.gameObject);
+            }
+        }
+    }
 
     private void Start()
     {
@@ -30,6 +48,6 @@ public class LocationReset : MonoBehaviour
 
     private void OnLevelWasLoaded(int level)
     {
-            rePosLocation_Player = GameObject.Find("StartingPoint").transform.position;
+        rePosLocation_Player = GameObject.Find("StartingPoint").transform.position;
     }
 }
