@@ -24,21 +24,30 @@ public class ItemData : ScriptableObject
     public string ItemInfo;         //아이템 설명
 
     /// <summary>
-    /// 깊은 복사하는 static함수, 객체를 바이너리화 시키고 다시 객체로 돌리면서(직렬화 후 다시 역직렬화) 복사가 되는 거 같은데 정확한 원리는 모르겟음
+    /// 깊은 복사하는 static함수, 인스턴스에서 호출하지 않고 클래스이름으로 호출하는 걸 생각하면 상속은 큰 걱정을 안해도 될 듯하다.
     /// </summary>
     /// <typeparam name="ItemData"></typeparam>
     /// <param name="itemData"></param>
     /// <returns></returns>
-    public ItemData DeepCopy<ItemData>(ItemData itemData)
+    public static ItemData DeepCopy(ItemData itemData)
     {
-        using (System.IO.MemoryStream ms = new System.IO.MemoryStream())
+        if(itemData != null)
         {
-            BinaryFormatter formatter = new BinaryFormatter();
-            formatter.Serialize(ms, itemData);
-            ms.Position = 0;
+            ItemData itemData_new = new ItemData();
+            itemData_new.itemName = itemData.itemName;
+            itemData_new.ID = itemData.ID;
+            itemData_new.itemIDCode = itemData.itemIDCode;
+            itemData_new.itemPrefab = itemData.itemPrefab;
+            itemData_new.itemIcon = itemData.itemIcon;
+            itemData_new.itemValue = itemData.itemValue;
+            itemData_new.itemMaxCount = itemData.itemMaxCount;
+            itemData_new.itemType = itemData.itemType;
+            itemData_new.job = itemData.job;
+            itemData_new.ItemInfo = itemData.ItemInfo;
 
-            return (ItemData)formatter.Deserialize(ms);
+            return itemData_new;
         }
+        return null;
     }
 }
 

@@ -242,7 +242,7 @@ public class InventoryUI : BasicUIForm_Parent
                             tempWeaponObject.layer = 10;    //9(Item)레이어에서 10(EquipItem)으로 변경 -> 아이템을 주울 때 layer로 판단하는데 장착한 무기가 주워지는것을 막기위해  
                             tempWeaponObject.transform.SetParent(player.weaponHandTransform, false);
                             Player.TakeWeapon();
-                            Player.myWeapon = (ItemData_Weapon)tempSlotUI.ItemData;   //무기에 데미지를 추가하기 위해 플레이어에게 변수로 무기데이터 저장
+                            Player.myWeapon = InGameManager.Instance.ItemManager.FindItem_Weapon(tempSlotUI.ItemData.ID);   //무기에 데미지를 추가하기 위해 플레이어에게 변수로 무기데이터 저장
                             Player.EquipWeaponAbility();     //플레이어에게 있는 무기 데미지와 자기 공격력 합치는 함수
 
                             tempSlotUI.SetSlotWithData(tempSlotUI.ItemData, 0);
@@ -263,7 +263,7 @@ public class InventoryUI : BasicUIForm_Parent
                             tempWeaponObject.layer = 10;
                             tempWeaponObject.transform.SetParent(player.weaponHandTransform, false);
                             Player.TakeWeapon(tempWeaponObject);
-                            Player.myWeapon = (ItemData_Weapon)tempSlotUI.ItemData;   //무기에 데미지를 추가하기 위해 플레이어에게 변수로 무기데이터 저장
+                            Player.myWeapon = InGameManager.Instance.ItemManager.FindItem_Weapon(tempSlotUI.ItemData.ID);   //무기에 데미지를 추가하기 위해 플레이어에게 변수로 무기데이터 저장
                             Player.EquipWeaponAbility();     //플레이어에게 있는 무기 데미지와 자기 공격력 합치는 함수
 
                             //이제 인벤에서 바뀐 무기자리에 임시슬롯에 백업한 데이터를 저장

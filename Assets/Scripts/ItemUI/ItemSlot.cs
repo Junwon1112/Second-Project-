@@ -70,12 +70,12 @@ public class ItemSlot  //: MonoBehaviour
     /// <param name="newItemCount"></param>
     public void AssignSlotItem(ItemData newItemData, uint newItemCount = 1 )
     {
-        if(IsEmpty())
-        {
-            SlotItemData = newItemData;
+        //if(IsEmpty())
+        //{
+            SlotItemData = ItemData.DeepCopy(newItemData);
             ItemCount = newItemCount;
             Debug.Log("∫Û ΩΩ∑‘ø° «“¥Á«—¥Ÿ");
-        }
+        //}
         
     }
 
