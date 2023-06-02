@@ -260,8 +260,9 @@ public class InventoryUI : BasicUIForm_Parent
                             //무기프리팹을 할당하는 일련의 과정을 실행한다.
                             GameObject tempWeaponObject;    //장착한 아이템을 무기위치에 만들고 잘 작동되도록 player에서 TakeWeapon을 통해 컴포넌트를 가져온다.
                             tempWeaponObject = ItemFactory.MakeItem(tempSlotUI.ItemData.ID, Vector3.zero, Quaternion.identity); // player.weaponHandTransform.rotation
+                            tempWeaponObject.layer = 10;
                             tempWeaponObject.transform.SetParent(player.weaponHandTransform, false);
-                            Player.TakeWeapon();
+                            Player.TakeWeapon(tempWeaponObject);
                             Player.myWeapon = (ItemData_Weapon)tempSlotUI.ItemData;   //무기에 데미지를 추가하기 위해 플레이어에게 변수로 무기데이터 저장
                             Player.EquipWeaponAbility();     //플레이어에게 있는 무기 데미지와 자기 공격력 합치는 함수
 

@@ -61,6 +61,7 @@ public class TotalGameManager : MonoBehaviour
         Destroy(DMGTextPlayer.Instance.gameObject);
         Destroy(MainCamera_PlayerPos.instance.gameObject);
         Destroy(MiniMapCamera.instance.gameObject);
+        Destroy(LocationReset.instance.gameObject);
         foreach (GameObject DontDestroyObj in DontDestroyOnLoad_Manager.Instance.objs_DontDestroy)
         {
             Destroy(DontDestroyObj);

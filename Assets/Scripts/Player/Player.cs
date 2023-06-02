@@ -598,12 +598,20 @@ public class Player : MonoBehaviour, IHealth
     /// <summary>
     /// 바로 아래 위치한 애니메이션으로 attackTrigger조절하는 함수에 collider를 전해주기 위한 함수
     /// </summary>
-    public void TakeWeapon()     
+    public void TakeWeapon(GameObject weaponObject = null)     
     {
-        PlayerWeapon tempPlayerWeapon = GetComponentInChildren<PlayerWeapon>();
-         //무기 장착시 SkillUse클래스에서도 무기를 받아오도록 함(무기가 시작할 땐 장착되어있지 않아 SkillUse Awake에서 안한다)
+        PlayerWeapon tempPlayerWeapon;
+        if (weaponObject == null)
+        {
+            tempPlayerWeapon = GetComponentInChildren<PlayerWeapon>();
+            //무기 장착시 SkillUse클래스에서도 무기를 받아오도록 함(무기가 시작할 땐 장착되어있지 않아 SkillUse Awake에서 안한다)
+        }
+        else
+        {
+            tempPlayerWeapon = weaponObject.transform.GetComponent<PlayerWeapon>();
+        }
+        skill_Implement.TakeWeapon(weaponObject);
 
-        skill_Implement.TakeWeapon();
         if (tempPlayerWeapon != null)
         {
             weaponPrefab = tempPlayerWeapon.gameObject;

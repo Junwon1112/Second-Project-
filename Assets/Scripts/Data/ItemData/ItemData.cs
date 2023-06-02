@@ -6,6 +6,7 @@ using UnityEngine;
 /// 아이템 데이터를 저장하는 데이터 파일을 만들어 주는 스크립터블 오브젝트, 에셋 메뉴에 아이템 데이터 생성 추가
 /// </summary>
 [CreateAssetMenu(fileName = "New Item data" , menuName = "Scriptable Object_Item Data/Item Data", order = 1)]
+
 public class ItemData : ScriptableObject
 {
     public string itemName;        //아이템 이름
@@ -18,6 +19,8 @@ public class ItemData : ScriptableObject
     public ItemType itemType;       //아이템 타입
     public JobType job;             //아이템 사용가능 직업
     public string ItemInfo;         //아이템 설명
+
+    
 }
 
 

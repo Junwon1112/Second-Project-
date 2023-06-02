@@ -48,9 +48,16 @@ public class Skill_Implement : MonoBehaviour
         anim = player.transform.GetComponent<Animator>();
     }
 
-    public void TakeWeapon()
+    public void TakeWeapon(GameObject weaponObject = null)
     {
-        weapon = InGameManager.Instance.MainPlayer.GetComponentInChildren<PlayerWeapon>();
+        if(weaponObject == null)
+        {
+            weapon = InGameManager.Instance.MainPlayer.GetComponentInChildren<PlayerWeapon>();
+        }
+        else
+        {
+            weapon = weaponObject.transform.GetComponent<PlayerWeapon>();
+        }
         capsuleCollider = weapon.transform.GetComponent<CapsuleCollider>();
     }
 

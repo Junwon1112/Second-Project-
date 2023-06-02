@@ -25,15 +25,16 @@ public class ReStartButton : MonoBehaviour
 
     private void ReStartStage()
     {
-        if(TotalGameManager.Instance.CurrentScene.name != ("Stage1"))
-        {
-            SceneManager.LoadScene(TotalGameManager.Instance.CurrentScene.name);
-        }
-        else
-        {
-            TotalGameManager.Instance.ResetDontDestroy();
-            SceneManager.LoadScene(TotalGameManager.Instance.CurrentScene.name);
-        }
+        SceneManager.LoadScene(TotalGameManager.Instance.CurrentScene.name);
+        //if (TotalGameManager.Instance.CurrentScene.name != ("Stage1"))
+        //{
+        //    SceneManager.LoadScene(TotalGameManager.Instance.CurrentScene.name);
+        //}
+        //else
+        //{
+        //    TotalGameManager.Instance.ResetDontDestroy();
+            
+        //}
         Time.timeScale = 1.0f;
     }
 }
