@@ -6,6 +6,7 @@ using UnityEngine;
 /// 아이템 데이터 중 포션에 대한 데이터, 스크립터블 오브젝트 상속받음
 /// </summary>
 [CreateAssetMenu(fileName = "New Weapon", menuName = "Scriptable Object_Item Data/ItemData_Weapon", order = 3)]
+[System.Serializable]
 public class ItemData_Weapon : ItemData, IEquipable
 {
     public float attackDamage;

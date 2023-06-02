@@ -361,39 +361,39 @@ public class ItemSlotUI : ItemSlotUI_Basic, IPointerClickHandler, IDragHandler, 
                     }
                     // 현재 다른 종류의 아이템 위치바꾸는 로직이 얕은 복사가 돼서 계속 아이템 데이터가 동기화 되어 잠시 막음
                     //차후 제대로 수정 필요
-                    else
-                    {
-                        SetSlotWithData(tempSlotSplitUI.ItemData, tempSlotSplitUI.SlotUICount);
-                        playerInven.itemSlots[this.slotUIID].AssignSlotItem(ItemData, SlotUICount);    //원본 슬롯에도 데이터와 갯수 전달
-                        splitUI.splitTempSlotSplitUI.ClearTempSlot();                   //tempSlot은 역할은 다했으니 초기화
-                        splitUI.splitTempSlotSplitUI.gameObject.SetActive(false);       //처리 다했으면 tempslotUI끄기
-
-                        playerInvenUI.SetAllSlotWithData(); //합치고 난뒤 전부 데이터가 제대로 들어갔는지 확인하기 위해
-                    }
-                    
-
-                    //else    //옮기는 데이터 종류와 다른 슬롯이거나 같더라도 합쳐야하는데 2개의 합이 maxCount보다 많을 경우 => 데이터를 서로 바꾼다
+                    //else
                     //{
-                    //    ItemData tempNewItemData = new ItemData();
-                    //    tempNewItemData = targetItemSlotUI.ItemData;
-                    //    uint tempCount = targetItemSlotUI.SlotUICount;
-
-                    //    //두 아이템의 자리 옮기기
-                    //    //playerInven.itemSlots[this.slotUIID].AssignSlotItem(targetItemSlotUI.ItemData, targetItemSlotUI.SlotUICount);    //원본 슬롯에 데이터와 갯수 전달
-                    //    //SetSlotWithData(targetItemSlotUI.ItemData, targetItemSlotUI.SlotUICount);  //temp슬롯으로 데이터를 보내 비어있는 자기 자신에 상대 슬롯의 값 먼저 할당
-
-                    //    playerInven.itemSlots[this.slotUIID].AssignSlotItem(tempNewItemData, tempCount);    //원본 슬롯에 데이터와 갯수 전달
-                    //    SetSlotWithData(tempNewItemData, tempCount);
-
-                    //    //원본 슬롯에 데이터와 갯수 전달
-                    //    playerInven.itemSlots[targetItemSlotUI.slotUIID].AssignSlotItem(tempSlotSplitUI.ItemData, tempSlotSplitUI.SlotUICount);    
-                    //    targetItemSlotUI.SetSlotWithData(tempSlotSplitUI.ItemData, tempSlotSplitUI.SlotUICount);
-                        
+                    //    SetSlotWithData(tempSlotSplitUI.ItemData, tempSlotSplitUI.SlotUICount);
+                    //    playerInven.itemSlots[this.slotUIID].AssignSlotItem(ItemData, SlotUICount);    //원본 슬롯에도 데이터와 갯수 전달
                     //    splitUI.splitTempSlotSplitUI.ClearTempSlot();                   //tempSlot은 역할은 다했으니 초기화
                     //    splitUI.splitTempSlotSplitUI.gameObject.SetActive(false);       //처리 다했으면 tempslotUI끄기
 
-                    //    playerInvenUI.SetAllSlotWithData(); //합치고 난뒤 전부 데이터가 제대로 들어갔는지 확인하기 위해 데이터로 슬롯을 바꿔준다
+                    //    playerInvenUI.SetAllSlotWithData(); //합치고 난뒤 전부 데이터가 제대로 들어갔는지 확인하기 위해
                     //}
+
+
+                    else    //옮기는 데이터 종류와 다른 슬롯이거나 같더라도 합쳐야하는데 2개의 합이 maxCount보다 많을 경우 => 데이터를 서로 바꾼다
+                    {
+                        ItemData tempNewItemData = new ItemData();
+                        tempNewItemData = tempNewItemData.DeepCopy<ItemData>((ItemData)targetItemSlotUI.ItemData);
+                        uint tempCount = targetItemSlotUI.SlotUICount;
+
+                        //두 아이템의 자리 옮기기
+                        //playerInven.itemSlots[this.slotUIID].AssignSlotItem(targetItemSlotUI.ItemData, targetItemSlotUI.SlotUICount);    //원본 슬롯에 데이터와 갯수 전달
+                        //SetSlotWithData(targetItemSlotUI.ItemData, targetItemSlotUI.SlotUICount);  //temp슬롯으로 데이터를 보내 비어있는 자기 자신에 상대 슬롯의 값 먼저 할당
+
+                        playerInven.itemSlots[this.slotUIID].AssignSlotItem(tempNewItemData, tempCount);    //원본 슬롯에 데이터와 갯수 전달
+                        SetSlotWithData(tempNewItemData, tempCount);
+
+                        //원본 슬롯에 데이터와 갯수 전달
+                        playerInven.itemSlots[targetItemSlotUI.slotUIID].AssignSlotItem(tempSlotSplitUI.ItemData, tempSlotSplitUI.SlotUICount);
+                        targetItemSlotUI.SetSlotWithData(tempSlotSplitUI.ItemData, tempSlotSplitUI.SlotUICount);
+
+                        splitUI.splitTempSlotSplitUI.ClearTempSlot();                   //tempSlot은 역할은 다했으니 초기화
+                        splitUI.splitTempSlotSplitUI.gameObject.SetActive(false);       //처리 다했으면 tempslotUI끄기
+
+                        playerInvenUI.SetAllSlotWithData(); //합치고 난뒤 전부 데이터가 제대로 들어갔는지 확인하기 위해 데이터로 슬롯을 바꿔준다
+                    }
                 }
 
             }
