@@ -72,7 +72,8 @@ public class ItemSlot  //: MonoBehaviour
     {
         //if(IsEmpty())
         //{
-            SlotItemData = ItemData.DeepCopy(newItemData);
+            //SlotItemData = ItemData.DeepCopy(newItemData);
+            SlotItemData = newItemData;
             ItemCount = newItemCount;
             Debug.Log("∫Û ΩΩ∑‘ø° «“¥Á«—¥Ÿ");
         //}

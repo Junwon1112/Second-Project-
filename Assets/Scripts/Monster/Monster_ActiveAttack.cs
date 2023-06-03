@@ -30,6 +30,7 @@ public class Monster_ActiveAttack : Monster_Basic
     float moveSpeed;
 
     float monsterSearchRadius = 5.0f;
+    float monsterChaseRadius = 20.0f;
     LayerMask playerLayer;
     int tempLayerMask;
 
@@ -53,6 +54,7 @@ public class Monster_ActiveAttack : Monster_Basic
     bool isPatrol = true;
     bool isCombat = false;
     bool isDie = false;
+    bool isAttacked = false;
 
     float hp;
     float maxHP = 100;
@@ -116,6 +118,10 @@ public class Monster_ActiveAttack : Monster_Basic
         get { return hp; }
         set 
         {
+            if (hp > value)
+            {
+                isAttacked = true;
+            }
             hp = value;
 
             if (hp <= 0 && !isDie)
@@ -258,7 +264,7 @@ public class Monster_ActiveAttack : Monster_Basic
         //player에 컬라이더가 없어 생기던 문제였음
         
 
-        if (colliders.Length > 0)  //플레이어는 한명뿐이니 존재하기만 하면 찾은것으로 판단
+        if (colliders.Length > 0 || isAttacked)  //플레이어는 한명뿐이니 존재하기만 하면 찾은것으로 판단
         {
             monsterState = MonsterState.chase;
             SetMonsterState(monsterState);
@@ -272,18 +278,24 @@ public class Monster_ActiveAttack : Monster_Basic
     /// </summary>
     private void ChasePlayer()  //FindPlayer가 찾은 플레이어 트랜스폼으로 추적하는 함수
     {
-
         if (agent.remainingDistance <= agent.stoppingDistance)  //플레이어에 도착하면 공격태세로 전환
         {
             monsterState = MonsterState.combat;
             SetMonsterState(monsterState);
         }
-        else if(agent.remainingDistance > monsterSearchRadius)    //너무 멀어지면 다시 순찰
+        else if(!isAttacked && agent.remainingDistance > monsterSearchRadius)    //공격당하지 않았을 때 탐색 범위보다 너무 멀어지면 다시 순찰 
         {
             monsterState = MonsterState.patrol;
             SetMonsterState(monsterState);
             agent.SetDestination(patrolPoints[destinationIndex].transform.position);
             //상태바뀔때 목적지 재설정
+        }
+        else if(isAttacked && agent.remainingDistance > monsterChaseRadius)     //공격당했을 때는 추적 범위보다 더 멀어지면 순찰로 돌아감
+        {
+            isAttacked = false;
+            monsterState = MonsterState.patrol;
+            SetMonsterState(monsterState);
+            agent.SetDestination(patrolPoints[destinationIndex].transform.position);
         }
         else
         {

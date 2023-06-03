@@ -88,7 +88,8 @@ public class ItemSlotUI : ItemSlotUI_Basic, IPointerClickHandler, IDragHandler, 
     {
         if(itemData != null && count > 0)    //아이템 데이터가 존재한다면
         {
-            this.itemData = ItemData.DeepCopy(itemData);
+            //this.itemData = ItemData.DeepCopy(itemData);
+            this.itemData = itemData;
             SlotUICount = count;
 
             ItemImage.color = Color.white;
@@ -375,7 +376,8 @@ public class ItemSlotUI : ItemSlotUI_Basic, IPointerClickHandler, IDragHandler, 
                     else    //옮기는 데이터 종류와 다른 슬롯이거나 같더라도 합쳐야하는데 2개의 합이 maxCount보다 많을 경우 => 데이터를 서로 바꾼다
                     {
                         ItemData tempNewItemData = new ItemData();
-                        tempNewItemData = ItemData.DeepCopy(targetItemSlotUI.ItemData);
+                        //tempNewItemData = ItemData.DeepCopy(targetItemSlotUI.ItemData);
+                        tempNewItemData = targetItemSlotUI.ItemData;
                         uint tempCount = targetItemSlotUI.SlotUICount;
 
                         //두 아이템의 자리 옮기기

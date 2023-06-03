@@ -33,19 +33,54 @@ public class ItemData : ScriptableObject
     {
         if(itemData != null)
         {
-            ItemData itemData_new = new ItemData();
-            itemData_new.itemName = itemData.itemName;
-            itemData_new.ID = itemData.ID;
-            itemData_new.itemIDCode = itemData.itemIDCode;
-            itemData_new.itemPrefab = itemData.itemPrefab;
-            itemData_new.itemIcon = itemData.itemIcon;
-            itemData_new.itemValue = itemData.itemValue;
-            itemData_new.itemMaxCount = itemData.itemMaxCount;
-            itemData_new.itemType = itemData.itemType;
-            itemData_new.job = itemData.job;
-            itemData_new.ItemInfo = itemData.ItemInfo;
+            if(itemData.ID < 10)
+            {
+                ItemData_Potion itemData_new = new ItemData_Potion();
+                itemData_new.itemName = itemData.itemName;
+                itemData_new.ID = itemData.ID;
+                itemData_new.itemIDCode = itemData.itemIDCode;
+                itemData_new.itemPrefab = itemData.itemPrefab;
+                itemData_new.itemIcon = itemData.itemIcon;
+                itemData_new.itemValue = itemData.itemValue;
+                itemData_new.itemMaxCount = itemData.itemMaxCount;
+                itemData_new.itemType = itemData.itemType;
+                itemData_new.job = itemData.job;
+                itemData_new.ItemInfo = itemData.ItemInfo;
 
-            return itemData_new;
+                return itemData_new;
+            }
+            else if(itemData.ID < 100)
+            {
+                ItemData_Weapon itemData_new = new ItemData_Weapon();
+                itemData_new.itemName = itemData.itemName;
+                itemData_new.ID = itemData.ID;
+                itemData_new.itemIDCode = itemData.itemIDCode;
+                itemData_new.itemPrefab = itemData.itemPrefab;
+                itemData_new.itemIcon = itemData.itemIcon;
+                itemData_new.itemValue = itemData.itemValue;
+                itemData_new.itemMaxCount = itemData.itemMaxCount;
+                itemData_new.itemType = itemData.itemType;
+                itemData_new.job = itemData.job;
+                itemData_new.ItemInfo = itemData.ItemInfo;
+
+                return itemData_new;
+            }
+            else if(itemData.ID == 100)
+            {
+                ItemData_SpecialPotion_Scale itemData_new = new ItemData_SpecialPotion_Scale();
+                itemData_new.itemName = itemData.itemName;
+                itemData_new.ID = itemData.ID;
+                itemData_new.itemIDCode = itemData.itemIDCode;
+                itemData_new.itemPrefab = itemData.itemPrefab;
+                itemData_new.itemIcon = itemData.itemIcon;
+                itemData_new.itemValue = itemData.itemValue;
+                itemData_new.itemMaxCount = itemData.itemMaxCount;
+                itemData_new.itemType = itemData.itemType;
+                itemData_new.job = itemData.job;
+                itemData_new.ItemInfo = itemData.ItemInfo;
+
+                return itemData_new;
+            }
         }
         return null;
     }

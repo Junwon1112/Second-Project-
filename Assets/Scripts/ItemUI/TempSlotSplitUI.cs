@@ -62,7 +62,8 @@ public class TempSlotSplitUI : ItemSlotUI_Basic
     /// <param name="count"></param>
     public void SetTempSlotWithData(ItemData itemData, uint count)
     {
-        ItemData = ItemData.DeepCopy(itemData);
+        ItemData = itemData;
+        //ItemData = ItemData.DeepCopy(itemData);
         ItemImage.sprite = ItemData.itemIcon;   //여기서 두번쨰 스플릿할때 에러남(아마 상속받아서 split쪽에서 ok누른뒤 에러나는거 같음)
         SlotUICount = count;
         tempSlotItemCountText.text = SlotUICount.ToString();
