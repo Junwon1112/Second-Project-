@@ -23,7 +23,7 @@ public class Merchant_Trigger : MonoBehaviour
 
     private void Start()
     {
-        transform.position = merchant.transform.position;
+        //transform.position = merchant.transform.position;
     }
 
     private void OnTriggerEnter(Collider other)

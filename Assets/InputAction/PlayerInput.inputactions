@@ -222,11 +222,11 @@
             ]
         },
         {
-            "name": "StoreUI",
+            "name": "StoreUI_Dialog",
             "id": "92bd2df5-bd75-4932-91e0-c5007a57a749",
             "actions": [
                 {
-                    "name": "StoreUIOnOff",
+                    "name": "StoreUI_Dialog_OnOff",
                     "type": "Button",
                     "id": "7a3a8894-95a6-4758-b9b3-6901ea593871",
                     "expectedControlType": "Button",
@@ -243,7 +243,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "StoreUIOnOff",
+                    "action": "StoreUI_Dialog_OnOff",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

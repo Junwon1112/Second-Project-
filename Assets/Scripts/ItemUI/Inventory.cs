@@ -250,7 +250,7 @@ public class Inventory : MonoBehaviour
         bool isFindSlot = false;
         //아이템이 꽉차면 NULL reference가 뜨는데 findsameitemslot함수에서 null값을 리턴해서 거기서는 slotItemData를 받을수 없어 에러가 나는듯, 하지만 일단 작동은 잘돼서 나중에 수정할 것
         
-        if(sameItemSlot != null)
+        if(sameItemSlot != null && count > 0)
         {
             if (sameItemSlot.SlotItemData != null) //데이터가 null이 아니라면 => 데이터가 비어있지 않음.
             {

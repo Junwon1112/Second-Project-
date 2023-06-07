@@ -59,16 +59,16 @@ public class StoreUI : BasicUIForm_Parent
 
     private void OnEnable()
     {
-        Input_Control.StoreUI.Enable();
-        Input_Control.StoreUI.StoreUIOnOff.performed += OnStoreUIOnoff;
+        Input_Control.StoreUI_Dialog.Enable();
+        Input_Control.StoreUI_Dialog.StoreUI_Dialog_OnOff.performed += OnStoreUIOnoff;
     }
 
 
     private void OnDisable()
     {
         SceneManager.sceneLoaded -= SceneManager_SceneLoaded;   //Start에서 등록
-        Input_Control.StoreUI.StoreUIOnOff.performed -= OnStoreUIOnoff;
-        Input_Control.StoreUI.Disable();
+        Input_Control.StoreUI_Dialog.StoreUI_Dialog_OnOff.performed -= OnStoreUIOnoff;
+        Input_Control.StoreUI_Dialog.Disable();
     }
 
     private void Awake()

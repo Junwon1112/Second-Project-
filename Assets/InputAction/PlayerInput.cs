@@ -244,11 +244,11 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
             ]
         },
         {
-            ""name"": ""StoreUI"",
+            ""name"": ""StoreUI_Dialog"",
             ""id"": ""92bd2df5-bd75-4932-91e0-c5007a57a749"",
             ""actions"": [
                 {
-                    ""name"": ""StoreUIOnOff"",
+                    ""name"": ""StoreUI_Dialog_OnOff"",
                     ""type"": ""Button"",
                     ""id"": ""7a3a8894-95a6-4758-b9b3-6901ea593871"",
                     ""expectedControlType"": ""Button"",
@@ -265,7 +265,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""StoreUIOnOff"",
+                    ""action"": ""StoreUI_Dialog_OnOff"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -611,9 +611,9 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         m_InventoryUI = asset.FindActionMap("InventoryUI", throwIfNotFound: true);
         m_InventoryUI_InventoryOnOff = m_InventoryUI.FindAction("InventoryOnOff", throwIfNotFound: true);
         m_InventoryUI_InventoryItemUse = m_InventoryUI.FindAction("InventoryItemUse", throwIfNotFound: true);
-        // StoreUI
-        m_StoreUI = asset.FindActionMap("StoreUI", throwIfNotFound: true);
-        m_StoreUI_StoreUIOnOff = m_StoreUI.FindAction("StoreUIOnOff", throwIfNotFound: true);
+        // StoreUI_Dialog
+        m_StoreUI_Dialog = asset.FindActionMap("StoreUI_Dialog", throwIfNotFound: true);
+        m_StoreUI_Dialog_StoreUI_Dialog_OnOff = m_StoreUI_Dialog.FindAction("StoreUI_Dialog_OnOff", throwIfNotFound: true);
         // EquipmentUI
         m_EquipmentUI = asset.FindActionMap("EquipmentUI", throwIfNotFound: true);
         m_EquipmentUI_EquipmentOnOff = m_EquipmentUI.FindAction("EquipmentOnOff", throwIfNotFound: true);
@@ -809,38 +809,38 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
     }
     public InventoryUIActions @InventoryUI => new InventoryUIActions(this);
 
-    // StoreUI
-    private readonly InputActionMap m_StoreUI;
-    private IStoreUIActions m_StoreUIActionsCallbackInterface;
-    private readonly InputAction m_StoreUI_StoreUIOnOff;
-    public struct StoreUIActions
+    // StoreUI_Dialog
+    private readonly InputActionMap m_StoreUI_Dialog;
+    private IStoreUI_DialogActions m_StoreUI_DialogActionsCallbackInterface;
+    private readonly InputAction m_StoreUI_Dialog_StoreUI_Dialog_OnOff;
+    public struct StoreUI_DialogActions
     {
         private @PlayerInput m_Wrapper;
-        public StoreUIActions(@PlayerInput wrapper) { m_Wrapper = wrapper; }
-        public InputAction @StoreUIOnOff => m_Wrapper.m_StoreUI_StoreUIOnOff;
-        public InputActionMap Get() { return m_Wrapper.m_StoreUI; }
+        public StoreUI_DialogActions(@PlayerInput wrapper) { m_Wrapper = wrapper; }
+        public InputAction @StoreUI_Dialog_OnOff => m_Wrapper.m_StoreUI_Dialog_StoreUI_Dialog_OnOff;
+        public InputActionMap Get() { return m_Wrapper.m_StoreUI_Dialog; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
         public bool enabled => Get().enabled;
-        public static implicit operator InputActionMap(StoreUIActions set) { return set.Get(); }
-        public void SetCallbacks(IStoreUIActions instance)
+        public static implicit operator InputActionMap(StoreUI_DialogActions set) { return set.Get(); }
+        public void SetCallbacks(IStoreUI_DialogActions instance)
         {
-            if (m_Wrapper.m_StoreUIActionsCallbackInterface != null)
+            if (m_Wrapper.m_StoreUI_DialogActionsCallbackInterface != null)
             {
-                @StoreUIOnOff.started -= m_Wrapper.m_StoreUIActionsCallbackInterface.OnStoreUIOnOff;
-                @StoreUIOnOff.performed -= m_Wrapper.m_StoreUIActionsCallbackInterface.OnStoreUIOnOff;
-                @StoreUIOnOff.canceled -= m_Wrapper.m_StoreUIActionsCallbackInterface.OnStoreUIOnOff;
+                @StoreUI_Dialog_OnOff.started -= m_Wrapper.m_StoreUI_DialogActionsCallbackInterface.OnStoreUI_Dialog_OnOff;
+                @StoreUI_Dialog_OnOff.performed -= m_Wrapper.m_StoreUI_DialogActionsCallbackInterface.OnStoreUI_Dialog_OnOff;
+                @StoreUI_Dialog_OnOff.canceled -= m_Wrapper.m_StoreUI_DialogActionsCallbackInterface.OnStoreUI_Dialog_OnOff;
             }
-            m_Wrapper.m_StoreUIActionsCallbackInterface = instance;
+            m_Wrapper.m_StoreUI_DialogActionsCallbackInterface = instance;
             if (instance != null)
             {
-                @StoreUIOnOff.started += instance.OnStoreUIOnOff;
-                @StoreUIOnOff.performed += instance.OnStoreUIOnOff;
-                @StoreUIOnOff.canceled += instance.OnStoreUIOnOff;
+                @StoreUI_Dialog_OnOff.started += instance.OnStoreUI_Dialog_OnOff;
+                @StoreUI_Dialog_OnOff.performed += instance.OnStoreUI_Dialog_OnOff;
+                @StoreUI_Dialog_OnOff.canceled += instance.OnStoreUI_Dialog_OnOff;
             }
         }
     }
-    public StoreUIActions @StoreUI => new StoreUIActions(this);
+    public StoreUI_DialogActions @StoreUI_Dialog => new StoreUI_DialogActions(this);
 
     // EquipmentUI
     private readonly InputActionMap m_EquipmentUI;
@@ -1118,9 +1118,9 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         void OnInventoryOnOff(InputAction.CallbackContext context);
         void OnInventoryItemUse(InputAction.CallbackContext context);
     }
-    public interface IStoreUIActions
+    public interface IStoreUI_DialogActions
     {
-        void OnStoreUIOnOff(InputAction.CallbackContext context);
+        void OnStoreUI_Dialog_OnOff(InputAction.CallbackContext context);
     }
     public interface IEquipmentUIActions
     {
