@@ -74,8 +74,8 @@ public class Player : MonoBehaviour, IHealth
     Image expFillImage;
     TextMeshProUGUI expValue_Text;
 
-    [SerializeField]
-    int level = 1;
+    
+    public int level = 1;
     TextMeshProUGUI lvText;
 
     /// <summary>

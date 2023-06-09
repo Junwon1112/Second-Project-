@@ -4,16 +4,14 @@ using UnityEngine;
 
 public class NPC : MonoBehaviour
 {
-    public string npcName;
+    public NPCData data;
+    //DialogUI dialogUI;
+
+
+    //private void Awake()
+    //{
+    //    dialogUI = FindObjectOfType<DialogUI>();
+    //}
     
-    public string[] basicScript;
-    DialogUI dialogUI;
-
-
-    private void Awake()
-    {
-        dialogUI = FindObjectOfType<DialogUI>();
-    }
-
 
 }

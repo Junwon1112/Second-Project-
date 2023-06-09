@@ -38,7 +38,19 @@ public class NPC_Trigger : MonoBehaviour
             IsPlayerInTrigger = true;
             dialogUI.npc_Trigger = this;
             dialogUI.npc = this.npc;
-            dialogUI.SetText(npc.npcName, npc.basicScript);
+            dialogUI.questButtons.npc = this.npc;
+            dialogUI.SetText(npc.data.npcName, npc.data.basicScript);
+            
+            for(int i =0; i < npc.data.quest.Length; i++)
+            {
+                if (npc.data.quest[i].requireLevel <= InGameManager.Instance.MainPlayer.level)
+                {
+                    dialogUI.isQuestExist = true;
+                    //dialogUI.questButtons.SetText(npc.data.npcName, npc.data.quest[i].dialog);
+                    break;
+                }
+            }
+            
         }
     }
     private void OnTriggerExit(Collider other)

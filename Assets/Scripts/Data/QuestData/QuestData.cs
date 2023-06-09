@@ -7,4 +7,5 @@ using UnityEngine;
 public abstract class QuestData : MonoBehaviour
 {
     public abstract void QuestContents();
+    public abstract void AssignQuest();
 }
