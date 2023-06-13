@@ -14,4 +14,11 @@ public class Quest : ScriptableObject
     public QuestData questData;
     public float compensation_Exp;
     public ItemData compensation_Item;
+    public QuestType questType;
+}
+
+public enum QuestType
+{
+    MonsterHunt = 0,
+    ItemCollect
 }

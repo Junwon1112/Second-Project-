@@ -95,7 +95,7 @@ public class QuestButtons : MonoBehaviour
 
     public void QuestAccept()
     {
-        tempQuestData.AssignQuest();
+
 
         dialogUI.index = 0;
         UIOnOffSetting();

@@ -4,8 +4,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public abstract class QuestData : MonoBehaviour
+public abstract class QuestData : ScriptableObject
 {
-    public abstract void QuestContents();
-    public abstract void AssignQuest();
+    public abstract void QuestCheck(int id, int count = 1);
+    //public abstract void AssignQuest();
 }
