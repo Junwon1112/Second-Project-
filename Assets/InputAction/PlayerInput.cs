@@ -55,15 +55,6 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""TempItemUse"",
-                    ""type"": ""Button"",
-                    ""id"": ""1fe494bc-c607-4f40-b727-3b417af9237b"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
                     ""name"": ""TakeItem"",
                     ""type"": ""Button"",
                     ""id"": ""fc9000cd-ddca-42b9-84d0-31df0c7d8b77"",
@@ -157,17 +148,6 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Look"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""1004cfaf-fd86-4848-920d-cf193e3fa389"",
-                    ""path"": ""<Keyboard>/q"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""TempItemUse"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -578,6 +558,34 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""QuestUI"",
+            ""id"": ""84e3774d-16a0-4a45-a908-38f36497a922"",
+            ""actions"": [
+                {
+                    ""name"": ""QuestUI_OnOff"",
+                    ""type"": ""Button"",
+                    ""id"": ""dff5f49d-29b5-41bd-97bf-65781b1d1a0f"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""3e939c8b-9222-49e6-aa65-39aee78b7c5d"",
+                    ""path"": ""<Keyboard>/q"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""QuestUI_OnOff"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": [
@@ -604,7 +612,6 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         m_Player_Move = m_Player.FindAction("Move", throwIfNotFound: true);
         m_Player_Attack = m_Player.FindAction("Attack", throwIfNotFound: true);
         m_Player_Look = m_Player.FindAction("Look", throwIfNotFound: true);
-        m_Player_TempItemUse = m_Player.FindAction("TempItemUse", throwIfNotFound: true);
         m_Player_TakeItem = m_Player.FindAction("TakeItem", throwIfNotFound: true);
         m_Player_TestMakeItem = m_Player.FindAction("TestMakeItem", throwIfNotFound: true);
         // InventoryUI
@@ -639,6 +646,9 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         // LoadingUI
         m_LoadingUI = asset.FindActionMap("LoadingUI", throwIfNotFound: true);
         m_LoadingUI_GoToNextScene = m_LoadingUI.FindAction("GoToNextScene", throwIfNotFound: true);
+        // QuestUI
+        m_QuestUI = asset.FindActionMap("QuestUI", throwIfNotFound: true);
+        m_QuestUI_QuestUI_OnOff = m_QuestUI.FindAction("QuestUI_OnOff", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -701,7 +711,6 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Move;
     private readonly InputAction m_Player_Attack;
     private readonly InputAction m_Player_Look;
-    private readonly InputAction m_Player_TempItemUse;
     private readonly InputAction m_Player_TakeItem;
     private readonly InputAction m_Player_TestMakeItem;
     public struct PlayerActions
@@ -711,7 +720,6 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         public InputAction @Move => m_Wrapper.m_Player_Move;
         public InputAction @Attack => m_Wrapper.m_Player_Attack;
         public InputAction @Look => m_Wrapper.m_Player_Look;
-        public InputAction @TempItemUse => m_Wrapper.m_Player_TempItemUse;
         public InputAction @TakeItem => m_Wrapper.m_Player_TakeItem;
         public InputAction @TestMakeItem => m_Wrapper.m_Player_TestMakeItem;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
@@ -732,9 +740,6 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 @Look.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnLook;
                 @Look.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnLook;
                 @Look.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnLook;
-                @TempItemUse.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnTempItemUse;
-                @TempItemUse.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnTempItemUse;
-                @TempItemUse.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnTempItemUse;
                 @TakeItem.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnTakeItem;
                 @TakeItem.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnTakeItem;
                 @TakeItem.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnTakeItem;
@@ -754,9 +759,6 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 @Look.started += instance.OnLook;
                 @Look.performed += instance.OnLook;
                 @Look.canceled += instance.OnLook;
-                @TempItemUse.started += instance.OnTempItemUse;
-                @TempItemUse.performed += instance.OnTempItemUse;
-                @TempItemUse.canceled += instance.OnTempItemUse;
                 @TakeItem.started += instance.OnTakeItem;
                 @TakeItem.performed += instance.OnTakeItem;
                 @TakeItem.canceled += instance.OnTakeItem;
@@ -1095,6 +1097,39 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         }
     }
     public LoadingUIActions @LoadingUI => new LoadingUIActions(this);
+
+    // QuestUI
+    private readonly InputActionMap m_QuestUI;
+    private IQuestUIActions m_QuestUIActionsCallbackInterface;
+    private readonly InputAction m_QuestUI_QuestUI_OnOff;
+    public struct QuestUIActions
+    {
+        private @PlayerInput m_Wrapper;
+        public QuestUIActions(@PlayerInput wrapper) { m_Wrapper = wrapper; }
+        public InputAction @QuestUI_OnOff => m_Wrapper.m_QuestUI_QuestUI_OnOff;
+        public InputActionMap Get() { return m_Wrapper.m_QuestUI; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(QuestUIActions set) { return set.Get(); }
+        public void SetCallbacks(IQuestUIActions instance)
+        {
+            if (m_Wrapper.m_QuestUIActionsCallbackInterface != null)
+            {
+                @QuestUI_OnOff.started -= m_Wrapper.m_QuestUIActionsCallbackInterface.OnQuestUI_OnOff;
+                @QuestUI_OnOff.performed -= m_Wrapper.m_QuestUIActionsCallbackInterface.OnQuestUI_OnOff;
+                @QuestUI_OnOff.canceled -= m_Wrapper.m_QuestUIActionsCallbackInterface.OnQuestUI_OnOff;
+            }
+            m_Wrapper.m_QuestUIActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @QuestUI_OnOff.started += instance.OnQuestUI_OnOff;
+                @QuestUI_OnOff.performed += instance.OnQuestUI_OnOff;
+                @QuestUI_OnOff.canceled += instance.OnQuestUI_OnOff;
+            }
+        }
+    }
+    public QuestUIActions @QuestUI => new QuestUIActions(this);
     private int m_PlayerSchemeIndex = -1;
     public InputControlScheme PlayerScheme
     {
@@ -1109,7 +1144,6 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         void OnMove(InputAction.CallbackContext context);
         void OnAttack(InputAction.CallbackContext context);
         void OnLook(InputAction.CallbackContext context);
-        void OnTempItemUse(InputAction.CallbackContext context);
         void OnTakeItem(InputAction.CallbackContext context);
         void OnTestMakeItem(InputAction.CallbackContext context);
     }
@@ -1152,5 +1186,9 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
     public interface ILoadingUIActions
     {
         void OnGoToNextScene(InputAction.CallbackContext context);
+    }
+    public interface IQuestUIActions
+    {
+        void OnQuestUI_OnOff(InputAction.CallbackContext context);
     }
 }

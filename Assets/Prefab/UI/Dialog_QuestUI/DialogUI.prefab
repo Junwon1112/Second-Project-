@@ -88,7 +88,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6317aab62c3e3074dba6b48099fef0d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  QuestButton: {fileID: 0}
+  questButton: {fileID: 374500211473319558, guid: 0388604933dfc5a40868363c555d6a07, type: 3}
+  acceptButton: {fileID: 3120434711576698565, guid: 3ffce5d7ba7575346bf521062e472d00, type: 3}
+  declineButton: {fileID: 1853848477174271267, guid: f7629fbddfd337f40bc7ea41d297e322, type: 3}
+  npc: {fileID: 0}
+  tempDialog: []
 --- !u!1 &7394240498590410911
 GameObject:
   m_ObjectHideFlags: 0
@@ -427,8 +431,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dialogs_Print: []
   npcName: 
+  index: 0
   npc: {fileID: 0}
   npc_Trigger: {fileID: 0}
+  buttons: []
+  isBasicDialog: 1
+  isQuestExist: 0
+  questButtons: {fileID: 0}
 --- !u!1 &7394240499110022840
 GameObject:
   m_ObjectHideFlags: 0

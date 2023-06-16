@@ -33,15 +33,6 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "TempItemUse",
-                    "type": "Button",
-                    "id": "1fe494bc-c607-4f40-b727-3b417af9237b",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
                     "name": "TakeItem",
                     "type": "Button",
                     "id": "fc9000cd-ddca-42b9-84d0-31df0c7d8b77",
@@ -135,17 +126,6 @@
                     "processors": "",
                     "groups": "",
                     "action": "Look",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "1004cfaf-fd86-4848-920d-cf193e3fa389",
-                    "path": "<Keyboard>/q",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "TempItemUse",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -552,6 +532,34 @@
                     "processors": "",
                     "groups": "",
                     "action": "GoToNextScene",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "QuestUI",
+            "id": "84e3774d-16a0-4a45-a908-38f36497a922",
+            "actions": [
+                {
+                    "name": "QuestUI_OnOff",
+                    "type": "Button",
+                    "id": "dff5f49d-29b5-41bd-97bf-65781b1d1a0f",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "3e939c8b-9222-49e6-aa65-39aee78b7c5d",
+                    "path": "<Keyboard>/q",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "QuestUI_OnOff",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

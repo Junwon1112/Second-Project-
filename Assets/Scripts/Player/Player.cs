@@ -303,7 +303,6 @@ public class Player : MonoBehaviour, IHealth
     {
         //input.Player.TestMakeItem.performed -= OnTestMakeItem;
 
-        input.Player.TempItemUse.performed -= OnTempItemUse;
         input.Player.Attack.performed -= OnAttackInput;
         input.Player.Move.canceled -= OnMoveInput;
         input.Player.Move.performed -= OnMoveInput;
@@ -323,7 +322,6 @@ public class Player : MonoBehaviour, IHealth
         input.Player.Move.canceled += OnMoveInput;
         input.Player.Attack.performed += OnAttackInput;
         input.Player.Look.performed += OnLookInput;
-        input.Player.TempItemUse.performed += OnTempItemUse;
         input.Player.TakeItem.performed += OnTakeItem;
         //input.Player.TestMakeItem.performed += OnTestMakeItem;
     }
@@ -437,40 +435,40 @@ public class Player : MonoBehaviour, IHealth
         }
     }
 
-    /// <summary>
-    /// Keyboard Q
-    /// </summary>
-    private void OnTempItemUse(InputAction.CallbackContext obj)     
-    {
+    ///// <summary>
+    ///// Keyboard Q
+    ///// </summary>
+    //private void OnTempItemUse(InputAction.CallbackContext obj)     
+    //{
 
-        //아이템 생성 ==> 성공
-        //GameObject itemObj = ItemFactory.MakeItem((uint)ItemIDCode.HP_Potion, transform.position, Quaternion.identity);
-        //아이템 사용
-        //if(playerInventory.FindSameItemSlotForUseItem(potion). != null);
-        if(playerInventory.FindSameItemSlotForUseItem(potion).SlotItemData != null)
-        {
-            int tempID;
-            potion.Use(player);
-            if(playerInventory.FindSameItemSlotForUseItem(potion).ItemCount == 1)
-            {
-                tempID = playerInventory.FindSameItemSlotForUseItem(potion).slotID;
-                playerInventory.FindSameItemSlotForUseItem(potion).ClearSlotItem();
-                playerInventoryUI.slotUIs[tempID].ItemData = null;
-                playerInventoryUI.slotUIs[tempID].SlotUICount = 0;
-                playerInventoryUI.SetAllSlotWithData();
-            }
-            else
-            {
-                tempID = playerInventory.FindSameItemSlotForUseItem(potion).slotID;
-                playerInventory.FindSameItemSlotForUseItem(potion).ItemCount--;
-                playerInventoryUI.slotUIs[tempID].SlotUICount--;
-                playerInventoryUI.SetAllSlotWithData();
-            }
+    //    //아이템 생성 ==> 성공
+    //    //GameObject itemObj = ItemFactory.MakeItem((uint)ItemIDCode.HP_Potion, transform.position, Quaternion.identity);
+    //    //아이템 사용
+    //    //if(playerInventory.FindSameItemSlotForUseItem(potion). != null);
+    //    if(playerInventory.FindSameItemSlotForUseItem(potion).SlotItemData != null)
+    //    {
+    //        int tempID;
+    //        potion.Use(player);
+    //        if(playerInventory.FindSameItemSlotForUseItem(potion).ItemCount == 1)
+    //        {
+    //            tempID = playerInventory.FindSameItemSlotForUseItem(potion).slotID;
+    //            playerInventory.FindSameItemSlotForUseItem(potion).ClearSlotItem();
+    //            playerInventoryUI.slotUIs[tempID].ItemData = null;
+    //            playerInventoryUI.slotUIs[tempID].SlotUICount = 0;
+    //            playerInventoryUI.SetAllSlotWithData();
+    //        }
+    //        else
+    //        {
+    //            tempID = playerInventory.FindSameItemSlotForUseItem(potion).slotID;
+    //            playerInventory.FindSameItemSlotForUseItem(potion).ItemCount--;
+    //            playerInventoryUI.slotUIs[tempID].SlotUICount--;
+    //            playerInventoryUI.SetAllSlotWithData();
+    //        }
             
-        }
+    //    }
         
         
-    }
+    //}
 
     /// <summary>
     /// Keyboard F를 눌러 실행

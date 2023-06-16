@@ -32,11 +32,6 @@ public class MonsterManager : MonoBehaviour
         huntCounts = new int[monsterDatas.Length];
     }
 
-
-    public int[] countQuestMonster;
-
-
-
     //public void CheckMonster_Plus(QuestMonsterBook monsterBook)
     //{
     //    monsterBook._killingCount++;

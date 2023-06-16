@@ -8,10 +8,10 @@ public class QuestManager : MonoBehaviour
     public bool isQuestComplete = false;
 
     [SerializeField]
-    public List<Quest> quests = new List<Quest>();
+    public List<Quest> totalQuests = new List<Quest>();
 
     public List<Quest> currentQuests = new List<Quest>();
-    public List<int> currentAchievement = new List<int>();
+    public int[,] currentAchievement;
 
     public Dictionary<int, Quest> questsDict = new Dictionary<int, Quest>();
 
@@ -37,20 +37,36 @@ public class QuestManager : MonoBehaviour
             }
         }
 
-        for(int i = 0; i < quests.Count; i++)
+        for(int i = 0; i < totalQuests.Count; i++)
         {
-            questsDict.Add((int)quests[i].questID, quests[i]);
+            questsDict.Add((int)totalQuests[i].questID, totalQuests[i]);
         }
 
 
         //questBook = new QuestMonsterBook[15];
     }
 
-    
+    private void Start()
+    {
+        currentAchievement = new int[totalQuests.Count, 10];
+    }
 
     public void CheckQuest_Monster(int monsterID)
     {
-
+        for(int i = 0; i < currentQuests.Count; i ++)
+        {
+            if (currentQuests[i].questType == QuestType.MonsterHunt)
+            {
+                QuestData_HuntMonster questData_Monster = (QuestData_HuntMonster)currentQuests[i].questData;
+                for (int j = 0; j< questData_Monster.monstersData.Length; j++)
+                {
+                    if (questData_Monster.monstersData[j].monsterID == monsterID)
+                    {
+                        currentAchievement[i, j]++;
+                    }
+                }
+            }
+        }
 
         //if (questsDict[questID].questType == QuestType.MonsterHunt)
         //{

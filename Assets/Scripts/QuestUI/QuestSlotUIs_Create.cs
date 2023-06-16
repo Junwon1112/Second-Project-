@@ -9,28 +9,34 @@ public class QuestSlotUIs_Create : MonoBehaviour
     GameObject questSlotUI;
 
 
-
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     public void CreateQuestSlot(Quest quest)
     {
-        GameObject tempObj = Instantiate(questSlotUI, transform);
-        TextMeshProUGUI questContents = tempObj.GetComponent<TextMeshProUGUI>();
-        if(quest.questType == QuestType.MonsterHunt)
+        if(transform.childCount == 0)
         {
-            QuestData_HuntMonster tempData = (QuestData_HuntMonster)quest.questData;
-
-            questContents.text = $"{tempData.monstersName} :   / {tempData.requireHuntCounts}";
+            Instantiate(questSlotUI, transform);
         }
+        else
+        {
+            int childNum = transform.childCount;
+            Vector3 finalPosition = transform.GetChild(childNum).position;
+            GameObject obj = Instantiate(questSlotUI, transform);
+
+            float slotInterval = 100.0f;
+
+            obj.transform.localPosition = new Vector3(obj.transform.localPosition.x, finalPosition.y - slotInterval, obj.transform.localPosition.z);
+        }
+
+        //TextMeshProUGUI questContents = tempObj.GetComponent<TextMeshProUGUI>();
+        //if(quest.questType == QuestType.MonsterHunt)
+        //{
+        //    QuestData_HuntMonster tempData = QuestManager.instance.cu;
+
+        //    for(int i = 0; i < tempData.monstersName.Length; i++)
+        //    {
+        //        questContents.text = $"{tempData.monstersName} :  / {tempData.requireHuntCounts[i]}";
+
+        //    }
+        //}
         
     }
 }

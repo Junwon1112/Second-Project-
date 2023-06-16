@@ -102,6 +102,12 @@ public class DialogUI : BasicUIForm_Parent, IPointerClickHandler, IPointerDownHa
         Text_Dialog.text = dialogs_Print[index];
     }
 
+    public void PrintNothing()
+    {
+        TextName.text = "";
+        Text_Dialog.text = "";
+    }
+
     /// <summary>
     /// 출력할 대화 세팅
     /// </summary>
@@ -138,38 +144,48 @@ public class DialogUI : BasicUIForm_Parent, IPointerClickHandler, IPointerDownHa
         //3. 버튼 생성하며 스크립트는 null이 되고 버튼 클릭 후 해당하는 퀘스트 대화창을 띄움
         //4. 대화 종료 후 수락 / 거절 버튼 생성
         //5. 수락하면 퀘스트 목표를 카운팅 시작, 거절하면 대화창을 그냥 닫음
-        index++;
+        
         if(isBasicDialog)
         {
-            if (dialogs_Print.Count > index)
+            index++;
+            if (dialogs_Print.Count-1 > index)
             {
                 PrintDialog();
             }
-            else if (dialogs_Print.Count == index)
+            else if (dialogs_Print.Count-1 == index)
             {
+                PrintDialog();
                 isBasicDialog = false;
                 index = -1;
             }
         }
         else
         {
-            if (isQuestExist && index == -1)   //=>NPC트리거에서 퀘스트가 있으면 isQuestExist를 true로 만듬
+            if(isQuestExist)
             {
-                questButtons.SetQuestButton();
-                questButtons.UIOnOffSetting();
-            }
-            else if(isQuestExist && index != -1 && dialogs_Print.Count > index)
-            {
-                PrintDialog();
-            }
-            else if(dialogs_Print.Count <= index)
-            {
-                //수락, 거절
-                questButtons.SetAcceptDeclineButton();
+                if (index == -1 && questButtons.IsUIOnOff)   //=>NPC트리거에서 퀘스트가 있으면 isQuestExist를 true로 만듬
+                {
+                    PrintNothing();
+                    questButtons.SetQuestButton();
+                    questButtons.UIOnOffSetting();
+                }
+                else if (isQuestExist && index != -1 && dialogs_Print.Count-1 > index)
+                {
+                    index++;
+                    PrintDialog();
+                }
+                else if (dialogs_Print.Count-1 <= index && questButtons.IsUIOnOff)
+                {
+                    //수락, 거절
+                    PrintNothing();
+                    questButtons.SetAcceptDeclineButton();
+                    questButtons.UIOnOffSetting();
+                }
             }
             else
             {
                 index = 0;
+                isBasicDialog = true;
                 UIOnOffSetting();
             }
         }
