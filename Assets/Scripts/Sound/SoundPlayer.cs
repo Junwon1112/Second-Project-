@@ -20,9 +20,14 @@ public class SoundPlayer : MonoBehaviour
     [SerializeField]
     protected AudioClip[] audioClips_Effect = null;
 
+    [SerializeField]
+    protected AudioClip[] audioClips_BGM = null;
+
     protected List<SoundObject> list_Sound = new List<SoundObject>();
 
-    protected Dictionary<SoundType, AudioClip> dic_EffectSound = new Dictionary<SoundType, AudioClip>();
+    protected Dictionary<SoundType_BGM, AudioClip> dic_BGMSound = new Dictionary<SoundType_BGM, AudioClip>();
+
+    protected Dictionary<SoundType_Effect, AudioClip> dic_EffectSound = new Dictionary<SoundType_Effect, AudioClip>();
 
     protected readonly string SOUND_NAME = "_Sound";
 
@@ -99,21 +104,30 @@ public class SoundPlayer : MonoBehaviour
         }
 
         dic_EffectSound.Clear ();
+        dic_BGMSound.Clear();
+
 
         list_Sound.Add(audio_basic);
 
-        for(int i = 0; i < audioClips_Effect.Length; i++)
+        for (int i = 0; i < audioClips_BGM.Length; i++)
         {
             //Enum.Parse는 Type enumType(Enum의 이름), string value(해당 Enum의 멤버 string 이름))
             //을 통해 object로 리턴하고 캐스팅해 원하는 타입으로 받을 수 있다
             //등록된 오디오클립의 이름이 Enum의 멤버라고 했으므로 오디오클립 파일명과 Enum멤버의 이름이 같아야한다
-            dic_EffectSound.Add((SoundType)System.Enum.Parse(typeof(SoundType), audioClips_Effect[i].name), audioClips_Effect[i]);
+            dic_BGMSound.Add((SoundType_BGM)System.Enum.Parse(typeof(SoundType_BGM), audioClips_BGM[i].name), audioClips_BGM[i]);
+        }
+
+        for (int i = 0; i < audioClips_Effect.Length; i++)
+        {
+            //Enum.Parse는 Type enumType(Enum의 이름), string value(해당 Enum의 멤버 string 이름))
+            //을 통해 object로 리턴하고 캐스팅해 원하는 타입으로 받을 수 있다
+            //등록된 오디오클립의 이름이 Enum의 멤버라고 했으므로 오디오클립 파일명과 Enum멤버의 이름이 같아야한다
+            dic_EffectSound.Add((SoundType_Effect)System.Enum.Parse(typeof(SoundType_Effect), audioClips_Effect[i].name), audioClips_Effect[i]);
         }
 
         InitializeVolume();
 
     }
-
 
     /// <summary>
     /// 이 메서드는 이 MonoBehavior가 사라질 때 호출
@@ -199,11 +213,23 @@ public class SoundPlayer : MonoBehaviour
     /// </summary>
     /// <param name="type">어떤 타입에 대한걸 원하는지</param>
     /// <returns>사운드 타입에 대응하는 오디오 클립</returns>
-    public AudioClip GetSoundClip(SoundType type)
+    public AudioClip GetSoundClip_Effect(SoundType_Effect type)
     {
         if (dic_EffectSound.ContainsKey(type))
         {
             return dic_EffectSound[type];
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+    public AudioClip GetSoundClip_BGM(SoundType_BGM type)
+    {
+        if (dic_BGMSound.ContainsKey(type))
+        {
+            return dic_BGMSound[type];
         }
         else
         {
@@ -254,6 +280,11 @@ public class SoundPlayer : MonoBehaviour
     public void PlayBGM()
     {
         PlayBGM(audioSource_bgm.clip);
+    }
+
+    public void PlayBGM(SoundType_BGM soundType)
+    {
+        PlayBGM(GetSoundClip_BGM(soundType));
     }
 
     /// <summary>
@@ -432,24 +463,24 @@ public class SoundPlayer : MonoBehaviour
     }
 
 
-    public void PlaySound(SoundType soundType/*, float volume*/)
+    public void PlaySound(SoundType_Effect soundType/*, float volume*/)
     {
-        if (soundType == SoundType.None)
+        if (soundType == SoundType_Effect.None)
         {
             return;
         }
 
-        PlaySound(GetSoundClip(soundType), /*volume,*/ null);
+        PlaySound(GetSoundClip_Effect(soundType), /*volume,*/ null);
     }
 
-    public void PlaySound(SoundType soundType, bool isStoppable)
+    public void PlaySound(SoundType_Effect soundType, bool isStoppable)
     {
-        if(soundType == SoundType.None)
+        if(soundType == SoundType_Effect.None)
         {
             return;
         }
 
-        PlaySound(GetSoundClip(soundType), /*1.0f,*/ 0, false, isStoppable, null);
+        PlaySound(GetSoundClip_Effect(soundType), /*1.0f,*/ 0, false, isStoppable, null);
     }
 
     public void PlaySound(AudioClip clip)

@@ -63,7 +63,7 @@ public class Projectile_LeafBind : MonoBehaviour, IBattle
                 isEnd = true;
             }
 
-            SoundPlayer.Instance?.PlaySound(SoundType.Sound_LeafHit);
+            SoundPlayer.Instance?.PlaySound(SoundType_Effect.Sound_LeafHit);
 
             Attack(monster);
 

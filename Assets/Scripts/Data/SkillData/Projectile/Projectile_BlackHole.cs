@@ -54,7 +54,7 @@ public class Projectile_BlackHole : MonoBehaviour, IBattle
 
             if (other.CompareTag("Monster"))
             {
-                SoundPlayer.Instance?.PlaySound(SoundType.Sound_DarkHit);
+                SoundPlayer.Instance?.PlaySound(SoundType_Effect.Sound_DarkHit);
                 ParticlePlayer.Instance?.PlayParticle(ParticleType.ParticleSystem_DarkHit, other.ClosestPoint(transform.position), transform.rotation);
 
                 Monster_Basic monster;

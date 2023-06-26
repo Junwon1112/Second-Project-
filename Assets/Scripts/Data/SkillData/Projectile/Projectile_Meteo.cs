@@ -54,7 +54,7 @@ public class Projectile_Meteo : MonoBehaviour, IBattle
 
             if (other.CompareTag("Monster"))
             {
-                SoundPlayer.Instance?.PlaySound(SoundType.Sound_FireHit);
+                SoundPlayer.Instance?.PlaySound(SoundType_Effect.Sound_FireHit);
                 ParticlePlayer.Instance?.PlayParticle(ParticleType.ParticleSystem_FireHit, other.ClosestPoint(transform.position), transform.rotation);
 
                 Monster_Basic monster;

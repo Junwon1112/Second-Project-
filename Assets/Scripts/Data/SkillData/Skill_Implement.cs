@@ -194,7 +194,7 @@ public class Skill_Implement : MonoBehaviour
             {
                 monsters[i] = monsterColliders[i].transform.parent.GetComponentInChildren<Monster_Basic>();
 
-                SoundPlayer.Instance?.PlaySound(SoundType.Sound_WindHit);
+                SoundPlayer.Instance?.PlaySound(SoundType_Effect.Sound_WindHit);
 
                 weapon.SkillAttack(monsters[i]);
 
@@ -227,7 +227,7 @@ public class Skill_Implement : MonoBehaviour
         Vector3 compensatePosition = player.transform.forward * 6;  //투사체 프리팹 위치 보정
 
         Instantiate(tempSkill_Data.projectile_Prefab, player.transform.position + compensatePosition, player.transform.rotation);
-        SoundPlayer.Instance?.PlaySound(SoundType.Sound_Skill_Meteo);
+        SoundPlayer.Instance?.PlaySound(SoundType_Effect.Sound_Skill_Meteo);
     }
 
     private void Witch_Skill_BlackHole(int skillID)
@@ -241,7 +241,7 @@ public class Skill_Implement : MonoBehaviour
         Vector3 compensatePosition = new Vector3(0,1.2f,0) + player.transform.forward * 6;  //투사체 프리팹 위치 보정
 
         Instantiate(tempSkill_Data.projectile_Prefab, player.transform.position + compensatePosition, player.transform.rotation);
-        SoundPlayer.Instance?.PlaySound(SoundType.Sound_Skill_BlackHole);
+        SoundPlayer.Instance?.PlaySound(SoundType_Effect.Sound_Skill_BlackHole);
     }
 
     private void Witch_Skill_LeafBind(int skillID)
@@ -298,7 +298,7 @@ public class Skill_Implement : MonoBehaviour
             {
                 SkillData_Shooting tempSkill_Data = SkillDataManager.Instance.FindSkill_Shooting(leafBindSkillID);
                 Instantiate(tempSkill_Data.projectile_Prefab ,targetMonster.transform);
-                SoundPlayer.Instance?.PlaySound(SoundType.Sound_Skill_LeafBind);
+                SoundPlayer.Instance?.PlaySound(SoundType_Effect.Sound_Skill_LeafBind);
             }
 
             IsWitchLeafBind_ClickUsing = false;

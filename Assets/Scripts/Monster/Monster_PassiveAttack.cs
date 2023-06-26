@@ -339,8 +339,8 @@ public class Monster_PassiveAttack : Monster_Basic
         //퀘스트 존재 시 퀘스트 몬스터 마리수++
         for(int i = 0; i < QuestManager.instance.currentQuests.Count; i++)
         {
-            QuestData questData;
-            QuestManager.instance.currentQuests[i].questData.QuestCheck(monsterData.monsterID);
+            //QuestData questData;
+            QuestManager.instance.CheckQuest_Monster(monsterData.monsterID);
         }
         Destroy(transform.parent.gameObject, 3.0f);
     }

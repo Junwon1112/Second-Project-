@@ -9,13 +9,7 @@ public class NPC_Trigger : MonoBehaviour
     CanvasGroup g_ButtonCanvas;
     DialogUI dialogUI;
 
-    bool isPlayerInTrigger;
-
-    public bool IsPlayerInTrigger
-    {
-        get { return isPlayerInTrigger; }
-        set { isPlayerInTrigger = value; }
-    }
+    
 
     private void Awake()
     {
@@ -30,26 +24,16 @@ public class NPC_Trigger : MonoBehaviour
     }
 
 
-    private void OnTriggerEnter(Collider other)
+private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
         {
             SetCanvasOn();
-            IsPlayerInTrigger = true;
+            dialogUI.IsPlayerInTrigger = true;
             dialogUI.npc_Trigger = this;
             dialogUI.npc = this.npc;
             dialogUI.questButtons.npc = this.npc;
-            dialogUI.SetText(npc.data.npcName, npc.data.basicScript);
-            
-            for(int i =0; i < npc.data.quest.Length; i++)
-            {
-                if (npc.data.quest[i].requireLevel <= InGameManager.Instance.MainPlayer.level)
-                {
-                    dialogUI.isQuestExist = true;
-                    //dialogUI.questButtons.SetText(npc.data.npcName, npc.data.quest[i].dialog);
-                    break;
-                }
-            }
+            //dialogUI.SetText(npc.data.npcName, npc.data.basicScript);
             
         }
     }
@@ -58,7 +42,7 @@ public class NPC_Trigger : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             SetCanvasOff();
-            IsPlayerInTrigger = false;
+            dialogUI.IsPlayerInTrigger = false;
         }
     }
 

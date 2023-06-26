@@ -11,18 +11,18 @@ public class QuestData_HuntMonster : QuestData
     
 
 
-    public override void QuestCheck(int monsterID, int huntCount = 1)
-    {
-        for(int i = 0; i < monstersData.Length; i++)
-        {
-            if(monstersData[i].monsterID == monsterID)
-            {
-             //   currentHuntCounts[i] += huntCount;
-            }
-        }
+    //public override void QuestCheck(int monsterID, int huntCount = 1)
+    //{
+    //    for(int i = 0; i < monstersData.Length; i++)
+    //    {
+    //        if(monstersData[i].monsterID == monsterID)
+    //        {
+    //         //   currentHuntCounts[i] += huntCount;
+    //        }
+    //    }
         
 
-    }
+    //}
 
     //public override void AssignQuest()
     //{

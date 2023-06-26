@@ -18,6 +18,9 @@ public class QuestUI : BasicUIForm_Parent
     private void Awake()
     {
         input = TotalGameManager.Instance.Input;
+        CanvasGroupOnOff = GetComponent<CanvasGroup>();
+        IsUIOnOff = true;
+        UI_OnOff = FindObjectOfType<UI_Player_MoveOnOff>();
     }
 
     private void OnEnable()

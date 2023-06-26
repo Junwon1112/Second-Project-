@@ -56,7 +56,7 @@ public class Projectile_WitchAttack : MonoBehaviour, IBattle
     {
         if (other.CompareTag("Monster"))
         {
-            SoundPlayer.Instance?.PlaySound(SoundType.Sound_IceHit);
+            SoundPlayer.Instance?.PlaySound(SoundType_Effect.Sound_IceHit);
             ParticlePlayer.Instance?.PlayParticle(ParticleType.ParticleSystem_IceHit, other.ClosestPoint(transform.position), transform.rotation);
 
             Monster_Basic monster;

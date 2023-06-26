@@ -104,8 +104,8 @@ public class DropUI : Num_UI_Basic
 
         if(splitPossibleCount > 0)  //현재 버리고 남은 총 갯수가 1개 이상이면 원래 슬롯에 아이템을 다시 만들어 준다.
         {
-            inventory.itemSlots[TakeID].AssignSlotItem(ItemData, splitPossibleCount);             //UI와 슬롯 데이터에서는 뺌
-            inventoryUI.slotUIs[TakeID].SetSlotWithData(ItemData, splitPossibleCount);
+            Inventory.itemSlots[TakeID].AssignSlotItem(ItemData, splitPossibleCount);             //UI와 슬롯 데이터에서는 뺌
+            InventoryUI.slotUIs[TakeID].SetSlotWithData(ItemData, splitPossibleCount);
         }
 
         NumUIClose();
@@ -138,8 +138,8 @@ public class DropUI : Num_UI_Basic
 
     public override void ClickCancelButton()
     {
-        inventory.itemSlots[TakeID].AssignSlotItem(ItemData, splitPossibleCount);
-        inventoryUI.slotUIs[TakeID].SetSlotWithData(ItemData, splitPossibleCount);
+        Inventory.itemSlots[TakeID].AssignSlotItem(ItemData, splitPossibleCount);
+        InventoryUI.slotUIs[TakeID].SetSlotWithData(ItemData, splitPossibleCount);
         NumUIClose();
     }
 }

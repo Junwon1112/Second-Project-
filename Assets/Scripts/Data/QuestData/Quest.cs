@@ -10,10 +10,13 @@ public class Quest : ScriptableObject
     public uint[] requireNPC_ID;
     public string questName;
     public int requireLevel;
-    public List<string> dialog;
+    public List<string> questConductDialog;
+    public List<string> questContinueDialog;
+    public List<string> questDoneDialog;
     public QuestData questData;
     public float compensation_Exp;
     public ItemData compensation_Item;
+    public int compensation_Num;
     public QuestType questType;
 }
 

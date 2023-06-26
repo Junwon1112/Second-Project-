@@ -13,13 +13,24 @@ public class QuestSlotUIs_Create : MonoBehaviour
     {
         if(transform.childCount == 0)
         {
-            Instantiate(questSlotUI, transform);
+            GameObject obj = Instantiate(questSlotUI, transform);
+            QuestSlotUI tempQuestSlotUI = obj.GetComponent<QuestSlotUI>();
+            tempQuestSlotUI.quest = quest;
+            tempQuestSlotUI.questIndex = QuestManager.instance.currentQuests.IndexOf(quest);
+            tempQuestSlotUI.SetQuestDatas();
+            int firstSlotPostion_y = 100;
+
+            obj.transform.localPosition = new Vector3(obj.transform.localPosition.x, firstSlotPostion_y, obj.transform.localPosition.z);
         }
         else
         {
             int childNum = transform.childCount;
-            Vector3 finalPosition = transform.GetChild(childNum).position;
+            Vector3 finalPosition = transform.GetChild(childNum-1).localPosition;
             GameObject obj = Instantiate(questSlotUI, transform);
+            QuestSlotUI tempQuestSlotUI = obj.GetComponent<QuestSlotUI>();
+            tempQuestSlotUI.quest = quest;
+            tempQuestSlotUI.questIndex = QuestManager.instance.currentQuests.IndexOf(quest);
+            tempQuestSlotUI.SetQuestDatas();
 
             float slotInterval = 100.0f;
 

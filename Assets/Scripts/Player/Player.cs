@@ -112,8 +112,8 @@ public class Player : MonoBehaviour, IHealth
     public ItemData_Weapon myWeapon;
 
     float findItemRange = 3.0f;
-    Inventory playerInventory;
-    InventoryUI playerInventoryUI;
+    public Inventory playerInventory;
+    public InventoryUI playerInventoryUI;
 
     /// <summary>
     /// 무기 바꿀때 사용하기 위한 변수들
@@ -590,7 +590,7 @@ public class Player : MonoBehaviour, IHealth
         MaxExp *= 1.3f;
         SetExp();
         ParticlePlayer.Instance.PlayParticle(ParticleType.ParticleSystem_LevelUp, transform, transform.position, transform.rotation);
-        SoundPlayer.Instance.PlaySound(SoundType.Sound_LevelUp);
+        SoundPlayer.Instance.PlaySound(SoundType_Effect.Sound_LevelUp);
     }
 
     /// <summary>
@@ -739,11 +739,11 @@ public class Player : MonoBehaviour, IHealth
     {
         if(Job == JobType.SwordMan)
         {
-            SoundPlayer.Instance?.PlaySound(SoundType.Sound_Attack_SwordMan);
+            SoundPlayer.Instance?.PlaySound(SoundType_Effect.Sound_Attack_SwordMan);
         }
         else if(Job == JobType.Witch)
         {
-            SoundPlayer.Instance?.PlaySound(SoundType.Sound_Attack_Witch);
+            SoundPlayer.Instance?.PlaySound(SoundType_Effect.Sound_Attack_Witch);
         }
     }
 
@@ -752,7 +752,7 @@ public class Player : MonoBehaviour, IHealth
     /// </summary>
     public void WalkSoundAndEffectStart()
     {
-        SoundPlayer.Instance?.PlaySound(SoundType.Sound_Walk);
+        SoundPlayer.Instance?.PlaySound(SoundType_Effect.Sound_Walk);
         ParticlePlayer.Instance?.PlayParticle(ParticleType.ParticleSystem_Walk, transform.position, transform.rotation);
     }
 

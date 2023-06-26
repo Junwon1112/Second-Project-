@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public enum SoundType
+public enum SoundType_Effect
 {
     None,
     Sound_Attack_SwordMan,
@@ -21,5 +21,12 @@ public enum SoundType
     Sound_Skill_BlackHole,
     Sound_Skill_LeafBind
 
+}
+
+public enum SoundType_BGM
+{
+    BGM_Main,
+    BGM_SelectCharacter,
+    BGM_Stage1
 }
 

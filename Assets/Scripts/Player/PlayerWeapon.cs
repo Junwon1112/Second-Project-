@@ -98,7 +98,7 @@ public class PlayerWeapon : MonoBehaviour, IBattle
         {
             Vector3 weaponPosition = transform.position;
 
-            SoundPlayer.Instance?.PlaySound(SoundType.Sound_Hit);
+            SoundPlayer.Instance?.PlaySound(SoundType_Effect.Sound_Hit);
             ParticlePlayer.Instance?.PlayParticle(ParticleType.ParticleSystem_Hit, other.ClosestPoint(transform.position), transform.rotation);
 
 

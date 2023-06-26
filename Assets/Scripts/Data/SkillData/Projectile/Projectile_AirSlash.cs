@@ -64,7 +64,7 @@ public class Projectile_AirSlash : MonoBehaviour, IBattle
     {
         if (other.CompareTag("Monster"))
         {
-            SoundPlayer.Instance?.PlaySound(SoundType.Sound_ElectroHit);
+            SoundPlayer.Instance?.PlaySound(SoundType_Effect.Sound_ElectroHit);
             ParticlePlayer.Instance?.PlayParticle(ParticleType.ParticleSystem_ElectroHit, other.ClosestPoint(transform.position), transform.rotation);
 
             Monster_Basic monster;

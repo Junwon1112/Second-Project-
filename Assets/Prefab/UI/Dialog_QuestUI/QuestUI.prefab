@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 8138415025541397985}
   - component: {fileID: 8138415025541397984}
   - component: {fileID: 7663851432437636733}
+  - component: {fileID: 2931524796870487036}
   m_Layer: 5
   m_Name: QuestUI
   m_TagString: Untagged
@@ -92,6 +93,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 27eca4b755155bd47ac1582c21230952, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!225 &2931524796870487036
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8138415025541397986}
+  m_Enabled: 1
+  m_Alpha: 0
+  m_Interactable: 0
+  m_BlocksRaycasts: 0
+  m_IgnoreParentGroups: 0
 --- !u!1 &8138415025592117939
 GameObject:
   m_ObjectHideFlags: 0

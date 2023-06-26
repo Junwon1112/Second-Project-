@@ -1048,6 +1048,22 @@ PrefabInstance:
       propertyPath: m_Name
       value: SoundManager
       objectReference: {fileID: 0}
+    - target: {fileID: 8158927102833114250, guid: e975c8bff8f5b9a4cb0c8fbfa52b1a6a, type: 3}
+      propertyPath: audioClips_BGM.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8158927102833114250, guid: e975c8bff8f5b9a4cb0c8fbfa52b1a6a, type: 3}
+      propertyPath: audioClips_BGM.Array.data[0]
+      value: 
+      objectReference: {fileID: 8300000, guid: 849959c0d99b5524f8f8087826bf7333, type: 3}
+    - target: {fileID: 8158927102833114250, guid: e975c8bff8f5b9a4cb0c8fbfa52b1a6a, type: 3}
+      propertyPath: audioClips_BGM.Array.data[1]
+      value: 
+      objectReference: {fileID: 8300000, guid: a11945a78d2ad144f9fd58ef70cbd865, type: 3}
+    - target: {fileID: 8158927102833114250, guid: e975c8bff8f5b9a4cb0c8fbfa52b1a6a, type: 3}
+      propertyPath: audioClips_BGM.Array.data[2]
+      value: 
+      objectReference: {fileID: 8300000, guid: 3dd4fbb90608cf349af69cffbf1302c3, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e975c8bff8f5b9a4cb0c8fbfa52b1a6a, type: 3}
 --- !u!1 &1642013462

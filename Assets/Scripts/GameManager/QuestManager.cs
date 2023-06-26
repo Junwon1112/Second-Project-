@@ -13,6 +13,10 @@ public class QuestManager : MonoBehaviour
     public List<Quest> currentQuests = new List<Quest>();
     public int[,] currentAchievement;
 
+    public List<Quest> conductedQuests = new List<Quest>(); //퀘스트가 완료되면 추가
+
+    public QuestSlotUIs_Create questSlotUIs;
+
     public Dictionary<int, Quest> questsDict = new Dictionary<int, Quest>();
 
     //public QuestMonsterBook[] questBook;
@@ -21,6 +25,8 @@ public class QuestManager : MonoBehaviour
     MonsterData monsterData;
 
     public int[] countQuestMonster;
+
+
 
     private void Awake()
     {
@@ -42,7 +48,7 @@ public class QuestManager : MonoBehaviour
             questsDict.Add((int)totalQuests[i].questID, totalQuests[i]);
         }
 
-
+        questSlotUIs = FindObjectOfType<QuestSlotUIs_Create>();
         //questBook = new QuestMonsterBook[15];
     }
 
@@ -55,28 +61,44 @@ public class QuestManager : MonoBehaviour
     {
         for(int i = 0; i < currentQuests.Count; i ++)
         {
-            if (currentQuests[i].questType == QuestType.MonsterHunt)
+            QuestData_HuntMonster questData_Monster = (QuestData_HuntMonster)currentQuests[i].questData;
+            for (int j = 0; j< questData_Monster.monstersData.Length; j++)
             {
-                QuestData_HuntMonster questData_Monster = (QuestData_HuntMonster)currentQuests[i].questData;
-                for (int j = 0; j< questData_Monster.monstersData.Length; j++)
+                if (questData_Monster.monstersData[j].monsterID == monsterID)
                 {
-                    if (questData_Monster.monstersData[j].monsterID == monsterID)
-                    {
-                        currentAchievement[i, j]++;
-                    }
+                    currentAchievement[i, j]++;
+                    QuestSlotUI questSlotUI = questSlotUIs.transform.GetChild(i).GetComponent<QuestSlotUI>();
+                    questSlotUI.SetQuestText(j);
                 }
             }
+        
+        }
+    }
+
+    public bool CheckTakeCompensation(Quest quest)
+    {
+        Inventory inven = InGameManager.Instance.MainPlayer.playerInventory;
+        bool isTakeItem = inven.TakeItem(quest.compensation_Item, (uint)quest.compensation_Num);
+        InGameManager.Instance.MainPlayer.playerInventoryUI.SetAllSlotWithData();
+
+        return isTakeItem;
+    }
+
+    public bool CheckIsQuestConducted(Quest quest)
+    {
+        if (conductedQuests.Count > 0)
+        {
+            for(int i = 0; i < conductedQuests.Count; i++)
+            {
+                if(conductedQuests[i] == quest)
+                {
+                    return true;
+                }
+            }
+            
         }
 
-        //if (questsDict[questID].questType == QuestType.MonsterHunt)
-        //{
-            
-        //}
-        //else if(questsDict[questID].questType == QuestType.ItemCollect)
-        //{
-
-        //}
-
+        return false;
     }
     
 }

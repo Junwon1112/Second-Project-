@@ -13,4 +13,5 @@ public enum WarningTextName
 {
     WarningText_BuyError = 0,
     WarningText_SellError = 1,
+    WarningText_CheckEmptySlot
 }

@@ -16,7 +16,13 @@ public class DialogUI : BasicUIForm_Parent, IPointerClickHandler, IPointerDownHa
     public Button[] buttons;
     public bool isBasicDialog = true;
     public bool isQuestExist = false;
+    public bool isQuestContinue = false;
+    public bool isQuestDone = false;
     public QuestButtons questButtons;
+    bool isPlayerInTrigger;
+
+    
+
 
     public override PlayerInput Input_Control { get; set; }
     public override CanvasGroup CanvasGroupOnOff { get; set; }
@@ -26,6 +32,12 @@ public class DialogUI : BasicUIForm_Parent, IPointerClickHandler, IPointerDownHa
     public override UI_Player_MoveOnOff UI_OnOff { get; set; }
     public TextMeshProUGUI TextName { get; set; }
     public TextMeshProUGUI Text_Dialog { get; set; }
+
+    public bool IsPlayerInTrigger
+    {
+        get { return isPlayerInTrigger; }
+        set { isPlayerInTrigger = value; }
+    }
 
     bool isEndTalk;
 
@@ -49,16 +61,18 @@ public class DialogUI : BasicUIForm_Parent, IPointerClickHandler, IPointerDownHa
         CanvasGroupOnOff = GetComponent<CanvasGroup>();
         Input_Control = TotalGameManager.Instance.Input;
         RectTransform_UI = GetComponent<RectTransform>();
+        UI_OnOff = FindObjectOfType<UI_Player_MoveOnOff>();
         questButtons = GetComponentInChildren<QuestButtons>();
     }
 
     private void Start()
     {
         IsUIOnOff = true;
+        IsPlayerInTrigger = false;
     }
     private void OnDialogOnoff(UnityEngine.InputSystem.InputAction.CallbackContext obj)
     {
-        if (npc_Trigger.IsPlayerInTrigger)  //NPC트리거 내부라면
+        if (IsPlayerInTrigger)  //NPC트리거 내부라면
         {
             UIOnOffSetting();
             PrintDialog();
@@ -73,12 +87,14 @@ public class DialogUI : BasicUIForm_Parent, IPointerClickHandler, IPointerDownHa
             IsUIOnOff = false;
 
             isBasicDialog = true;
+            SetText(npc.data.npcName, npc.data.basicScript);
+            isQuestExist = CheckQuestExist();
 
             CanvasGroupOnOff.alpha = 1;
             CanvasGroupOnOff.interactable = true;
             CanvasGroupOnOff.blocksRaycasts = true;
 
-            //UI_OnOff.IsUIOnOff();
+            UI_OnOff.IsUIOnOff();
         }
         else
         {
@@ -88,7 +104,7 @@ public class DialogUI : BasicUIForm_Parent, IPointerClickHandler, IPointerDownHa
             CanvasGroupOnOff.interactable = false;
             CanvasGroupOnOff.blocksRaycasts = false;
 
-            //UI_OnOff.IsUIOnOff();
+            UI_OnOff.IsUIOnOff();
         }
 
     }
@@ -116,10 +132,9 @@ public class DialogUI : BasicUIForm_Parent, IPointerClickHandler, IPointerDownHa
     public void SetText(string name, string[] dialogs)
     {
         dialogs_Print.Clear();
-        
+        npcName = name;
         for (int i = 0; i < dialogs.Length; i++)
         {
-            npcName = name;
             dialogs_Print.Add(dialogs[i]); 
         }
 
@@ -128,13 +143,34 @@ public class DialogUI : BasicUIForm_Parent, IPointerClickHandler, IPointerDownHa
     public void SetText(string name, List<string> dialogs)
     {
         dialogs_Print.Clear();
-
+        npcName = name;
         for (int i = 0; i < dialogs.Count; i++)
         {
-            npcName = name;
             dialogs_Print.Add(dialogs[i]);
         }
 
+    }
+
+    public void SetDialogClear()
+    {
+        isQuestContinue = false;
+        isQuestDone = false;
+        index = 0;
+        isBasicDialog = true;
+        questButtons.UIOnOffSetting();
+        UIOnOffSetting();
+    }
+
+    private bool CheckQuestExist()
+    {
+        for (int i = 0; i < npc.data.quest.Length; i++)
+        {
+            if (npc.data.quest[i].requireLevel <= InGameManager.Instance.MainPlayer.level && !QuestManager.instance.CheckIsQuestConducted(npc.data.quest[i]))
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
     public void OnPointerDown(PointerEventData eventData)
@@ -147,12 +183,12 @@ public class DialogUI : BasicUIForm_Parent, IPointerClickHandler, IPointerDownHa
         
         if(isBasicDialog)
         {
-            index++;
             if (dialogs_Print.Count-1 > index)
             {
                 PrintDialog();
+                index++;
             }
-            else if (dialogs_Print.Count-1 == index)
+            else if (dialogs_Print.Count-1 <= index)
             {
                 PrintDialog();
                 isBasicDialog = false;
@@ -167,19 +203,42 @@ public class DialogUI : BasicUIForm_Parent, IPointerClickHandler, IPointerDownHa
                 {
                     PrintNothing();
                     questButtons.SetQuestButton();
-                    questButtons.UIOnOffSetting();
+                    if(questButtons.transform.childCount != 0)
+                    {
+                        questButtons.UIOnOffSetting();
+                    }
+                    else    //모든 퀘스트를 완료했을 경우 대화창을 닫는다
+                    {
+                        index = 0;
+                        isBasicDialog = true;
+                        UIOnOffSetting();
+                    }
                 }
-                else if (isQuestExist && index != -1 && dialogs_Print.Count-1 > index)
+                else if (isQuestExist && index != -1 && dialogs_Print.Count-1 > index)  //퀘스트 대화 진행 중
                 {
                     index++;
                     PrintDialog();
                 }
-                else if (dialogs_Print.Count-1 <= index && questButtons.IsUIOnOff)
+                //마지막 대화일 경우
+                else if (dialogs_Print.Count-1 <= index && questButtons.IsUIOnOff)  //마지막 대화인가 && 퀘스트버튼 UI가 처음 켜지는 것인가
                 {
-                    //수락, 거절
-                    PrintNothing();
-                    questButtons.SetAcceptDeclineButton();
-                    questButtons.UIOnOffSetting();
+                    if (isQuestContinue)  //진행중인 퀘스트가 아니라면 버튼 생성
+                    {
+                        index = 0;
+                        isBasicDialog = true;
+                        UIOnOffSetting();
+                    }
+                    else if(isQuestDone)    //진행중인 퀘스트가 완료됐을 경우
+                    {
+                        questButtons.QuestDone();
+                    }
+                    else    //진행중인 퀘스트라면 UI를 닫는다
+                    {
+                        //수락, 거절
+                        PrintNothing();
+                        questButtons.SetAcceptDeclineButton();
+                        questButtons.UIOnOffSetting();
+                    }
                 }
             }
             else
@@ -189,10 +248,6 @@ public class DialogUI : BasicUIForm_Parent, IPointerClickHandler, IPointerDownHa
                 UIOnOffSetting();
             }
         }
-
-        
-
-
     }
 
     public void OnPointerClick(PointerEventData eventData)

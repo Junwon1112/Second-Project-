@@ -41,7 +41,7 @@ public class DMGTextObject : MonoBehaviour
     {
         damageText.text = damageValue.ToString();
         randValue_x = Random.Range(-1f, 1f);
-        randValue_x = Random.Range(0f, 1f);
+        randValue_y = Random.Range(0f, 1f);
         moveDir = new Vector3(randValue_x, randValue_y, 0);
         
     }

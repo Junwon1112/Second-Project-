@@ -16,10 +16,18 @@ MonoBehaviour:
   requireNPC_ID: e8030000e8030000
   questName: Help Me!
   requireLevel: 0
-  dialog:
-  - Excuse me. Can you help me?
-  - There are too many Monsters. If you have a time, Kill the 3 turtle shells.
+  questConductDialog:
+  - Can you help me?
+  - There are too many turtleshells!
+  - Catch just five turtleshells.
+  questContinueDialog:
+  - Umm... Maybe you have to catch more.
+  questDoneDialog:
+  - Wow you cleared my request!
+  - Thank you So much!
+  - Here is your Compensation
   questData: {fileID: 11400000, guid: 60031123a0c7e854e903f2aad852f055, type: 2}
   compensation_Exp: 200
   compensation_Item: {fileID: 11400000, guid: fe94727696a6b4a4693157b1e6af5f47, type: 2}
+  compensation_Num: 3
   questType: 0
