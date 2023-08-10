@@ -47,6 +47,8 @@ public class OptionMenuUI : MenuUI_Basic
             CanvasGroup.alpha = 1;
             CanvasGroup.blocksRaycasts = true;
             CanvasGroup.interactable = true;
+
+            SoundPlayer.Instance.PlaySound(SoundType_Effect.Sound_UI_Open);
         }
     }
 
@@ -57,6 +59,8 @@ public class OptionMenuUI : MenuUI_Basic
         CanvasGroup.interactable = false;
 
         IsOpen = false;
+
+        SoundPlayer.Instance.PlaySound(SoundType_Effect.Sound_UI_Close);
 
         Time.timeScale = 1;
     }

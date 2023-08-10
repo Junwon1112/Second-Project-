@@ -1064,6 +1064,22 @@ PrefabInstance:
       propertyPath: audioClips_BGM.Array.data[2]
       value: 
       objectReference: {fileID: 8300000, guid: 3dd4fbb90608cf349af69cffbf1302c3, type: 3}
+    - target: {fileID: 8158927102833114250, guid: e975c8bff8f5b9a4cb0c8fbfa52b1a6a, type: 3}
+      propertyPath: audioClips_Effect.Array.size
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 8158927102833114250, guid: e975c8bff8f5b9a4cb0c8fbfa52b1a6a, type: 3}
+      propertyPath: audioClips_Effect.Array.data[13]
+      value: 
+      objectReference: {fileID: 8300000, guid: 17e816f8587006148980609bb6949871, type: 3}
+    - target: {fileID: 8158927102833114250, guid: e975c8bff8f5b9a4cb0c8fbfa52b1a6a, type: 3}
+      propertyPath: audioClips_Effect.Array.data[14]
+      value: 
+      objectReference: {fileID: 8300000, guid: 225ffd7705eff1f40b3c5ab03feade3b, type: 3}
+    - target: {fileID: 8158927102833114250, guid: e975c8bff8f5b9a4cb0c8fbfa52b1a6a, type: 3}
+      propertyPath: audioClips_Effect.Array.data[15]
+      value: 
+      objectReference: {fileID: 8300000, guid: 145a46743f48ff24c97ac946da0a4c5b, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e975c8bff8f5b9a4cb0c8fbfa52b1a6a, type: 3}
 --- !u!1 &1642013462

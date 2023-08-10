@@ -83,6 +83,8 @@ public class SkillToQuickSlotUI : BasicUIForm_Parent
             CanvasGroupOnOff.interactable = true;
             CanvasGroupOnOff.blocksRaycasts = true;
 
+            SoundPlayer.Instance.PlaySound(SoundType_Effect.Sound_UI_Open);
+
             UI_OnOff.IsUIOnOff();
         }
         else
@@ -92,6 +94,8 @@ public class SkillToQuickSlotUI : BasicUIForm_Parent
             CanvasGroupOnOff.alpha = 0;
             CanvasGroupOnOff.interactable = false;
             CanvasGroupOnOff.blocksRaycasts = false;
+
+            SoundPlayer.Instance.PlaySound(SoundType_Effect.Sound_UI_Close);
 
             UI_OnOff.IsUIOnOff();
         }

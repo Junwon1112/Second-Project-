@@ -61,6 +61,8 @@ public class VolumeMenuUI : SideMenuUI
             SideCanvasGroup.blocksRaycasts = false;
             SideCanvasGroup.interactable = false;
 
+            SoundPlayer.Instance.PlaySound(SoundType_Effect.Sound_UI_Close);
+
             IsSideUIChangeComplete = true;
 
             Time.timeScale = 1;
@@ -71,6 +73,8 @@ public class VolumeMenuUI : SideMenuUI
 
             IsSideUIChangeComplete = false;
             StartCoroutine(CoVolumeChangeUpdate());     //IsVolumeChangeComplete가 반드시 false가 되고 난 후 실행되어야함
+
+            SoundPlayer.Instance.PlaySound(SoundType_Effect.Sound_UI_Open);
 
             SideCanvasGroup.alpha = 1;
             SideCanvasGroup.blocksRaycasts = true;

@@ -29,6 +29,8 @@ public class WindowMenuUI : SideMenuUI
 
             IsSideUIChangeComplete = true;
 
+            SoundPlayer.Instance.PlaySound(SoundType_Effect.Sound_UI_Close);
+
             Time.timeScale = 1;
         }
         else
@@ -36,6 +38,8 @@ public class WindowMenuUI : SideMenuUI
             Time.timeScale = 0;
 
             IsSideUIChangeComplete = false;
+
+            SoundPlayer.Instance.PlaySound(SoundType_Effect.Sound_UI_Open);
 
             SideCanvasGroup.alpha = 1;
             SideCanvasGroup.blocksRaycasts = true;

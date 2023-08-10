@@ -87,6 +87,8 @@ public class BuyUI : Num_UI_Basic
 
         RectTransform.SetAsLastSibling();
 
+        SoundPlayer.Instance.PlaySound(SoundType_Effect.Sound_UI_Open);
+
         //시작하면 나오는 초기값을 제대로 설정해주는 과정 
         CheckRightCount(InputField.text);
     }
@@ -99,6 +101,8 @@ public class BuyUI : Num_UI_Basic
         NumUI_CanvasGroup.alpha = 0.0f;
         NumUI_CanvasGroup.interactable = false;
         NumUI_CanvasGroup.blocksRaycasts = false;
+
+        SoundPlayer.Instance.PlaySound(SoundType_Effect.Sound_UI_Close);
     }
 
     protected override void ClickOKButton()

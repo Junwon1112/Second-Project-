@@ -19,8 +19,11 @@ public enum SoundType_Effect
     Sound_LeafHit,
     Sound_Skill_Meteo,
     Sound_Skill_BlackHole,
-    Sound_Skill_LeafBind
+    Sound_Skill_LeafBind,
 
+    Sound_UI_Open,
+    Sound_UI_Close,
+    Sound_UI_Click
 }
 
 public enum SoundType_BGM

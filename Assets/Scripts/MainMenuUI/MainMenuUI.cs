@@ -69,6 +69,8 @@ public class MainMenuUI : MenuUI_Basic
             CanvasGroup.alpha = 1;
             CanvasGroup.blocksRaycasts = true;
             CanvasGroup.interactable = true;
+
+            SoundPlayer.Instance.PlaySound(SoundType_Effect.Sound_UI_Open);
         }  
     }
 
@@ -81,6 +83,8 @@ public class MainMenuUI : MenuUI_Basic
         IsOpen = false;
 
         Time.timeScale = 1;
+
+        SoundPlayer.Instance.PlaySound(SoundType_Effect.Sound_UI_Close);
     }
 
     protected override bool IsChildMenuOpen()
