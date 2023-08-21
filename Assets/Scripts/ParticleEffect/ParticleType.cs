@@ -16,5 +16,6 @@ public enum ParticleType
     ParticleSystem_IceHit,
     ParticleSystem_FireHit,
     ParticleSystem_DarkHit,
-    ParticleSystem_DashAttack
+    ParticleSystem_DashAttack,
+    ParticleSystem_Slash
 }

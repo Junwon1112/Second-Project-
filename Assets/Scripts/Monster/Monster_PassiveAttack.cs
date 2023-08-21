@@ -23,7 +23,7 @@ public class Monster_PassiveAttack : Monster_Basic
     public delegate void Action(NavMeshAgent agent);
     int destinationIndex = 0;
 
-    float initialMonsterSpeed = 3.5f;
+    float initialMonsterSpeed = 2.0f;
     float moveSpeed;
 
     float monsterChaseRadius = 20.0f;

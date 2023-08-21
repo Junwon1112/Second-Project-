@@ -33,6 +33,10 @@ public class QuickSlotUI : MonoBehaviour, IBeginDragHandler, IEndDragHandler, ID
         //skillUse = new SkillUse();
     }
 
+    private void Update()
+    {
+        skillImage.fillAmount =  1 - skillUse.coolTimeRatio;
+    }
 
     //public void SkillUseInitiate()
     //{

@@ -47,6 +47,7 @@ public class Player : MonoBehaviour, IHealth
     /// </summary>
     Vector3 restartDir = Vector3.zero;
 
+    public Vector3 combatDir = Vector3.zero;
     //float walkSoundVolume = 1.0f;
     //float AttackSoundVolume = 0.7f;
 
@@ -337,8 +338,15 @@ public class Player : MonoBehaviour, IHealth
 
     private void Update()
     {
+        if(CanMove())
+        {
+            transform.Translate(dir * Time.deltaTime * 10, Space.Self);   
+        }
+        else
+        {
+            transform.Translate(combatDir * Time.deltaTime * 10, Space.Self);
+        }
 
-        transform.Translate(dir * Time.deltaTime * 10, Space.Self);   
         if (dir == Vector3.zero)
         {
             anim.SetBool("IsMove", false);
@@ -348,26 +356,24 @@ public class Player : MonoBehaviour, IHealth
 
     private void OnMoveInput(InputAction.CallbackContext obj)
     {
-        if (CanMove())
-        {
-            isKeepMoving = true;
+        isKeepMoving = true;
 
-            Vector3 tempDir;
-            //2개의 축만 필요해 2d vector로 만들면 readvalue값을 2d로 받아야만 한다.
-            //이후 3d로 변환하는 과정을 거친다.
-            tempDir = obj.ReadValue<Vector2>();
-            
-            restartDir.x = tempDir.x;
-            restartDir.z = tempDir.y;
+        Vector3 tempDir;
+        //2개의 축만 필요해 2d vector로 만들면 readvalue값을 2d로 받아야만 한다.
+        //이후 3d로 변환하는 과정을 거친다.
+        tempDir = obj.ReadValue<Vector2>();
+        
+        restartDir.x = tempDir.x;
+        restartDir.z = tempDir.y;
 
-            dir = restartDir;
+        dir = restartDir;
 
-            anim.SetFloat("DirSignal_Front", dir.z);
-            anim.SetFloat("DirSignal_Side", dir.x);
-            anim.SetBool("IsMove", true);
-        }
+        anim.SetFloat("DirSignal_Front", dir.z);
+        anim.SetFloat("DirSignal_Side", dir.x);
+        anim.SetBool("IsMove", true);
 
-        if(obj.canceled)
+
+        if (obj.canceled)
         {
             StopMove();
             isKeepMoving = false;
@@ -405,6 +411,7 @@ public class Player : MonoBehaviour, IHealth
                 if (Job == JobType.SwordMan)
                 {
                     anim.SetTrigger("AttackOn_SwordMan");
+                    //wsParticlePlayer.Instance.PlayParticle(ParticleType.ParticleSystem_Slash, transform.position + transform.forward, Quaternion.Euler(0,0,0));
                 }
                 else if (Job == JobType.Witch)
                 {
@@ -690,6 +697,16 @@ public class Player : MonoBehaviour, IHealth
             weaponCollider.enabled = true;
         }
         
+    }
+
+    public void AttackSlash_1()
+    {
+        ParticlePlayer.Instance.PlayParticle(ParticleType.ParticleSystem_Slash, transform.position + transform.forward + new Vector3(0, 1, 0), transform.rotation * Quaternion.Euler(0, 90, 0));
+    }
+
+    public void AttackSlash_2()
+    {
+        ParticlePlayer.Instance.PlayParticle(ParticleType.ParticleSystem_Slash, transform.position + transform.forward + new Vector3(0, 1, 0), transform.rotation * Quaternion.Euler(-60, 90, 0));
     }
 
     public void IsRestartMove()

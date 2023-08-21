@@ -7,7 +7,7 @@
             "actions": [
                 {
                     "name": "Move",
-                    "type": "Value",
+                    "type": "PassThrough",
                     "id": "e8fd8ff2-65d7-44d1-8dae-01ddf3c23cc4",
                     "expectedControlType": "",
                     "processors": "",
@@ -64,7 +64,7 @@
                     "isPartOfComposite": false
                 },
                 {
-                    "name": "up",
+                    "name": "Up",
                     "id": "b8155a9e-bfa7-43e4-b4c8-12b768e85415",
                     "path": "<Keyboard>/w",
                     "interactions": "",
@@ -75,7 +75,7 @@
                     "isPartOfComposite": true
                 },
                 {
-                    "name": "down",
+                    "name": "Down",
                     "id": "e8935b68-feec-46fe-a9ef-e90d81559a9c",
                     "path": "<Keyboard>/s",
                     "interactions": "",
@@ -86,23 +86,23 @@
                     "isPartOfComposite": true
                 },
                 {
-                    "name": "left",
-                    "id": "095d0fa3-a748-4746-9680-4cb4baba4f89",
+                    "name": "Left",
+                    "id": "cddbdc85-fe0a-444c-95c2-6e8c7f85d65c",
                     "path": "<Keyboard>/a",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Player",
+                    "groups": "",
                     "action": "Move",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
                 {
-                    "name": "right",
-                    "id": "62c1889e-9789-40f6-b056-64d34a8fbf37",
+                    "name": "Right",
+                    "id": "723723cf-4598-4134-9f26-6661d856bcd6",
                     "path": "<Keyboard>/d",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Player",
+                    "groups": "",
                     "action": "Move",
                     "isComposite": false,
                     "isPartOfComposite": true

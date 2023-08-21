@@ -16,7 +16,7 @@ MonoBehaviour:
   monsterType: 1
   monsterID: 1
   monsterLV: 2
-  moveSpeed: 4
+  moveSpeed: 2
   maxHP: 120
   exp: 50
   attackDamage: 20
